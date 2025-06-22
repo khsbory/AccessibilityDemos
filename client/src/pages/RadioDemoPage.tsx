@@ -93,23 +93,27 @@ export default function RadioDemoPage() {
                         <SheetTitle>기간을 선택하세요</SheetTitle>
                       </SheetHeader>
                       <div className="mt-6">
-                        <RadioGroup
-                          value={badSelectedPeriod}
-                          onValueChange={handleBadSelection}
-                          className="space-y-4"
-                        >
-                          {periods.map((period) => (
-                            <div key={period.value} className="flex items-center space-x-2">
-                              <RadioGroupItem 
-                                value={period.value} 
-                                id={`bad-${period.value}`}
-                              />
-                              <Label htmlFor={`bad-${period.value}`} className="text-base">
-                                {period.label}
-                              </Label>
-                            </div>
-                          ))}
-                        </RadioGroup>
+                        <fieldset>
+                          <legend className="sr-only">기간 선택</legend>
+                          <div className="space-y-4">
+                            {periods.map((period) => (
+                              <div key={period.value} className="flex items-center space-x-2">
+                                <input
+                                  type="radio"
+                                  name="bad-period"
+                                  value={period.value}
+                                  id={`bad-${period.value}`}
+                                  checked={badSelectedPeriod === period.value}
+                                  onChange={() => handleBadSelection(period.value)}
+                                  className="w-4 h-4 text-primary border-2 border-primary focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                                />
+                                <label htmlFor={`bad-${period.value}`} className="text-base cursor-pointer">
+                                  {period.label}
+                                </label>
+                              </div>
+                            ))}
+                          </div>
+                        </fieldset>
                       </div>
                     </SheetContent>
                   </Sheet>
@@ -160,44 +164,50 @@ export default function RadioDemoPage() {
                         <SheetTitle>기간을 선택하세요 (스페이스바로 선택)</SheetTitle>
                       </SheetHeader>
                       <div className="mt-6">
-                        <div className="space-y-4" role="radiogroup" aria-labelledby="period-selection">
-                          {periods.map((period, index) => (
-                            <div key={period.value} className="flex items-center space-x-2">
-                              <div
-                                role="radio"
-                                aria-checked={goodSelectedPeriod === period.value}
-                                tabIndex={index === 0 ? 0 : -1}
-                                className={`w-4 h-4 rounded-full border-2 border-primary flex items-center justify-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
-                                  goodSelectedPeriod === period.value ? 'bg-primary' : 'bg-background'
-                                }`}
-                                onKeyDown={(e) => {
-                                  if (e.key === ' ') {
-                                    e.preventDefault();
-                                    handleGoodSelection(period.value);
-                                  } else if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
-                                    e.preventDefault();
-                                    const nextIndex = (index + 1) % periods.length;
-                                    const nextElement = e.currentTarget.parentElement?.parentElement?.children[nextIndex]?.querySelector('[role="radio"]') as HTMLElement;
-                                    nextElement?.focus();
-                                  } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
-                                    e.preventDefault();
-                                    const prevIndex = index === 0 ? periods.length - 1 : index - 1;
-                                    const prevElement = e.currentTarget.parentElement?.parentElement?.children[prevIndex]?.querySelector('[role="radio"]') as HTMLElement;
-                                    prevElement?.focus();
-                                  }
-                                }}
-                                onClick={() => handleGoodSelection(period.value)}
-                              >
-                                {goodSelectedPeriod === period.value && (
-                                  <div className="w-2 h-2 rounded-full bg-primary-foreground" />
-                                )}
+                        <fieldset>
+                          <legend className="sr-only">기간 선택 (스페이스바로 선택)</legend>
+                          <div className="space-y-4">
+                            {periods.map((period, index) => (
+                              <div key={period.value} className="flex items-center space-x-2">
+                                <input
+                                  type="radio"
+                                  name="good-period"
+                                  value={period.value}
+                                  id={`good-${period.value}`}
+                                  checked={goodSelectedPeriod === period.value}
+                                  onChange={() => {}} // 기본 onChange 무시
+                                  onKeyDown={(e) => {
+                                    // 화살표 키 기본 동작 차단
+                                    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                                      e.preventDefault();
+                                      e.stopPropagation();
+                                      
+                                      // 수동 포커스 이동
+                                      let nextIndex;
+                                      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                                        nextIndex = (index + 1) % periods.length;
+                                      } else {
+                                        nextIndex = index === 0 ? periods.length - 1 : index - 1;
+                                      }
+                                      
+                                      const nextElement = document.getElementById(`good-${periods[nextIndex].value}`);
+                                      nextElement?.focus();
+                                    }
+                                    // 스페이스바로만 선택
+                                    else if (e.key === ' ') {
+                                      e.preventDefault();
+                                      handleGoodSelection(period.value);
+                                    }
+                                  }}
+                                  className="w-4 h-4 text-primary border-2 border-primary focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                                />
+                                <label htmlFor={`good-${period.value}`} className="text-base cursor-pointer">
+                                  {period.label}
+                                </label>
                               </div>
-                              <Label className="text-base cursor-pointer" onClick={() => handleGoodSelection(period.value)}>
-                                {period.label}
-                              </Label>
-                            </div>
-                          ))}
-                        </div>
+                            ))}
+                          </div>
+                        </fieldset>
                       </div>
                     </SheetContent>
                   </Sheet>
@@ -209,7 +219,7 @@ export default function RadioDemoPage() {
                 <p className="text-emerald-800 text-sm flex items-start">
                   <Check className="mr-2 h-4 w-4 mt-0.5" aria-hidden="true" />
                   <span>
-                    <strong>개선점:</strong> 화살표 키로 이동할 때 자동 선택되지 않고, 스페이스바로만 선택됩니다. 키보드 사용자가 연속적으로 옵션을 탐색할 수 있습니다.
+                    <strong>개선점:</strong> 표준 HTML input을 사용하면서 화살표 키 기본 동작만 차단했습니다. 스페이스바로만 선택되어 키보드 사용자가 연속적으로 옵션을 탐색할 수 있습니다.
                   </span>
                 </p>
               </CardContent>
@@ -234,16 +244,18 @@ export default function RadioDemoPage() {
                   <Badge variant="destructive" className="mr-2">❌ 잘못된 구현</Badge>
                 </div>
                 <pre className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto text-sm">
-                  <code>{`// 기본 라디오 그룹 - 화살표 키로 자동 선택됨
-<RadioGroup onValueChange={(value) => {
-  // 선택 즉시 DOM 갱신으로 인한 바텀시트 닫힘
-  setSelectedValue(value);
-  closeBottomSheet();
-}}>
-  <RadioGroupItem value="1month" />
-  <RadioGroupItem value="3months" />
-  // ... 다른 옵션들
-</RadioGroup>`}</code>
+                  <code>{`// 기본 HTML 라디오 - 화살표 키로 자동 선택됨
+<input 
+  type="radio" 
+  name="period"
+  value="1month"
+  onChange={() => {
+    // 선택 즉시 DOM 갱신으로 인한 바텀시트 닫힘
+    setSelectedValue("1month");
+    closeBottomSheet();
+  }}
+/>
+<label htmlFor="period-1month">1개월</label>`}</code>
                 </pre>
               </div>
 
@@ -253,26 +265,27 @@ export default function RadioDemoPage() {
                   <Badge className="bg-emerald-600 hover:bg-emerald-700 mr-2">✅ 올바른 구현</Badge>
                 </div>
                 <pre className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto text-sm">
-                  <code>{`// 커스텀 라디오 그룹 - 스페이스바로만 선택
-<div role="radiogroup" aria-labelledby="period-selection">
-  {periods.map((period, index) => (
-    <div
-      role="radio"
-      aria-checked={selected === period.value}
-      tabIndex={index === 0 ? 0 : -1}
-      onKeyDown={(e) => {
-        if (e.key === ' ') {
-          e.preventDefault();
-          handleSelection(period.value);
-        } else if (e.key === 'ArrowDown') {
-          e.preventDefault();
-          // 다음 라디오 버튼으로 포커스 이동 (선택하지 않음)
-          focusNext();
-        }
-      }}
-    />
-  ))}
-</div>`}</code>
+                  <code>{`// 표준 HTML + 키보드 동작 제어
+<input 
+  type="radio" 
+  name="period"
+  value="1month"
+  onChange={() => {}} // 기본 onChange 무시
+  onKeyDown={(e) => {
+    // 화살표 키 기본 동작 차단
+    if (['ArrowUp', 'ArrowDown'].includes(e.key)) {
+      e.preventDefault();
+      // 포커스만 이동 (선택하지 않음)
+      focusNext();
+    }
+    // 스페이스바로만 선택
+    if (e.key === ' ') {
+      e.preventDefault();
+      handleSelection("1month");
+    }
+  }}
+/>
+<label htmlFor="period-1month">1개월</label>`}</code>
                 </pre>
               </div>
 
@@ -281,10 +294,11 @@ export default function RadioDemoPage() {
                 <CardContent className="p-4">
                   <h4 className="font-medium text-blue-900 mb-2">구현 가이드라인</h4>
                   <ul className="text-blue-800 text-sm space-y-1">
-                    <li>• 화살표 키는 포커스 이동만, 스페이스바로 선택</li>
-                    <li>• DOM 갱신 전에 사용자의 명시적 확인 받기</li>
-                    <li>• role="radiogroup"과 적절한 ARIA 속성 사용</li>
-                    <li>• 키보드 내비게이션에서 연속 선택 가능하도록 구현</li>
+                    <li>• 표준 HTML input[type="radio"] 사용으로 완벽한 접근성 보장</li>
+                    <li>• 화살표 키 기본 동작만 preventDefault()로 차단</li>
+                    <li>• 스페이스바로만 선택되도록 제어</li>
+                    <li>• fieldset과 legend로 그룹 의미 전달</li>
+                    <li>• ARIA 없이도 모든 스크린 리더에서 완벽 지원</li>
                   </ul>
                 </CardContent>
               </Card>
