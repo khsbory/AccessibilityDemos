@@ -6,6 +6,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { Menu, Accessibility, ChevronDown, Smartphone, Monitor, Globe, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { skipToMainContent } from "@/lib/focus-utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function Header() {
   const [location] = useLocation();
@@ -13,6 +14,7 @@ export default function Header() {
   const [expandedDemo, setExpandedDemo] = useState<string>("");
   const headerRef = useRef<HTMLDivElement>(null);
   const buttonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const isMobile = useIsMobile();
 
   const isActive = (path: string) => {
     if (path === "/" && location === "/") return true;
@@ -48,6 +50,15 @@ export default function Header() {
       items: []
     }
   ];
+
+  // 디바이스별 데모 필터링
+  const getVisibleDemos = (isMobile: boolean) => {
+    return demoItems.filter(demo => {
+      if (demo.id === 'mobile') return isMobile;  // 모바일에서만 표시
+      if (demo.id === 'pc') return !isMobile;    // PC에서만 표시
+      return true; // 공통 데모는 항상 표시
+    });
+  };
 
   const toggleDemo = (demoId: string) => {
     const wasExpanded = expandedDemo === demoId;
@@ -113,7 +124,7 @@ export default function Header() {
             </span>
           </Link>
           
-          {demoItems.map((demo) => (
+          {getVisibleDemos(isMobile).map((demo) => (
             <div key={demo.id} className="w-full">
               <Collapsible open={expandedDemo === demo.id} onOpenChange={() => toggleDemo(demo.id)}>
                 <CollapsibleTrigger asChild>
@@ -181,7 +192,7 @@ export default function Header() {
           </span>
         </Link>
         
-        {demoItems.map((demo) => (
+        {getVisibleDemos(isMobile).map((demo) => (
           <div key={demo.id} className="relative">
             <button 
               ref={(el) => buttonRefs.current[demo.id] = el}
