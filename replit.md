@@ -118,6 +118,10 @@ This is a full-stack web application demonstrating web accessibility issues and 
 - June 22, 2025. Corrected code examples to match actual implementation with hidden radio buttons and button role labels
 - June 22, 2025. Fixed accessibility unapplied version to use sr-only radio buttons with label styling only
 - June 22, 2025. Removed confusing onKeyDown handlers from bad example to show default radio behavior
+- June 22, 2025. Updated demo descriptions and code examples to accurately reflect radio button auto-selection issue
+- June 22, 2025. Corrected problem description: radio button arrow key movement causes automatic selection
+- June 22, 2025. Fixed test guides to show auto-focus and arrow key auto-selection causing DOM updates
+- June 22, 2025. Updated solution to emphasize hidden radio buttons with label role="button" and Tab-only navigation
 
 ## User Preferences
 
