@@ -65,7 +65,10 @@ export default function Header() {
       return (
         <nav className="flex flex-col space-y-2" role="navigation" aria-label="주요 메뉴">
           <Link href="/" onClick={onItemClick} className="w-full text-decoration-none">
-            <span className={`block w-full py-2 px-3 rounded-md text-left ${isActive("/") ? "text-primary bg-primary/10" : "text-foreground hover:text-primary hover:bg-muted"} transition-colors cursor-pointer`}>
+            <span 
+              className={`block w-full py-2 px-3 rounded-md text-left ${isActive("/") ? "text-primary bg-primary/10" : "text-foreground hover:text-primary hover:bg-muted"} transition-colors cursor-pointer`}
+              aria-current={isActive("/") ? "page" : undefined}
+            >
               소개
             </span>
           </Link>
@@ -96,6 +99,7 @@ export default function Header() {
                           href={item.href} 
                           onClick={onItemClick} 
                           className="block py-1 px-2 text-sm text-muted-foreground hover:text-primary transition-colors text-decoration-none"
+                          aria-current={isActive(item.href) ? "page" : undefined}
                         >
                           {item.title}
                         </Link>
@@ -118,7 +122,10 @@ export default function Header() {
     return (
       <nav className="hidden md:flex items-center space-x-6" role="navigation" aria-label="주요 메뉴">
         <Link href="/" className="text-decoration-none">
-          <span className={`py-2 px-3 rounded-md ${isActive("/") ? "text-primary bg-primary/10" : "text-foreground hover:text-primary hover:bg-muted"} transition-colors cursor-pointer`}>
+          <span 
+            className={`py-2 px-3 rounded-md ${isActive("/") ? "text-primary bg-primary/10" : "text-foreground hover:text-primary hover:bg-muted"} transition-colors cursor-pointer`}
+            aria-current={isActive("/") ? "page" : undefined}
+          >
             소개
           </span>
         </Link>
@@ -163,6 +170,7 @@ export default function Header() {
                           href={item.href} 
                           onClick={() => setExpandedDemo("")}
                           className="flex items-center p-2 rounded-md hover:bg-muted transition-all group text-decoration-none"
+                          aria-current={isActive(item.href) ? "page" : undefined}
                         >
                           <div className="flex-1">
                             <div className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
@@ -190,6 +198,21 @@ export default function Header() {
 
   return (
     <div ref={headerRef}>
+      {/* 본문 바로가기 링크 */}
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[60] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary-foreground"
+        onClick={(e) => {
+          e.preventDefault();
+          const mainContent = document.getElementById('main-content');
+          if (mainContent) {
+            mainContent.focus();
+            mainContent.scrollIntoView({ behavior: 'smooth' });
+          }
+        }}
+      >
+        본문 바로가기
+      </a>
       <header className="bg-background shadow-sm border-b border-border sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
