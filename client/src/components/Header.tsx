@@ -18,6 +18,11 @@ export default function Header() {
     return false;
   };
 
+  const isParentActive = (demoId: string) => {
+    const demo = demoItems.find(d => d.id === demoId);
+    return demo?.items.some(item => isActive(item.href)) || false;
+  };
+
   const demoItems = [
     {
       id: 'mobile',
@@ -77,7 +82,13 @@ export default function Header() {
             <div key={demo.id} className="w-full">
               <Collapsible open={expandedDemo === demo.id} onOpenChange={() => toggleDemo(demo.id)}>
                 <CollapsibleTrigger asChild>
-                  <button className="w-full flex items-center justify-between py-2 px-3 rounded-md text-left text-foreground hover:text-primary hover:bg-muted transition-colors focus:outline-none focus:ring-2 focus:ring-primary">
+                  <button className={`w-full flex items-center justify-between py-2 px-3 rounded-md text-left transition-colors focus:outline-none focus:ring-2 focus:ring-primary ${
+                    isParentActive(demo.id) 
+                      ? "text-primary bg-primary/10" 
+                      : "text-foreground hover:text-primary hover:bg-muted"
+                  }`}
+                  aria-current={isParentActive(demo.id) ? "page" : undefined}
+                  >
                     <div className="flex items-center">
                       <demo.icon className="h-4 w-4 mr-2" aria-hidden="true" />
                       <span>{demo.title}</span>
@@ -134,8 +145,13 @@ export default function Header() {
           <div key={demo.id} className="relative">
             <button 
               onClick={() => toggleDemo(demo.id)}
-              className="flex items-center py-2 px-3 rounded-md text-foreground hover:text-primary hover:bg-muted transition-colors focus:outline-none focus:ring-2 focus:ring-primary"
+              className={`flex items-center py-2 px-3 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary ${
+                isParentActive(demo.id) 
+                  ? "text-primary bg-primary/10" 
+                  : "text-foreground hover:text-primary hover:bg-muted"
+              }`}
               aria-expanded={expandedDemo === demo.id}
+              aria-current={isParentActive(demo.id) ? "page" : undefined}
             >
               <demo.icon className="h-4 w-4 mr-2" aria-hidden="true" />
               <span>{demo.title}</span>
