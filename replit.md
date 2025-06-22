@@ -96,6 +96,7 @@ This is a full-stack web application demonstrating web accessibility issues and 
 - June 22, 2025. Initial setup
 - June 22, 2025. Restructured navigation from single "데모" page to direct category access (소개, 모바일 데모, PC 웹 데모, 공통 웹 데모)
 - June 22, 2025. Improved HTML semantics by separating button and link elements for better accessibility
+- June 22, 2025. Implemented dropdown navigation system with direct access to demos from header menu
 
 ## User Preferences
 
