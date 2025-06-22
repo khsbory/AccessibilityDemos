@@ -341,7 +341,24 @@ export default function CategoryRadioDemoPage() {
                                   id={`bad-level2-${item.value}`}
                                   checked={isSelected}
                                   onChange={() => handleBadLevel2Selection(item.value)}
-                                  className="sr-only"
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                                      e.preventDefault();
+                                      // 화살표 키는 탐색만, 선택하지 않음
+                                      const currentIndex = badLevel2Options.findIndex(opt => opt.value === item.value);
+                                      const nextIndex = e.key === 'ArrowDown' 
+                                        ? (currentIndex + 1) % badLevel2Options.length
+                                        : (currentIndex - 1 + badLevel2Options.length) % badLevel2Options.length;
+                                      const nextElement = document.getElementById(`bad-level2-${badLevel2Options[nextIndex].value}`);
+                                      nextElement?.focus();
+                                    }
+                                    // 스페이스바로만 선택
+                                    else if (e.key === ' ') {
+                                      e.preventDefault();
+                                      handleBadLevel2Selection(item.value);
+                                    }
+                                  }}
+                                  className="w-4 h-4 text-primary border-2 border-primary focus:ring-2 focus:ring-primary focus:ring-offset-2"
                                 />
                                 <label 
                                   htmlFor={`bad-level2-${item.value}`} 
