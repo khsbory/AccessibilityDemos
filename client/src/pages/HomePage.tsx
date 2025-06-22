@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Target, Map, Star, CheckCircle, Code, Accessibility, Smartphone, Monitor, Globe } from "lucide-react";
+import { Target, Map, Star, CheckCircle, Code, Accessibility, Smartphone, Monitor, Globe, Headphones } from "lucide-react";
 
 export default function HomePage() {
   return (
@@ -32,6 +32,40 @@ export default function HomePage() {
                   <li>관련 코드를 분석하고 구현 방법을 학습할 수 있습니다</li>
                   <li>실제 스크린 리더와 키보드 내비게이션으로 차이점을 직접 확인할 수 있습니다</li>
                 </ul>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* Screen Reader Environment Setup Section */}
+      <section className="mb-12">
+        <Card>
+          <CardContent className="p-6">
+            <h3 className="text-2xl font-semibold text-foreground mb-4 flex items-center">
+              <Headphones className="text-primary mr-3 h-6 w-6" aria-hidden="true" />
+              스크린 리더 환경 설정
+            </h3>
+            
+            <div className="space-y-8">
+              <div>
+                <h4 className="text-lg font-medium text-foreground mb-3">Windows</h4>
+                <p className="text-muted-foreground">콘텐츠 준비중입니다.</p>
+              </div>
+              
+              <div>
+                <h4 className="text-lg font-medium text-foreground mb-3">iPhone</h4>
+                <p className="text-muted-foreground">콘텐츠 준비중입니다.</p>
+              </div>
+              
+              <div>
+                <h4 className="text-lg font-medium text-foreground mb-3">Android</h4>
+                <p className="text-muted-foreground">콘텐츠 준비중입니다.</p>
+              </div>
+              
+              <div>
+                <h4 className="text-lg font-medium text-foreground mb-3">macOS</h4>
+                <p className="text-muted-foreground">콘텐츠 준비중입니다.</p>
               </div>
             </div>
           </CardContent>
