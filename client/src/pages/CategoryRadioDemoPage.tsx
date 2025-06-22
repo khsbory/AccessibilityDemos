@@ -649,56 +649,62 @@ export default function CategoryRadioDemoPage() {
       <CodeExampleSection
         badExample={{
           title: "접근성 미적용 코드",
-          code: `// 기본 라디오 버튼 동작으로 화살표 키 이동 시 자동 선택
+          code: `// 라디오 버튼이 시각적으로 보이지만 키보드 탐색 시 자동 선택
 <input
   type="radio"
+  name="category"
   onChange={handleSelection}
-  className="sr-only" // 포커스 스타일 없음
+  className="w-4 h-4 focus:ring-2 focus:ring-primary" 
 />
 <label className="cursor-pointer">
   카테고리명
 </label>
 
-// 자동 선택으로 DOM 갱신되어 연속 탐색 불가
+// 화살표 키 이동 시 즉시 선택되어 DOM 갱신
 const handleSelection = (value) => {
   setSelected(value); // 즉시 상태 변경
-  loadNextLevel(value); // DOM 갱신
+  loadNextLevel(value); // DOM 갱신으로 다른 옵션 숨김
 };`
         }}
         goodExample={{
           title: "접근성 적용 코드",
-          code: `// 화살표 키는 탐색만, 스페이스바로만 선택
+          code: `// 라디오 버튼을 완전히 숨기고 레이블에 button 역할 부여
 <input
   type="radio"
-  onKeyDown={(e) => {
-    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-      e.preventDefault();
-      // 화살표 키로 포커스만 이동
-      moveToNextOption(e.key);
-    } else if (e.key === ' ') {
-      e.preventDefault();
-      handleSelection(value); // 스페이스바로만 선택
-    }
-  }}
-  className="focus:ring-2 focus:ring-primary" // 포커스 스타일
+  name="category"
+  value={item.value}
+  checked={isSelected}
+  onChange={() => handleSelection(item.value)}
+  className="hidden"
 />
-
-// 레이블에 button 역할과 키보드 접근성
 <label 
+  htmlFor={inputId}
   role="button"
   tabIndex={0}
   aria-current={isSelected ? "true" : undefined}
-  className="focus:ring-2 focus:ring-primary"
+  onKeyDown={(e) => {
+    if (e.key === ' ' || e.key === 'Enter') {
+      e.preventDefault();
+      handleSelection(item.value);
+    }
+  }}
+  className="focus:ring-2 focus:ring-primary cursor-pointer"
 >
   카테고리명
-</label>`
+</label>
+
+// UL에 aria-label로 계층 정보 제공
+<ul aria-label="2단계" className="space-y-3">
+  {items.map(item => ...)}
+</ul>`
         }}
         guidelines={[
-          "화살표 키는 탐색용으로만 사용, 스페이스바로만 선택 가능하게 구현",
-          "라디오 버튼에 포커스 스타일 적용하여 현재 위치 시각적 표시",
-          "DOM 갱신을 최소화하여 연속적인 키보드 탐색 가능하게 구현",
+          "라디오 버튼을 hidden으로 숨기고 레이블에 role='button' 적용",
+          "tabIndex={0}으로 키보드 포커스 가능하게 설정",
+          "onKeyDown으로 스페이스바/Enter 키 이벤트만 처리",
           "aria-current로 현재 선택된 항목 명확히 표시",
-          "UL 태그에 aria-label로 계층 구조 정보 제공"
+          "UL 태그에 aria-label로 계층 구조 정보 제공",
+          "포커스 스타일링으로 현재 위치 시각적 표시"
         ]}
       />
     </DemoPageLayout>

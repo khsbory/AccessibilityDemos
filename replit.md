@@ -115,6 +115,7 @@ This is a full-stack web application demonstrating web accessibility issues and 
 - June 22, 2025. Fixed radio button keyboard navigation: arrow keys for browsing only, spacebar for selection
 - June 22, 2025. Added visual focus styles to radio buttons and improved problem descriptions for hierarchy issues
 - June 22, 2025. Updated demo content to reflect real keyboard navigation challenges in hierarchical categories
+- June 22, 2025. Corrected code examples to match actual implementation with hidden radio buttons and button role labels
 
 ## User Preferences
 
