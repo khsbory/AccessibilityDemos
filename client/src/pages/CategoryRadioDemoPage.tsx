@@ -336,7 +336,6 @@ export default function CategoryRadioDemoPage() {
                               {/* 3단계 - 선택된 2단계 바로 아래에 표시 */}
                               {hasLevel3 && (
                                 <div className="ml-6 space-y-2">
-                                  <h4 className="text-sm font-medium text-muted-foreground">3단계 카테고리</h4>
                                   <ul className="space-y-2">
                                     {badLevel3Options.map((subItem) => (
                                       <li key={subItem.value}>
@@ -501,7 +500,6 @@ export default function CategoryRadioDemoPage() {
                               {/* 3단계 - 선택된 2단계 바로 아래에 표시 */}
                               {hasLevel3 && (
                                 <div className="ml-6 space-y-2">
-                                  <h4 className="text-sm font-medium text-muted-foreground">3단계 카테고리</h4>
                                   <ul className="space-y-2" aria-label="3단계">
                                     {goodLevel3Options.map((subItem) => (
                                       <li key={subItem.value}>
