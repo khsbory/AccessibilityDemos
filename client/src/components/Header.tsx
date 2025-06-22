@@ -21,9 +21,19 @@ export default function Header() {
           소개
         </span>
       </Link>
-      <Link href="/demos" onClick={onItemClick} className={`${mobile ? "w-full" : ""} text-decoration-none`}>
-        <span className={`${mobile ? "block w-full py-2 px-3 rounded-md text-left" : "py-2 px-3 rounded-md"} ${isActive("/demos") ? "text-primary bg-primary/10" : "text-foreground hover:text-primary hover:bg-muted"} transition-colors cursor-pointer`}>
-          데모
+      <Link href="/mobile-demos" onClick={onItemClick} className={`${mobile ? "w-full" : ""} text-decoration-none`}>
+        <span className={`${mobile ? "block w-full py-2 px-3 rounded-md text-left" : "py-2 px-3 rounded-md"} ${isActive("/mobile-demos") ? "text-primary bg-primary/10" : "text-foreground hover:text-primary hover:bg-muted"} transition-colors cursor-pointer`}>
+          모바일 데모
+        </span>
+      </Link>
+      <Link href="/pc-demos" onClick={onItemClick} className={`${mobile ? "w-full" : ""} text-decoration-none`}>
+        <span className={`${mobile ? "block w-full py-2 px-3 rounded-md text-left" : "py-2 px-3 rounded-md"} ${isActive("/pc-demos") ? "text-primary bg-primary/10" : "text-foreground hover:text-primary hover:bg-muted"} transition-colors cursor-pointer`}>
+          PC 웹 데모
+        </span>
+      </Link>
+      <Link href="/common-demos" onClick={onItemClick} className={`${mobile ? "w-full" : ""} text-decoration-none`}>
+        <span className={`${mobile ? "block w-full py-2 px-3 rounded-md text-left" : "py-2 px-3 rounded-md"} ${isActive("/common-demos") ? "text-primary bg-primary/10" : "text-foreground hover:text-primary hover:bg-muted"} transition-colors cursor-pointer`}>
+          공통 웹 데모
         </span>
       </Link>
     </nav>
