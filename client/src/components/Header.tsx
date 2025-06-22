@@ -140,6 +140,48 @@ export default function Header() {
                 <ChevronDown className="h-3 w-3" aria-hidden="true" />
               </motion.div>
             </button>
+            
+            {/* 각 버튼 아래 인라인 확장 메뉴 */}
+            {expandedDemo === demo.id && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+                className="absolute top-full left-0 mt-1 w-80 bg-background border border-border rounded-lg shadow-lg z-50"
+              >
+                <div className="p-4">
+                  <h3 className="text-sm font-medium text-foreground mb-3 flex items-center">
+                    <demo.icon className="h-4 w-4 mr-2" aria-hidden="true" />
+                    {demo.title}
+                  </h3>
+                  {demo.items.length > 0 ? (
+                    <div className="space-y-2">
+                      {demo.items.map((item, index) => (
+                        <Link 
+                          key={index}
+                          href={item.href} 
+                          onClick={() => setExpandedDemo("")}
+                          className="flex items-center p-2 rounded-md hover:bg-muted transition-all group text-decoration-none"
+                        >
+                          <div className="flex-1">
+                            <div className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
+                              {item.title}
+                            </div>
+                          </div>
+                          <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:text-primary transition-colors ml-2" aria-hidden="true" />
+                        </Link>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-4 text-muted-foreground">
+                      <demo.icon className="mx-auto h-8 w-8 mb-2" aria-hidden="true" />
+                      <p className="text-xs">데모 준비 중입니다</p>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            )}
           </div>
         ))}
       </nav>
@@ -181,57 +223,7 @@ export default function Header() {
         </div>
       </header>
 
-      {/* 데스크톱 확장 메뉴 */}
-      {expandedDemo && (
-        <div className="bg-background border-b border-border shadow-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
-            >
-              {(() => {
-                const currentDemo = demoItems.find(demo => demo.id === expandedDemo);
-                if (!currentDemo) return null;
-                
-                return (
-                  <div>
-                    <h3 className="text-lg font-medium text-foreground mb-3 flex items-center">
-                      <currentDemo.icon className="h-5 w-5 mr-2" aria-hidden="true" />
-                      {currentDemo.title}
-                    </h3>
-                    {currentDemo.items.length > 0 ? (
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                        {currentDemo.items.map((item, index) => (
-                          <Link 
-                            key={index}
-                            href={item.href} 
-                            onClick={() => setExpandedDemo("")}
-                            className="flex items-center p-3 rounded-lg border border-border hover:border-primary/30 hover:bg-primary/5 transition-all group text-decoration-none"
-                          >
-                            <div className="flex-1">
-                              <h4 className="font-medium text-foreground group-hover:text-primary transition-colors">
-                                {item.title}
-                              </h4>
-                            </div>
-                            <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors ml-2" aria-hidden="true" />
-                          </Link>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="text-center py-8 text-muted-foreground">
-                        <currentDemo.icon className="mx-auto h-12 w-12 mb-4" aria-hidden="true" />
-                        <p>데모 준비 중입니다</p>
-                      </div>
-                    )}
-                  </div>
-                );
-              })()}
-            </motion.div>
-          </div>
-        </div>
-      )}
+
     </div>
   );
 }
