@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Layout from "@/components/Layout";
 import HomePage from "@/pages/HomePage";
 import RadioDemoPage from "@/pages/RadioDemoPage";
+import CategoryRadioDemoPage from "@/pages/CategoryRadioDemoPage";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -14,6 +15,7 @@ function Router() {
       <Switch>
         <Route path="/" component={HomePage} />
         <Route path="/demos/radio-auto-select" component={RadioDemoPage} />
+        <Route path="/demos/category-radio" component={CategoryRadioDemoPage} />
         <Route component={NotFound} />
       </Switch>
     </Layout>

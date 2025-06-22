@@ -36,7 +36,8 @@ export default function Header() {
       title: 'PC 웹 데모',
       icon: Monitor,
       items: [
-        { title: '라디오 버튼 자동 선택 이슈', href: '/demos/radio-auto-select' }
+        { title: '라디오 버튼 자동 선택 이슈', href: '/demos/radio-auto-select' },
+        { title: '라디오 버튼 계층형 카테고리', href: '/demos/category-radio' }
       ]
     },
     {

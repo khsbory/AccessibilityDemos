@@ -100,6 +100,9 @@ This is a full-stack web application demonstrating web accessibility issues and 
 - June 22, 2025. Added accessibility features: aria-current="page", skip to main content link, parent category active state
 - June 22, 2025. Created reusable demo components for consistent structure across all demo pages
 - June 22, 2025. Refactored RadioDemoPage with standard HTML inputs and keyboard control override
+- June 22, 2025. Implemented CategoryRadioDemoPage with hierarchical category selection using radio buttons
+- June 22, 2025. Added 3-level category structure (cosmetics/perfume → subcategories → specific items)
+- June 22, 2025. Applied accessibility patterns: hidden radio buttons, role="button" labels, aria-labels for lists
 
 ## User Preferences
 
