@@ -358,7 +358,7 @@ export default function CategoryRadioDemoPage() {
                                       handleBadLevel2Selection(item.value);
                                     }
                                   }}
-                                  className="w-4 h-4 text-primary border-2 border-primary focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                                  className="sr-only"
                                 />
                                 <label 
                                   htmlFor={`bad-level2-${item.value}`} 
@@ -401,7 +401,7 @@ export default function CategoryRadioDemoPage() {
                                                 handleBadLevel3Selection(subItem.value);
                                               }
                                             }}
-                                            className="w-4 h-4 text-primary border-2 border-primary focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                                            className="sr-only"
                                           />
                                           <label 
                                             htmlFor={`bad-level3-${subItem.value}`} 

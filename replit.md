@@ -116,6 +116,7 @@ This is a full-stack web application demonstrating web accessibility issues and 
 - June 22, 2025. Added visual focus styles to radio buttons and improved problem descriptions for hierarchy issues
 - June 22, 2025. Updated demo content to reflect real keyboard navigation challenges in hierarchical categories
 - June 22, 2025. Corrected code examples to match actual implementation with hidden radio buttons and button role labels
+- June 22, 2025. Fixed accessibility unapplied version to use sr-only radio buttons with label styling only
 
 ## User Preferences
 
