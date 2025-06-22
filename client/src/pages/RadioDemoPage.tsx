@@ -248,7 +248,7 @@ export default function RadioDemoPage() {
                     <h4 className="font-medium text-foreground mb-3">키보드로 테스트하기:</h4>
                     <ol className="text-sm text-muted-foreground space-y-2">
                       <li><strong>1단계:</strong> "기간 선택" 버튼에 포커스 후 Enter 키로 바텀시트 열기</li>
-                      <li><strong>2단계:</strong> Tab 키로 첫 번째 라디오 버튼(1개월)에 포커스 이동</li>
+                      <li><strong>2단계:</strong> 바텀시트가 열리면 자동으로 첫 번째 라디오 버튼(1개월)에 포커스됨</li>
                       <li><strong>3단계:</strong> ↓ 화살표 키를 눌러 다음 옵션으로 이동</li>
                       <li className="text-red-700 font-medium">
                         <AlertTriangle className="inline h-3 w-3 mr-1" />
@@ -269,7 +269,7 @@ export default function RadioDemoPage() {
                     <h4 className="font-medium text-foreground mb-3">키보드로 테스트하기:</h4>
                     <ol className="text-sm text-muted-foreground space-y-2">
                       <li><strong>1단계:</strong> "기간 선택 (접근성 적용)" 버튼에 포커스 후 Enter 키로 바텀시트 열기</li>
-                      <li><strong>2단계:</strong> Tab 키로 첫 번째 라디오 버튼(1개월)에 포커스 이동</li>
+                      <li><strong>2단계:</strong> 바텀시트가 열리면 자동으로 첫 번째 라디오 버튼(1개월)에 포커스됨</li>
                       <li><strong>3단계:</strong> ↓ ↑ 화살표 키로 자유롭게 옵션 탐색 (선택되지 않음)</li>
                       <li><strong>4단계:</strong> 원하는 옵션에서 스페이스바로 선택</li>
                       <li className="text-emerald-700 font-medium">
