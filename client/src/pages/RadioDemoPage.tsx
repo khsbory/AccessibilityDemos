@@ -1,16 +1,44 @@
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Info, X, CheckCircle, Code, AlertTriangle, Check } from "lucide-react";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Info, X, CheckCircle, Code, AlertTriangle, Check, Calendar } from "lucide-react";
 
 export default function RadioDemoPage() {
+  const [badSheetOpen, setBadSheetOpen] = useState(false);
+  const [goodSheetOpen, setGoodSheetOpen] = useState(false);
+  const [badSelectedPeriod, setBadSelectedPeriod] = useState("");
+  const [goodSelectedPeriod, setGoodSelectedPeriod] = useState("");
+
+  const periods = [
+    { value: "1month", label: "1개월" },
+    { value: "3months", label: "3개월" },
+    { value: "6months", label: "6개월" },
+    { value: "1year", label: "1년" },
+    { value: "3years", label: "3년" },
+    { value: "5years", label: "5년" }
+  ];
+
+  // 접근성이 적용되지 않은 경우 - 자동 선택시 즉시 닫힘
+  const handleBadSelection = (value: string) => {
+    setBadSelectedPeriod(value);
+    setBadSheetOpen(false);
+  };
+
+  // 접근성이 적용된 경우 - 스페이스바로만 선택
+  const handleGoodSelection = (value: string) => {
+    setGoodSelectedPeriod(value);
+    setGoodSheetOpen(false);
+  };
+
   return (
     <div>
       <div className="mb-8">
         <h2 className="text-3xl font-bold text-foreground mb-4">라디오 버튼 자동 선택 이슈</h2>
-        <p className="text-lg text-muted-foreground">라디오 버튼의 첫 번째 옵션이 자동으로 선택되어 발생하는 접근성 문제를 확인해보세요.</p>
+        <p className="text-lg text-muted-foreground">라디오 버튼이 자동 선택되면서 DOM이 갱신될 때 키보드 사용자가 연속적으로 선택할 수 없는 접근성 문제를 확인해보세요.</p>
       </div>
 
       {/* Introduction Section */}
@@ -22,12 +50,13 @@ export default function RadioDemoPage() {
               문제 소개
             </h3>
             <div className="prose max-w-none text-muted-foreground">
-              <p className="mb-4">라디오 버튼에서 첫 번째 옵션이 자동으로 선택되어 있으면 사용자가 의도하지 않은 선택을 할 수 있습니다. 특히 스크린 리더 사용자는 이러한 자동 선택을 인지하지 못할 수 있어 문제가 됩니다.</p>
+              <p className="mb-4">라디오 버튼에서 화살표 키로 이동할 때 자동으로 선택되면서 DOM이 갱신되는 경우, 키보드 사용자가 연속적으로 다른 옵션을 선택하기 어려운 문제가 발생합니다.</p>
               <h4 className="text-lg font-medium text-foreground mb-2">주요 문제점</h4>
               <ul className="list-disc list-inside space-y-1">
-                <li>사용자가 선택하지 않았음에도 기본값이 제출됨</li>
-                <li>스크린 리더 사용자가 자동 선택을 놓칠 수 있음</li>
-                <li>사용자의 명시적 선택 없이 진행되는 불편함</li>
+                <li>화살표 키로 라디오 버튼 이동 시 자동 선택으로 인한 DOM 갱신</li>
+                <li>DOM 갱신으로 포커스가 리셋되어 연속 선택 불가</li>
+                <li>키보드 사용자가 원하지 않는 옵션에서 멈춤</li>
+                <li>첫 번째에서 마지막 옵션으로 바로 이동하기 어려움</li>
               </ul>
             </div>
           </CardContent>
@@ -44,45 +73,46 @@ export default function RadioDemoPage() {
             </h3>
             <Card className="bg-red-50 border-red-200 mb-4">
               <CardContent className="p-6">
-                <h4 className="font-medium text-foreground mb-4">선호하는 연락 방법을 선택하세요:</h4>
-                <div className="space-y-3">
-                  <div className="flex items-center space-x-3">
-                    <input 
-                      type="radio" 
-                      name="contact-bad" 
-                      value="email" 
-                      className="h-4 w-4" 
-                      defaultChecked 
-                      id="email-bad"
-                    />
-                    <label htmlFor="email-bad" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      이메일
-                    </label>
+                <div className="space-y-4">
+                  <div>
+                    <Label className="text-sm font-medium text-foreground">선택된 기간:</Label>
+                    <p className="text-lg font-semibold text-foreground mt-1">
+                      {badSelectedPeriod ? periods.find(p => p.value === badSelectedPeriod)?.label : "선택되지 않음"}
+                    </p>
                   </div>
-                  <div className="flex items-center space-x-3">
-                    <input 
-                      type="radio" 
-                      name="contact-bad" 
-                      value="phone" 
-                      className="h-4 w-4" 
-                      id="phone-bad"
-                    />
-                    <label htmlFor="phone-bad" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      전화
-                    </label>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <input 
-                      type="radio" 
-                      name="contact-bad" 
-                      value="sms" 
-                      className="h-4 w-4" 
-                      id="sms-bad"
-                    />
-                    <label htmlFor="sms-bad" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      문자메시지
-                    </label>
-                  </div>
+                  
+                  <Sheet open={badSheetOpen} onOpenChange={setBadSheetOpen}>
+                    <SheetTrigger asChild>
+                      <Button variant="outline" className="w-full">
+                        <Calendar className="mr-2 h-4 w-4" />
+                        기간 선택
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent side="bottom" className="h-[400px]">
+                      <SheetHeader>
+                        <SheetTitle>기간을 선택하세요</SheetTitle>
+                      </SheetHeader>
+                      <div className="mt-6">
+                        <RadioGroup
+                          value={badSelectedPeriod}
+                          onValueChange={handleBadSelection}
+                          className="space-y-4"
+                        >
+                          {periods.map((period) => (
+                            <div key={period.value} className="flex items-center space-x-2">
+                              <RadioGroupItem 
+                                value={period.value} 
+                                id={`bad-${period.value}`}
+                              />
+                              <Label htmlFor={`bad-${period.value}`} className="text-base">
+                                {period.label}
+                              </Label>
+                            </div>
+                          ))}
+                        </RadioGroup>
+                      </div>
+                    </SheetContent>
+                  </Sheet>
                 </div>
               </CardContent>
             </Card>
@@ -91,7 +121,7 @@ export default function RadioDemoPage() {
                 <p className="text-red-800 text-sm flex items-start">
                   <AlertTriangle className="mr-2 h-4 w-4 mt-0.5" aria-hidden="true" />
                   <span>
-                    <strong>문제:</strong> 이메일이 자동으로 선택되어 있어 사용자가 의도하지 않은 선택을 할 수 있습니다.
+                    <strong>문제:</strong> 화살표 키로 라디오 버튼을 이동할 때 자동 선택되면서 바텀 시트가 닫혀 연속 선택이 불가능합니다.
                   </span>
                 </p>
               </CardContent>
@@ -110,23 +140,68 @@ export default function RadioDemoPage() {
             </h3>
             <Card className="bg-emerald-50 border-emerald-200 mb-4">
               <CardContent className="p-6">
-                <fieldset>
-                  <legend className="font-medium text-foreground mb-4">선호하는 연락 방법을 선택하세요:</legend>
-                  <RadioGroup className="space-y-3">
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="email" id="email-good" />
-                      <Label htmlFor="email-good">이메일</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="phone" id="phone-good" />
-                      <Label htmlFor="phone-good">전화</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="sms" id="sms-good" />
-                      <Label htmlFor="sms-good">문자메시지</Label>
-                    </div>
-                  </RadioGroup>
-                </fieldset>
+                <div className="space-y-4">
+                  <div>
+                    <Label className="text-sm font-medium text-foreground">선택된 기간:</Label>
+                    <p className="text-lg font-semibold text-foreground mt-1">
+                      {goodSelectedPeriod ? periods.find(p => p.value === goodSelectedPeriod)?.label : "선택되지 않음"}
+                    </p>
+                  </div>
+                  
+                  <Sheet open={goodSheetOpen} onOpenChange={setGoodSheetOpen}>
+                    <SheetTrigger asChild>
+                      <Button variant="outline" className="w-full">
+                        <Calendar className="mr-2 h-4 w-4" />
+                        기간 선택 (접근성 적용)
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent side="bottom" className="h-[400px]">
+                      <SheetHeader>
+                        <SheetTitle>기간을 선택하세요 (스페이스바로 선택)</SheetTitle>
+                      </SheetHeader>
+                      <div className="mt-6">
+                        <div className="space-y-4" role="radiogroup" aria-labelledby="period-selection">
+                          {periods.map((period, index) => (
+                            <div key={period.value} className="flex items-center space-x-2">
+                              <div
+                                role="radio"
+                                aria-checked={goodSelectedPeriod === period.value}
+                                tabIndex={index === 0 ? 0 : -1}
+                                className={`w-4 h-4 rounded-full border-2 border-primary flex items-center justify-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
+                                  goodSelectedPeriod === period.value ? 'bg-primary' : 'bg-background'
+                                }`}
+                                onKeyDown={(e) => {
+                                  if (e.key === ' ') {
+                                    e.preventDefault();
+                                    handleGoodSelection(period.value);
+                                  } else if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                                    e.preventDefault();
+                                    const nextIndex = (index + 1) % periods.length;
+                                    const nextElement = e.currentTarget.parentElement?.parentElement?.children[nextIndex]?.querySelector('[role="radio"]') as HTMLElement;
+                                    nextElement?.focus();
+                                  } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                                    e.preventDefault();
+                                    const prevIndex = index === 0 ? periods.length - 1 : index - 1;
+                                    const prevElement = e.currentTarget.parentElement?.parentElement?.children[prevIndex]?.querySelector('[role="radio"]') as HTMLElement;
+                                    prevElement?.focus();
+                                  }
+                                }}
+                                onClick={() => handleGoodSelection(period.value)}
+                              >
+                                {goodSelectedPeriod === period.value && (
+                                  <div className="w-2 h-2 rounded-full bg-primary-foreground" />
+                                )}
+                              </div>
+                              <Label className="text-base cursor-pointer" onClick={() => handleGoodSelection(period.value)}>
+                                {period.label}
+                              </Label>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </SheetContent>
+                  </Sheet>
+                </div>
               </CardContent>
             </Card>
             <Card className="bg-emerald-100 border-emerald-300">
@@ -134,7 +209,7 @@ export default function RadioDemoPage() {
                 <p className="text-emerald-800 text-sm flex items-start">
                   <Check className="mr-2 h-4 w-4 mt-0.5" aria-hidden="true" />
                   <span>
-                    <strong>개선점:</strong> 어떤 옵션도 미리 선택되지 않아 사용자가 명시적으로 선택해야 합니다. fieldset과 legend를 사용하여 그룹을 명확히 했습니다.
+                    <strong>개선점:</strong> 화살표 키로 이동할 때 자동 선택되지 않고, 스페이스바로만 선택됩니다. 키보드 사용자가 연속적으로 옵션을 탐색할 수 있습니다.
                   </span>
                 </p>
               </CardContent>
@@ -159,21 +234,16 @@ export default function RadioDemoPage() {
                   <Badge variant="destructive" className="mr-2">❌ 잘못된 구현</Badge>
                 </div>
                 <pre className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto text-sm">
-                  <code>{`<div>
-  <h4>선호하는 연락 방법을 선택하세요:</h4>
-  <label>
-    <input type="radio" name="contact" value="email" checked>
-    이메일
-  </label>
-  <label>
-    <input type="radio" name="contact" value="phone">
-    전화
-  </label>
-  <label>
-    <input type="radio" name="contact" value="sms">
-    문자메시지
-  </label>
-</div>`}</code>
+                  <code>{`// 기본 라디오 그룹 - 화살표 키로 자동 선택됨
+<RadioGroup onValueChange={(value) => {
+  // 선택 즉시 DOM 갱신으로 인한 바텀시트 닫힘
+  setSelectedValue(value);
+  closeBottomSheet();
+}}>
+  <RadioGroupItem value="1month" />
+  <RadioGroupItem value="3months" />
+  // ... 다른 옵션들
+</RadioGroup>`}</code>
                 </pre>
               </div>
 
@@ -183,21 +253,26 @@ export default function RadioDemoPage() {
                   <Badge className="bg-emerald-600 hover:bg-emerald-700 mr-2">✅ 올바른 구현</Badge>
                 </div>
                 <pre className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto text-sm">
-                  <code>{`<fieldset>
-  <legend>선호하는 연락 방법을 선택하세요:</legend>
-  <label>
-    <input type="radio" name="contact" value="email">
-    이메일
-  </label>
-  <label>
-    <input type="radio" name="contact" value="phone">
-    전화
-  </label>
-  <label>
-    <input type="radio" name="contact" value="sms">
-    문자메시지
-  </label>
-</fieldset>`}</code>
+                  <code>{`// 커스텀 라디오 그룹 - 스페이스바로만 선택
+<div role="radiogroup" aria-labelledby="period-selection">
+  {periods.map((period, index) => (
+    <div
+      role="radio"
+      aria-checked={selected === period.value}
+      tabIndex={index === 0 ? 0 : -1}
+      onKeyDown={(e) => {
+        if (e.key === ' ') {
+          e.preventDefault();
+          handleSelection(period.value);
+        } else if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          // 다음 라디오 버튼으로 포커스 이동 (선택하지 않음)
+          focusNext();
+        }
+      }}
+    />
+  ))}
+</div>`}</code>
                 </pre>
               </div>
 
@@ -206,10 +281,10 @@ export default function RadioDemoPage() {
                 <CardContent className="p-4">
                   <h4 className="font-medium text-blue-900 mb-2">구현 가이드라인</h4>
                   <ul className="text-blue-800 text-sm space-y-1">
-                    <li>• checked 속성을 사용하지 않아 자동 선택 방지</li>
-                    <li>• fieldset과 legend 요소로 라디오 버튼 그룹의 목적을 명확히 표시</li>
-                    <li>• 필수 선택인 경우 required 속성과 적절한 오류 메시지 제공</li>
-                    <li>• aria-describedby로 추가 설명이나 도움말 연결</li>
+                    <li>• 화살표 키는 포커스 이동만, 스페이스바로 선택</li>
+                    <li>• DOM 갱신 전에 사용자의 명시적 확인 받기</li>
+                    <li>• role="radiogroup"과 적절한 ARIA 속성 사용</li>
+                    <li>• 키보드 내비게이션에서 연속 선택 가능하도록 구현</li>
                   </ul>
                 </CardContent>
               </Card>
