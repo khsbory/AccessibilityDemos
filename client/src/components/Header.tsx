@@ -1,0 +1,71 @@
+import { useState } from "react";
+import { Link, useLocation } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Menu, Accessibility } from "lucide-react";
+
+export default function Header() {
+  const [location] = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const isActive = (path: string) => {
+    if (path === "/" && location === "/") return true;
+    if (path !== "/" && location.startsWith(path)) return true;
+    return false;
+  };
+
+  const NavLinks = ({ mobile = false, onItemClick = () => {} }) => (
+    <nav className={`${mobile ? "flex flex-col space-y-2" : "hidden md:flex items-center space-x-6"}`} role="navigation" aria-label="주요 메뉴">
+      <Link href="/" onClick={onItemClick}>
+        <Button 
+          variant="ghost" 
+          className={`${mobile ? "w-full justify-start" : ""} ${isActive("/") ? "text-primary" : "text-foreground hover:text-primary"} transition-colors`}
+          aria-current={isActive("/") ? "page" : undefined}
+        >
+          소개
+        </Button>
+      </Link>
+      <Link href="/demos" onClick={onItemClick}>
+        <Button 
+          variant="ghost" 
+          className={`${mobile ? "w-full justify-start" : ""} ${isActive("/demos") ? "text-primary" : "text-foreground hover:text-primary"} transition-colors`}
+          aria-current={isActive("/demos") ? "page" : undefined}
+        >
+          데모
+        </Button>
+      </Link>
+    </nav>
+  );
+
+  return (
+    <header className="bg-background shadow-sm border-b border-border sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          <Link href="/">
+            <div className="flex items-center space-x-3 cursor-pointer">
+              <div className="flex items-center justify-center w-10 h-10 bg-primary rounded-lg">
+                <Accessibility className="h-6 w-6 text-primary-foreground" aria-hidden="true" />
+              </div>
+              <h1 className="text-xl font-semibold text-foreground">접근성 데모</h1>
+            </div>
+          </Link>
+          
+          <NavLinks />
+          
+          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="md:hidden" aria-label="메뉴 열기">
+                <Menu className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right">
+              <div className="mt-6">
+                <NavLinks mobile={true} onItemClick={() => setMobileMenuOpen(false)} />
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </div>
+    </header>
+  );
+}
