@@ -228,6 +228,75 @@ export default function RadioDemoPage() {
         </Card>
       </section>
 
+      {/* Test Guide Section */}
+      <section className="mb-8">
+        <Card>
+          <CardContent className="p-6">
+            <h3 className="text-2xl font-semibold text-foreground mb-4 flex items-center">
+              <Calendar className="text-blue-600 mr-3 h-6 w-6" aria-hidden="true" />
+              테스트 가이드
+            </h3>
+            
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Bad Example Test */}
+              <div>
+                <div className="flex items-center mb-3">
+                  <Badge variant="destructive" className="mr-2">❌ 문제 상황 재현</Badge>
+                </div>
+                <Card className="bg-red-50 border-red-200">
+                  <CardContent className="p-4">
+                    <h4 className="font-medium text-foreground mb-3">키보드로 테스트하기:</h4>
+                    <ol className="text-sm text-muted-foreground space-y-2">
+                      <li><strong>1단계:</strong> "기간 선택" 버튼에 포커스 후 Enter 키로 바텀시트 열기</li>
+                      <li><strong>2단계:</strong> Tab 키로 첫 번째 라디오 버튼(1개월)에 포커스 이동</li>
+                      <li><strong>3단계:</strong> ↓ 화살표 키를 눌러 다음 옵션으로 이동</li>
+                      <li className="text-red-700 font-medium">
+                        <AlertTriangle className="inline h-3 w-3 mr-1" />
+                        결과: 즉시 선택되면서 바텀시트가 닫힘 (연속 탐색 불가)
+                      </li>
+                    </ol>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Good Example Test */}
+              <div>
+                <div className="flex items-center mb-3">
+                  <Badge className="bg-emerald-600 hover:bg-emerald-700 mr-2">✅ 개선된 동작</Badge>
+                </div>
+                <Card className="bg-emerald-50 border-emerald-200">
+                  <CardContent className="p-4">
+                    <h4 className="font-medium text-foreground mb-3">키보드로 테스트하기:</h4>
+                    <ol className="text-sm text-muted-foreground space-y-2">
+                      <li><strong>1단계:</strong> "기간 선택 (접근성 적용)" 버튼에 포커스 후 Enter 키로 바텀시트 열기</li>
+                      <li><strong>2단계:</strong> Tab 키로 첫 번째 라디오 버튼(1개월)에 포커스 이동</li>
+                      <li><strong>3단계:</strong> ↓ ↑ 화살표 키로 자유롭게 옵션 탐색 (선택되지 않음)</li>
+                      <li><strong>4단계:</strong> 원하는 옵션에서 스페이스바로 선택</li>
+                      <li className="text-emerald-700 font-medium">
+                        <Check className="inline h-3 w-3 mr-1" />
+                        결과: 연속적으로 모든 옵션 탐색 가능
+                      </li>
+                    </ol>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            {/* Additional Test Instructions */}
+            <Card className="bg-blue-50 border-blue-200 mt-6">
+              <CardContent className="p-4">
+                <h4 className="font-medium text-blue-900 mb-2">추가 테스트 방법</h4>
+                <div className="text-blue-800 text-sm space-y-1">
+                  <p><strong>스크린 리더 사용자:</strong> 라디오 버튼에 포커스할 때 레이블이 자동으로 읽히는지 확인</p>
+                  <p><strong>키보드 전용 사용자:</strong> 마우스 없이 모든 기능에 접근 가능한지 확인</p>
+                  <p><strong>연속 선택 테스트:</strong> 첫 번째에서 마지막 옵션으로 바로 이동 가능한지 확인</p>
+                </div>
+              </CardContent>
+            </Card>
+          </CardContent>
+        </Card>
+      </section>
+
       {/* Code Section */}
       <section>
         <Card>
