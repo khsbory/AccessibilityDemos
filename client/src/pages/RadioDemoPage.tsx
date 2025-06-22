@@ -1,27 +1,14 @@
-import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { ChevronRight, Info, X, CheckCircle, Code, AlertTriangle, Check } from "lucide-react";
+import { Info, X, CheckCircle, Code, AlertTriangle, Check } from "lucide-react";
 
 export default function RadioDemoPage() {
   return (
     <div>
       <div className="mb-8">
-        <nav className="flex mb-4" aria-label="탐색경로">
-          <ol className="flex items-center space-x-2 text-sm text-muted-foreground">
-            <li>
-              <Link href="/" className="text-muted-foreground hover:text-primary transition-colors text-decoration-none">
-                홈
-              </Link>
-            </li>
-            <li><ChevronRight className="h-3 w-3" aria-hidden="true" /></li>
-            <li className="text-foreground">라디오 버튼 자동 선택 이슈</li>
-          </ol>
-        </nav>
-        
         <h2 className="text-3xl font-bold text-foreground mb-4">라디오 버튼 자동 선택 이슈</h2>
         <p className="text-lg text-muted-foreground">라디오 버튼의 첫 번째 옵션이 자동으로 선택되어 발생하는 접근성 문제를 확인해보세요.</p>
       </div>
