@@ -167,11 +167,11 @@ export default function Header() {
             {/* 각 버튼 아래 인라인 확장 메뉴 */}
             {expandedDemo === demo.id && (
               <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.2 }}
-                className="absolute top-full left-0 mt-1 w-80 bg-background border border-border rounded-lg shadow-lg z-50"
+                className="absolute top-full left-0 mt-2 w-80 bg-background border border-border rounded-md shadow-sm z-40 overflow-hidden"
               >
                 <div className="p-4">
                   <h3 className="text-sm font-medium text-foreground mb-3 flex items-center">
