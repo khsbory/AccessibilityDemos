@@ -25,9 +25,8 @@ export default function DemosPage() {
         <Card>
           <Collapsible open={openSection === "mobile"} onOpenChange={() => toggleSection("mobile")}>
             <CollapsibleTrigger asChild>
-              <Button
-                variant="ghost"
-                className="w-full p-6 h-auto justify-between hover:bg-muted/50 focus:ring-2 focus:ring-primary"
+              <button
+                className="w-full p-6 h-auto flex justify-between items-center hover:bg-muted/50 focus:ring-2 focus:ring-primary focus:outline-none rounded-lg transition-colors"
                 aria-expanded={openSection === "mobile"}
                 aria-controls="mobile-content"
               >
@@ -41,7 +40,7 @@ export default function DemosPage() {
                 >
                   <ChevronDown className="h-5 w-5" aria-hidden="true" />
                 </motion.div>
-              </Button>
+              </button>
             </CollapsibleTrigger>
             <CollapsibleContent id="mobile-content">
               <CardContent className="px-6 pb-6">
@@ -59,9 +58,8 @@ export default function DemosPage() {
         <Card>
           <Collapsible open={openSection === "pc"} onOpenChange={() => toggleSection("pc")}>
             <CollapsibleTrigger asChild>
-              <Button
-                variant="ghost"
-                className="w-full p-6 h-auto justify-between hover:bg-muted/50 focus:ring-2 focus:ring-primary"
+              <button
+                className="w-full p-6 h-auto flex justify-between items-center hover:bg-muted/50 focus:ring-2 focus:ring-primary focus:outline-none rounded-lg transition-colors"
                 aria-expanded={openSection === "pc"}
                 aria-controls="pc-content"
               >
@@ -75,24 +73,22 @@ export default function DemosPage() {
                 >
                   <ChevronDown className="h-5 w-5" aria-hidden="true" />
                 </motion.div>
-              </Button>
+              </button>
             </CollapsibleTrigger>
             <CollapsibleContent id="pc-content">
               <CardContent className="px-6 pb-6">
                 <p className="text-muted-foreground mb-6">데스크탑 웹 환경에서의 접근성 구현 사례들을 확인할 수 있습니다.</p>
                 <div className="space-y-3">
-                  <Link href="/demos/radio-auto-select">
-                    <Card className="border-border hover:border-primary/30 hover:bg-primary/5 transition-all cursor-pointer group">
-                      <CardContent className="p-4">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <h4 className="font-medium text-foreground group-hover:text-primary">라디오 버튼 자동 선택 이슈</h4>
-                            <p className="text-sm text-muted-foreground mt-1">라디오 버튼의 잘못된 자동 선택으로 인한 접근성 문제</p>
-                          </div>
-                          <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" aria-hidden="true" />
+                  <Link href="/demos/radio-auto-select" className="block text-decoration-none">
+                    <div className="border border-border hover:border-primary/30 hover:bg-primary/5 transition-all cursor-pointer group rounded-lg p-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="font-medium text-foreground group-hover:text-primary">라디오 버튼 자동 선택 이슈</h4>
+                          <p className="text-sm text-muted-foreground mt-1">라디오 버튼의 잘못된 자동 선택으로 인한 접근성 문제</p>
                         </div>
-                      </CardContent>
-                    </Card>
+                        <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" aria-hidden="true" />
+                      </div>
+                    </div>
                   </Link>
                 </div>
               </CardContent>
@@ -104,9 +100,8 @@ export default function DemosPage() {
         <Card>
           <Collapsible open={openSection === "common"} onOpenChange={() => toggleSection("common")}>
             <CollapsibleTrigger asChild>
-              <Button
-                variant="ghost"
-                className="w-full p-6 h-auto justify-between hover:bg-muted/50 focus:ring-2 focus:ring-primary"
+              <button
+                className="w-full p-6 h-auto flex justify-between items-center hover:bg-muted/50 focus:ring-2 focus:ring-primary focus:outline-none rounded-lg transition-colors"
                 aria-expanded={openSection === "common"}
                 aria-controls="common-content"
               >
@@ -120,7 +115,7 @@ export default function DemosPage() {
                 >
                   <ChevronDown className="h-5 w-5" aria-hidden="true" />
                 </motion.div>
-              </Button>
+              </button>
             </CollapsibleTrigger>
             <CollapsibleContent id="common-content">
               <CardContent className="px-6 pb-6">
