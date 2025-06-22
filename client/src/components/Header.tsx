@@ -11,6 +11,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [expandedDemo, setExpandedDemo] = useState<string>("");
   const headerRef = useRef<HTMLDivElement>(null);
+  const buttonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
 
   const isActive = (path: string) => {
     if (path === "/" && location === "/") return true;
@@ -47,22 +48,52 @@ export default function Header() {
   ];
 
   const toggleDemo = (demoId: string) => {
-    setExpandedDemo(expandedDemo === demoId ? "" : demoId);
+    const wasExpanded = expandedDemo === demoId;
+    setExpandedDemo(wasExpanded ? "" : demoId);
+    
+    // 메뉴를 닫을 때 해당 버튼으로 초점 복원
+    if (wasExpanded) {
+      setTimeout(() => {
+        buttonRefs.current[demoId]?.focus();
+      }, 100);
+    }
   };
 
-  // 다른 곳 클릭시 메뉴 닫기
+  // 다른 곳 클릭시 메뉴 닫기 및 키보드 이벤트 처리
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (headerRef.current && !headerRef.current.contains(event.target as Node)) {
+        const currentExpanded = expandedDemo;
         setExpandedDemo("");
+        
+        // 외부 클릭으로 메뉴가 닫힐 때 해당 버튼으로 초점 복원
+        if (currentExpanded) {
+          setTimeout(() => {
+            buttonRefs.current[currentExpanded]?.focus();
+          }, 100);
+        }
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && expandedDemo) {
+        const currentExpanded = expandedDemo;
+        setExpandedDemo("");
+        
+        // ESC 키로 메뉴 닫을 때 해당 버튼으로 초점 복원
+        setTimeout(() => {
+          buttonRefs.current[currentExpanded]?.focus();
+        }, 100);
       }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [expandedDemo]);
 
   const NavLinks = ({ mobile = false, onItemClick = () => {} }) => {
     if (mobile) {
@@ -144,6 +175,7 @@ export default function Header() {
         {demoItems.map((demo) => (
           <div key={demo.id} className="relative">
             <button 
+              ref={(el) => buttonRefs.current[demo.id] = el}
               onClick={() => toggleDemo(demo.id)}
               className={`flex items-center py-2 px-3 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary ${
                 isParentActive(demo.id) 
@@ -184,7 +216,14 @@ export default function Header() {
                         <Link 
                           key={index}
                           href={item.href} 
-                          onClick={() => setExpandedDemo("")}
+                          onClick={() => {
+                            const currentExpanded = expandedDemo;
+                            setExpandedDemo("");
+                            // 메뉴 항목 클릭 시에도 해당 버튼으로 초점 복원
+                            setTimeout(() => {
+                              buttonRefs.current[currentExpanded]?.focus();
+                            }, 100);
+                          }}
                           className="flex items-center p-2 rounded-md hover:bg-muted transition-all group text-decoration-none"
                           aria-current={isActive(item.href) ? "page" : undefined}
                         >
