@@ -647,43 +647,54 @@ const handleBadLevel2Selection = (value) => {
         }}
         goodExample={{
           title: "접근성 적용 코드",
-          code: `// 라디오 버튼을 완전히 숨기고 레이블에 button 역할 부여
-<input
-  type="radio"
-  name="category"
-  value={item.value}
-  checked={isSelected}
-  onChange={() => handleSelection(item.value)}
-  className="hidden"
-/>
-<label 
-  htmlFor={inputId}
-  role="button"
-  tabIndex={0}
-  aria-current={isSelected ? "true" : undefined}
-  onKeyDown={(e) => {
-    if (e.key === ' ' || e.key === 'Enter') {
-      e.preventDefault();
-      handleSelection(item.value);
-    }
-  }}
-  className="focus:ring-2 focus:ring-primary cursor-pointer"
->
-  카테고리명
-</label>
+          code: `// 모든 2단계 카테고리가 항상 DOM에 유지되어 자유로운 탐색 가능
+{goodLevel2Options.map((item) => {
+  const isSelected = goodSelected === item.value;
+  
+  // DOM에서 제거하지 않고 항상 접근 가능하게 유지
+  return (
+    <li key={item.value}>
+      <input
+        type="radio"
+        name="good-category"
+        value={item.value}
+        checked={isSelected}
+        onChange={() => handleGoodLevel2Selection(item.value)}
+        className="hidden" // 완전히 숨김
+      />
+      <label 
+        htmlFor={\`good-level2-\${item.value}\`}
+        role="button"
+        tabIndex={0}
+        aria-current={isSelected ? "true" : undefined}
+        onKeyDown={(e) => {
+          // 스페이스바/Enter로만 선택
+          if (e.key === ' ' || e.key === 'Enter') {
+            e.preventDefault();
+            handleGoodLevel2Selection(item.value);
+          }
+        }}
+        className="focus:ring-2 focus:ring-primary focus:ring-offset-2 cursor-pointer"
+      >
+        {item.label}
+      </label>
+    </li>
+  );
+})}
 
-// UL에 aria-label로 계층 정보 제공
-<ul aria-label="2단계" className="space-y-3">
-  {items.map(item => ...)}
+// aria-label로 계층 구조 정보 제공
+<ul aria-label="2단계 카테고리" className="space-y-3">
+  {goodLevel2Options.map(item => ...)}
 </ul>`
         }}
         guidelines={[
-          "라디오 버튼을 hidden으로 숨기고 레이블에 role='button' 적용",
-          "tabIndex={0}으로 키보드 포커스 가능하게 설정",
-          "onKeyDown으로 스페이스바/Enter 키 이벤트만 처리",
-          "aria-current로 현재 선택된 항목 명확히 표시",
-          "UL 태그에 aria-label로 계층 구조 정보 제공",
-          "포커스 스타일링으로 현재 위치 시각적 표시"
+          "계층형 카테고리에서 모든 단계의 옵션이 항상 DOM에 유지되도록 구현",
+          "3단계 표시 시에도 다른 2단계 카테고리들을 숨기지 않고 접근 가능하게 유지",
+          "라디오 버튼을 hidden으로 숨기고 레이블에 role='button'과 tabIndex={0} 적용",
+          "onKeyDown으로 스페이스바/Enter 키로만 선택되도록 하여 의도치 않은 선택 방지",
+          "aria-current='true'로 현재 선택된 항목 명확히 표시",
+          "UL 태그에 aria-label로 각 계층 구조 정보 제공",
+          "focus:ring-2로 키보드 포커스 시각적 표시하여 현재 위치 파악 가능"
         ]}
       />
     </DemoPageLayout>
