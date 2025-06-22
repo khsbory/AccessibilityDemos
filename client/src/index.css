@@ -57,3 +57,9 @@
     @apply font-sans antialiased bg-background text-foreground;
   }
 }
+
+@layer components {
+  .text-decoration-none {
+    text-decoration: none;
+  }
+}

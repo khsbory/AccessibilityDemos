@@ -16,41 +16,25 @@ export default function Header() {
 
   const NavLinks = ({ mobile = false, onItemClick = () => {} }) => (
     <nav className={`${mobile ? "flex flex-col space-y-2" : "hidden md:flex items-center space-x-6"}`} role="navigation" aria-label="주요 메뉴">
-      <Link href="/" onClick={onItemClick}>
-        <Button 
-          variant="ghost" 
-          className={`${mobile ? "w-full justify-start" : ""} ${isActive("/") ? "text-primary" : "text-foreground hover:text-primary"} transition-colors`}
-          aria-current={isActive("/") ? "page" : undefined}
-        >
+      <Link href="/" onClick={onItemClick} className={`${mobile ? "w-full" : ""} text-decoration-none`}>
+        <span className={`${mobile ? "block w-full py-2 px-3 rounded-md text-left" : "py-2 px-3 rounded-md"} ${isActive("/") ? "text-primary bg-primary/10" : "text-foreground hover:text-primary hover:bg-muted"} transition-colors cursor-pointer`}>
           소개
-        </Button>
+        </span>
       </Link>
-      <Link href="/mobile-demos" onClick={onItemClick}>
-        <Button 
-          variant="ghost" 
-          className={`${mobile ? "w-full justify-start" : ""} ${isActive("/mobile-demos") ? "text-primary" : "text-foreground hover:text-primary"} transition-colors`}
-          aria-current={isActive("/mobile-demos") ? "page" : undefined}
-        >
+      <Link href="/mobile-demos" onClick={onItemClick} className={`${mobile ? "w-full" : ""} text-decoration-none`}>
+        <span className={`${mobile ? "block w-full py-2 px-3 rounded-md text-left" : "py-2 px-3 rounded-md"} ${isActive("/mobile-demos") ? "text-primary bg-primary/10" : "text-foreground hover:text-primary hover:bg-muted"} transition-colors cursor-pointer`}>
           모바일 데모
-        </Button>
+        </span>
       </Link>
-      <Link href="/pc-demos" onClick={onItemClick}>
-        <Button 
-          variant="ghost" 
-          className={`${mobile ? "w-full justify-start" : ""} ${isActive("/pc-demos") ? "text-primary" : "text-foreground hover:text-primary"} transition-colors`}
-          aria-current={isActive("/pc-demos") ? "page" : undefined}
-        >
+      <Link href="/pc-demos" onClick={onItemClick} className={`${mobile ? "w-full" : ""} text-decoration-none`}>
+        <span className={`${mobile ? "block w-full py-2 px-3 rounded-md text-left" : "py-2 px-3 rounded-md"} ${isActive("/pc-demos") ? "text-primary bg-primary/10" : "text-foreground hover:text-primary hover:bg-muted"} transition-colors cursor-pointer`}>
           PC 웹 데모
-        </Button>
+        </span>
       </Link>
-      <Link href="/common-demos" onClick={onItemClick}>
-        <Button 
-          variant="ghost" 
-          className={`${mobile ? "w-full justify-start" : ""} ${isActive("/common-demos") ? "text-primary" : "text-foreground hover:text-primary"} transition-colors`}
-          aria-current={isActive("/common-demos") ? "page" : undefined}
-        >
+      <Link href="/common-demos" onClick={onItemClick} className={`${mobile ? "w-full" : ""} text-decoration-none`}>
+        <span className={`${mobile ? "block w-full py-2 px-3 rounded-md text-left" : "py-2 px-3 rounded-md"} ${isActive("/common-demos") ? "text-primary bg-primary/10" : "text-foreground hover:text-primary hover:bg-muted"} transition-colors cursor-pointer`}>
           공통 웹 데모
-        </Button>
+        </span>
       </Link>
     </nav>
   );

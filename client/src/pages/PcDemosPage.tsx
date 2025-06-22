@@ -28,9 +28,8 @@ export default function PcDemosPage() {
         <Card>
           <Collapsible open={expandedDemo === "form-controls"} onOpenChange={() => toggleDemo("form-controls")}>
             <CollapsibleTrigger asChild>
-              <Button
-                variant="ghost"
-                className="w-full p-6 h-auto justify-between hover:bg-muted/50 focus:ring-2 focus:ring-primary"
+              <button
+                className="w-full p-6 h-auto flex justify-between items-center hover:bg-muted/50 focus:ring-2 focus:ring-primary focus:outline-none rounded-lg transition-colors"
                 aria-expanded={expandedDemo === "form-controls"}
                 aria-controls="form-controls-content"
               >
@@ -43,24 +42,22 @@ export default function PcDemosPage() {
                 >
                   <ChevronDown className="h-5 w-5" aria-hidden="true" />
                 </motion.div>
-              </Button>
+              </button>
             </CollapsibleTrigger>
             <CollapsibleContent id="form-controls-content">
               <CardContent className="px-6 pb-6">
                 <p className="text-muted-foreground mb-6">폼 요소들의 접근성 구현 방법을 확인해보세요.</p>
                 <div className="space-y-3">
-                  <Link href="/demos/radio-auto-select">
-                    <Card className="border-border hover:border-primary/30 hover:bg-primary/5 transition-all cursor-pointer group">
-                      <CardContent className="p-4">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <h4 className="font-medium text-foreground group-hover:text-primary">라디오 버튼 자동 선택 이슈</h4>
-                            <p className="text-sm text-muted-foreground mt-1">라디오 버튼의 잘못된 자동 선택으로 인한 접근성 문제</p>
-                          </div>
-                          <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" aria-hidden="true" />
+                  <Link href="/demos/radio-auto-select" className="block text-decoration-none">
+                    <div className="border border-border hover:border-primary/30 hover:bg-primary/5 transition-all cursor-pointer group rounded-lg p-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="font-medium text-foreground group-hover:text-primary">라디오 버튼 자동 선택 이슈</h4>
+                          <p className="text-sm text-muted-foreground mt-1">라디오 버튼의 잘못된 자동 선택으로 인한 접근성 문제</p>
                         </div>
-                      </CardContent>
-                    </Card>
+                        <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" aria-hidden="true" />
+                      </div>
+                    </div>
                   </Link>
                 </div>
               </CardContent>
@@ -72,9 +69,8 @@ export default function PcDemosPage() {
         <Card>
           <Collapsible open={expandedDemo === "navigation"} onOpenChange={() => toggleDemo("navigation")}>
             <CollapsibleTrigger asChild>
-              <Button
-                variant="ghost"
-                className="w-full p-6 h-auto justify-between hover:bg-muted/50 focus:ring-2 focus:ring-primary"
+              <button
+                className="w-full p-6 h-auto flex justify-between items-center hover:bg-muted/50 focus:ring-2 focus:ring-primary focus:outline-none rounded-lg transition-colors"
                 aria-expanded={expandedDemo === "navigation"}
                 aria-controls="navigation-content"
               >
@@ -87,7 +83,7 @@ export default function PcDemosPage() {
                 >
                   <ChevronDown className="h-5 w-5" aria-hidden="true" />
                 </motion.div>
-              </Button>
+              </button>
             </CollapsibleTrigger>
             <CollapsibleContent id="navigation-content">
               <CardContent className="px-6 pb-6">
@@ -105,9 +101,8 @@ export default function PcDemosPage() {
         <Card>
           <Collapsible open={expandedDemo === "interactive"} onOpenChange={() => toggleDemo("interactive")}>
             <CollapsibleTrigger asChild>
-              <Button
-                variant="ghost"
-                className="w-full p-6 h-auto justify-between hover:bg-muted/50 focus:ring-2 focus:ring-primary"
+              <button
+                className="w-full p-6 h-auto flex justify-between items-center hover:bg-muted/50 focus:ring-2 focus:ring-primary focus:outline-none rounded-lg transition-colors"
                 aria-expanded={expandedDemo === "interactive"}
                 aria-controls="interactive-content"
               >
@@ -120,7 +115,7 @@ export default function PcDemosPage() {
                 >
                   <ChevronDown className="h-5 w-5" aria-hidden="true" />
                 </motion.div>
-              </Button>
+              </button>
             </CollapsibleTrigger>
             <CollapsibleContent id="interactive-content">
               <CardContent className="px-6 pb-6">
