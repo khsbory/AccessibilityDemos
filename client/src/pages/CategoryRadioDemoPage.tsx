@@ -108,13 +108,19 @@ export default function CategoryRadioDemoPage() {
   const [goodLevel2Options, setGoodLevel2Options] = useState<any[]>([]);
   const [goodLevel3Options, setGoodLevel3Options] = useState<any[]>([]);
 
+  // 접근성 미적용 - 1단계 선택 (기본값으로 복귀)
+  const handleBadLevel1Selection = (value: string) => {
+    setBadSelected(value);
+    setBadLevel2Options(categoryData.level2.cosmetics.concat(categoryData.level2.perfume));
+    setBadLevel3Options([]); // 3단계 초기화
+  };
+
   // 접근성 미적용 - 2단계 선택
   const handleBadLevel2Selection = (value: string) => {
     setBadSelected(value);
     // 동적으로 3단계 데이터 로드
     const level3Data = categoryData.level3[value as keyof typeof categoryData.level3] || [];
     setBadLevel3Options(level3Data);
-    setBadLevel2Options(categoryData.level2.cosmetics.concat(categoryData.level2.perfume));
   };
 
   // 접근성 미적용 - 3단계 선택
@@ -123,13 +129,19 @@ export default function CategoryRadioDemoPage() {
     setBadSheetOpen(false);
   };
 
+  // 접근성 적용 - 1단계 선택 (기본값으로 복귀)
+  const handleGoodLevel1Selection = (value: string) => {
+    setGoodSelected(value);
+    setGoodLevel2Options(categoryData.level2.cosmetics.concat(categoryData.level2.perfume));
+    setGoodLevel3Options([]); // 3단계 초기화
+  };
+
   // 접근성 적용 - 2단계 선택
   const handleGoodLevel2Selection = (value: string) => {
     setGoodSelected(value);
     // 동적으로 3단계 데이터 로드
     const level3Data = categoryData.level3[value as keyof typeof categoryData.level3] || [];
     setGoodLevel3Options(level3Data);
-    setGoodLevel2Options(categoryData.level2.cosmetics.concat(categoryData.level2.perfume));
   };
 
   // 접근성 적용 - 3단계 선택
@@ -217,13 +229,21 @@ export default function CategoryRadioDemoPage() {
                   <div className="flex items-center space-x-2">
                     <input
                       type="radio"
-                      name="bad-level1"
+                      name="bad-category"
                       value="cosmetics/perfume"
+                      id="bad-level1-cosmetics-perfume"
                       checked={badSelected === "cosmetics/perfume"}
-                      readOnly
+                      onChange={() => handleBadLevel1Selection("cosmetics/perfume")}
                       className="sr-only"
                     />
-                    <label className="text-base font-medium cursor-pointer bg-primary text-primary-foreground px-3 py-2 rounded">
+                    <label 
+                      htmlFor="bad-level1-cosmetics-perfume"
+                      className={`text-base font-medium cursor-pointer px-3 py-2 rounded ${
+                        badSelected === "cosmetics/perfume" 
+                          ? "bg-primary text-primary-foreground" 
+                          : "border hover:bg-gray-50"
+                      }`}
+                    >
                       화장품/향수
                     </label>
                   </div>
@@ -239,7 +259,7 @@ export default function CategoryRadioDemoPage() {
                           <div className="flex items-center space-x-2">
                             <input
                               type="radio"
-                              name="bad-level2"
+                              name="bad-category"
                               value={item.value}
                               id={`bad-level2-${item.value}`}
                               checked={badSelected === item.value}
@@ -248,7 +268,9 @@ export default function CategoryRadioDemoPage() {
                             />
                             <label 
                               htmlFor={`bad-level2-${item.value}`} 
-                              className="text-base cursor-pointer px-4 py-2 border rounded hover:bg-gray-50 w-full text-left"
+                              className={`text-base cursor-pointer px-4 py-2 border rounded hover:bg-gray-50 w-full text-left ${
+                                badSelected === item.value ? "bg-primary text-primary-foreground border-primary" : ""
+                              }`}
                             >
                               {item.label}
                             </label>
@@ -269,7 +291,7 @@ export default function CategoryRadioDemoPage() {
                           <div className="flex items-center space-x-2">
                             <input
                               type="radio"
-                              name="bad-level3"
+                              name="bad-category"
                               value={item.value}
                               id={`bad-level3-${item.value}`}
                               checked={badSelected === item.value}
@@ -278,7 +300,9 @@ export default function CategoryRadioDemoPage() {
                             />
                             <label 
                               htmlFor={`bad-level3-${item.value}`} 
-                              className="text-base cursor-pointer px-4 py-2 border rounded hover:bg-gray-50 w-full text-left"
+                              className={`text-base cursor-pointer px-4 py-2 border rounded hover:bg-gray-50 w-full text-left ${
+                                badSelected === item.value ? "bg-primary text-primary-foreground border-primary" : ""
+                              }`}
                             >
                               {item.label}
                             </label>
@@ -323,13 +347,29 @@ export default function CategoryRadioDemoPage() {
                   <div className="flex items-center space-x-2">
                     <input
                       type="radio"
-                      name="good-level1"
+                      name="good-category"
                       value="cosmetics/perfume"
+                      id="good-level1-cosmetics-perfume"
                       checked={goodSelected === "cosmetics/perfume"}
-                      readOnly
+                      onChange={() => handleGoodLevel1Selection("cosmetics/perfume")}
                       className="hidden"
                     />
-                    <label className="text-base font-medium cursor-pointer bg-primary text-primary-foreground px-3 py-2 rounded">
+                    <label 
+                      htmlFor="good-level1-cosmetics-perfume"
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === ' ' || e.key === 'Enter') {
+                          e.preventDefault();
+                          handleGoodLevel1Selection("cosmetics/perfume");
+                        }
+                      }}
+                      className={`text-base font-medium cursor-pointer px-3 py-2 rounded focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
+                        goodSelected === "cosmetics/perfume" 
+                          ? "bg-primary text-primary-foreground" 
+                          : "border hover:bg-gray-50"
+                      }`}
+                    >
                       화장품/향수
                     </label>
                   </div>
@@ -345,7 +385,7 @@ export default function CategoryRadioDemoPage() {
                           <div className="flex items-center space-x-2">
                             <input
                               type="radio"
-                              name="good-level2"
+                              name="good-category"
                               value={item.value}
                               id={`good-level2-${item.value}`}
                               checked={goodSelected === item.value}
@@ -362,7 +402,9 @@ export default function CategoryRadioDemoPage() {
                                   handleGoodLevel2Selection(item.value);
                                 }
                               }}
-                              className="text-base cursor-pointer px-4 py-2 border rounded hover:bg-gray-50 w-full text-left focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                              className={`text-base cursor-pointer px-4 py-2 border rounded hover:bg-gray-50 w-full text-left focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
+                                goodSelected === item.value ? "bg-primary text-primary-foreground border-primary" : ""
+                              }`}
                             >
                               {item.label}
                             </label>
@@ -383,7 +425,7 @@ export default function CategoryRadioDemoPage() {
                           <div className="flex items-center space-x-2">
                             <input
                               type="radio"
-                              name="good-level3"
+                              name="good-category"
                               value={item.value}
                               id={`good-level3-${item.value}`}
                               checked={goodSelected === item.value}
@@ -400,7 +442,9 @@ export default function CategoryRadioDemoPage() {
                                   handleGoodLevel3Selection(item.value);
                                 }
                               }}
-                              className="text-base cursor-pointer px-4 py-2 border rounded hover:bg-gray-50 w-full text-left focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                              className={`text-base cursor-pointer px-4 py-2 border rounded hover:bg-gray-50 w-full text-left focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
+                                goodSelected === item.value ? "bg-primary text-primary-foreground border-primary" : ""
+                              }`}
                             >
                               {item.label}
                             </label>
