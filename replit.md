@@ -94,6 +94,7 @@ This is a full-stack web application demonstrating web accessibility issues and 
 ## Changelog
 
 - June 22, 2025. Initial setup
+- June 22, 2025. Restructured navigation from single "데모" page to direct category access (소개, 모바일 데모, PC 웹 데모, 공통 웹 데모)
 
 ## User Preferences
 

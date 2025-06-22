@@ -13,15 +13,7 @@ export default function RadioDemoPage() {
         <nav className="flex mb-4" aria-label="탐색경로">
           <ol className="flex items-center space-x-2 text-sm text-muted-foreground">
             <li>
-              <Link href="/demos">
-                <Button variant="link" className="p-0 h-auto text-muted-foreground hover:text-primary">
-                  데모
-                </Button>
-              </Link>
-            </li>
-            <li><ChevronRight className="h-3 w-3" aria-hidden="true" /></li>
-            <li>
-              <Link href="/demos">
+              <Link href="/pc-demos">
                 <Button variant="link" className="p-0 h-auto text-muted-foreground hover:text-primary">
                   PC 웹 데모
                 </Button>

@@ -25,13 +25,31 @@ export default function Header() {
           소개
         </Button>
       </Link>
-      <Link href="/demos" onClick={onItemClick}>
+      <Link href="/mobile-demos" onClick={onItemClick}>
         <Button 
           variant="ghost" 
-          className={`${mobile ? "w-full justify-start" : ""} ${isActive("/demos") ? "text-primary" : "text-foreground hover:text-primary"} transition-colors`}
-          aria-current={isActive("/demos") ? "page" : undefined}
+          className={`${mobile ? "w-full justify-start" : ""} ${isActive("/mobile-demos") ? "text-primary" : "text-foreground hover:text-primary"} transition-colors`}
+          aria-current={isActive("/mobile-demos") ? "page" : undefined}
         >
-          데모
+          모바일 데모
+        </Button>
+      </Link>
+      <Link href="/pc-demos" onClick={onItemClick}>
+        <Button 
+          variant="ghost" 
+          className={`${mobile ? "w-full justify-start" : ""} ${isActive("/pc-demos") ? "text-primary" : "text-foreground hover:text-primary"} transition-colors`}
+          aria-current={isActive("/pc-demos") ? "page" : undefined}
+        >
+          PC 웹 데모
+        </Button>
+      </Link>
+      <Link href="/common-demos" onClick={onItemClick}>
+        <Button 
+          variant="ghost" 
+          className={`${mobile ? "w-full justify-start" : ""} ${isActive("/common-demos") ? "text-primary" : "text-foreground hover:text-primary"} transition-colors`}
+          aria-current={isActive("/common-demos") ? "page" : undefined}
+        >
+          공통 웹 데모
         </Button>
       </Link>
     </nav>
