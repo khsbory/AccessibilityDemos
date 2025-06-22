@@ -590,8 +590,8 @@ export default function CategoryRadioDemoPage() {
         badSteps={[
           { step: "1단계", description: '"카테고리 선택" 버튼 클릭하여 바텀시트 열기' },
           { step: "2단계", description: "바텀시트가 열리면 1단계 라디오 버튼(화장품/향수)에 자동으로 포커스됨" },
-          { step: "3단계", description: "Tab 키로 2단계 라디오 버튼으로 이동 후 ↓ 화살표 키로 탐색" },
-          { step: "4단계", description: "화살표 키로 이동하는 순간 자동으로 선택되어 의도치 않은 카테고리 선택" },
+          { step: "3단계", description: "↓ 화살표 키를 누르면 2단계 라디오 버튼으로 이동" },
+          { step: "4단계", description: "2단계에서 화살표 키로 이동하는 순간 자동으로 선택되어 의도치 않은 카테고리 선택" },
           { step: "5단계", description: "선택된 2단계 카테고리의 3단계가 표시되면서 다른 2단계들이 DOM에서 숨겨짐" },
           { step: "6단계", description: "키보드로 다른 2단계 카테고리 비교 탐색 완전히 차단됨" }
         ]}
