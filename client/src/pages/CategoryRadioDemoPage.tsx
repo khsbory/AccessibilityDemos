@@ -101,25 +101,40 @@ export default function CategoryRadioDemoPage() {
   const [badSelected, setBadSelected] = useState("cosmetics/perfume"); // 1단계 기본 선택
   const [badLevel2Options, setBadLevel2Options] = useState<any[]>([]);
   const [badLevel3Options, setBadLevel3Options] = useState<any[]>([]);
+  const [badSelectedLevel2, setBadSelectedLevel2] = useState<string>(""); // 현재 선택된 2단계
 
   // 접근성 적용 상태
   const [goodSheetOpen, setGoodSheetOpen] = useState(false);
   const [goodSelected, setGoodSelected] = useState("cosmetics/perfume"); // 1단계 기본 선택
   const [goodLevel2Options, setGoodLevel2Options] = useState<any[]>([]);
   const [goodLevel3Options, setGoodLevel3Options] = useState<any[]>([]);
+  const [goodSelectedLevel2, setGoodSelectedLevel2] = useState<string>(""); // 현재 선택된 2단계
+
+  // 서버에서 데이터를 받아오는 함수 (실제로는 API 호출)
+  const fetchLevel3Data = async (level2Value: string) => {
+    // 실제 구현에서는 API 호출
+    return new Promise<any[]>((resolve) => {
+      setTimeout(() => {
+        const data = categoryData.level3[level2Value as keyof typeof categoryData.level3] || [];
+        resolve(data);
+      }, 200); // 200ms 지연으로 서버 호출 시뮬레이션
+    });
+  };
 
   // 접근성 미적용 - 1단계 선택 (기본값으로 복귀)
   const handleBadLevel1Selection = (value: string) => {
     setBadSelected(value);
     setBadLevel2Options(categoryData.level2.cosmetics.concat(categoryData.level2.perfume));
     setBadLevel3Options([]); // 3단계 초기화
+    setBadSelectedLevel2(""); // 선택된 2단계 초기화
   };
 
   // 접근성 미적용 - 2단계 선택
-  const handleBadLevel2Selection = (value: string) => {
+  const handleBadLevel2Selection = async (value: string) => {
     setBadSelected(value);
-    // 동적으로 3단계 데이터 로드
-    const level3Data = categoryData.level3[value as keyof typeof categoryData.level3] || [];
+    setBadSelectedLevel2(value);
+    // 서버에서 동적으로 3단계 데이터 로드
+    const level3Data = await fetchLevel3Data(value);
     setBadLevel3Options(level3Data);
   };
 
@@ -134,13 +149,15 @@ export default function CategoryRadioDemoPage() {
     setGoodSelected(value);
     setGoodLevel2Options(categoryData.level2.cosmetics.concat(categoryData.level2.perfume));
     setGoodLevel3Options([]); // 3단계 초기화
+    setGoodSelectedLevel2(""); // 선택된 2단계 초기화
   };
 
   // 접근성 적용 - 2단계 선택
-  const handleGoodLevel2Selection = (value: string) => {
+  const handleGoodLevel2Selection = async (value: string) => {
     setGoodSelected(value);
-    // 동적으로 3단계 데이터 로드
-    const level3Data = categoryData.level3[value as keyof typeof categoryData.level3] || [];
+    setGoodSelectedLevel2(value);
+    // 서버에서 동적으로 3단계 데이터 로드
+    const level3Data = await fetchLevel3Data(value);
     setGoodLevel3Options(level3Data);
   };
 
@@ -154,12 +171,14 @@ export default function CategoryRadioDemoPage() {
   const openBadSheet = () => {
     setBadLevel2Options(categoryData.level2.cosmetics.concat(categoryData.level2.perfume));
     setBadLevel3Options([]);
+    setBadSelectedLevel2("");
     setBadSheetOpen(true);
   };
 
   const openGoodSheet = () => {
     setGoodLevel2Options(categoryData.level2.cosmetics.concat(categoryData.level2.perfume));
     setGoodLevel3Options([]);
+    setGoodSelectedLevel2("");
     setGoodSheetOpen(true);
   };
 
@@ -254,61 +273,74 @@ export default function CategoryRadioDemoPage() {
                   <div>
                     <h3 className="text-sm font-medium text-foreground mb-3">2단계 카테고리</h3>
                     <ul className="space-y-3">
-                      {badLevel2Options.map((item) => (
-                        <li key={item.value}>
-                          <div className="flex items-center space-x-2">
-                            <input
-                              type="radio"
-                              name="bad-category"
-                              value={item.value}
-                              id={`bad-level2-${item.value}`}
-                              checked={badSelected === item.value}
-                              onChange={() => handleBadLevel2Selection(item.value)}
-                              className="sr-only"
-                            />
-                            <label 
-                              htmlFor={`bad-level2-${item.value}`} 
-                              className={`text-base cursor-pointer px-4 py-2 border rounded hover:bg-gray-50 w-full text-left ${
-                                badSelected === item.value ? "bg-primary text-primary-foreground border-primary" : ""
-                              }`}
-                            >
-                              {item.label}
-                            </label>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {/* 3단계 */}
-                {badLevel3Options.length > 0 && (
-                  <div>
-                    <h3 className="text-sm font-medium text-foreground mb-3">3단계 카테고리</h3>
-                    <ul className="space-y-3">
-                      {badLevel3Options.map((item) => (
-                        <li key={item.value}>
-                          <div className="flex items-center space-x-2">
-                            <input
-                              type="radio"
-                              name="bad-category"
-                              value={item.value}
-                              id={`bad-level3-${item.value}`}
-                              checked={badSelected === item.value}
-                              onChange={() => handleBadLevel3Selection(item.value)}
-                              className="sr-only"
-                            />
-                            <label 
-                              htmlFor={`bad-level3-${item.value}`} 
-                              className={`text-base cursor-pointer px-4 py-2 border rounded hover:bg-gray-50 w-full text-left ${
-                                badSelected === item.value ? "bg-primary text-primary-foreground border-primary" : ""
-                              }`}
-                            >
-                              {item.label}
-                            </label>
-                          </div>
-                        </li>
-                      ))}
+                      {badLevel2Options.map((item) => {
+                        const isSelected = badSelected === item.value;
+                        const hasLevel3 = badSelectedLevel2 === item.value && badLevel3Options.length > 0;
+                        const isOtherSelected = badSelectedLevel2 && badSelectedLevel2 !== item.value;
+                        
+                        // 다른 2단계가 선택되고 3단계가 표시중이면 숨김
+                        if (isOtherSelected && badLevel3Options.length > 0) {
+                          return null;
+                        }
+                        
+                        return (
+                          <li key={item.value}>
+                            <div className="space-y-3">
+                              <div className="flex items-center space-x-2">
+                                <input
+                                  type="radio"
+                                  name="bad-category"
+                                  value={item.value}
+                                  id={`bad-level2-${item.value}`}
+                                  checked={isSelected}
+                                  onChange={() => handleBadLevel2Selection(item.value)}
+                                  className="sr-only"
+                                />
+                                <label 
+                                  htmlFor={`bad-level2-${item.value}`} 
+                                  className={`text-base cursor-pointer px-4 py-2 border rounded hover:bg-gray-50 w-full text-left ${
+                                    isSelected ? "bg-primary text-primary-foreground border-primary" : ""
+                                  }`}
+                                >
+                                  {item.label}
+                                </label>
+                              </div>
+                              
+                              {/* 3단계 - 선택된 2단계 바로 아래에 표시 */}
+                              {hasLevel3 && (
+                                <div className="ml-6 space-y-2">
+                                  <h4 className="text-sm font-medium text-muted-foreground">3단계 카테고리</h4>
+                                  <ul className="space-y-2">
+                                    {badLevel3Options.map((subItem) => (
+                                      <li key={subItem.value}>
+                                        <div className="flex items-center space-x-2">
+                                          <input
+                                            type="radio"
+                                            name="bad-category"
+                                            value={subItem.value}
+                                            id={`bad-level3-${subItem.value}`}
+                                            checked={badSelected === subItem.value}
+                                            onChange={() => handleBadLevel3Selection(subItem.value)}
+                                            className="sr-only"
+                                          />
+                                          <label 
+                                            htmlFor={`bad-level3-${subItem.value}`} 
+                                            className={`text-sm cursor-pointer px-3 py-2 border rounded hover:bg-gray-50 w-full text-left ${
+                                              badSelected === subItem.value ? "bg-primary text-primary-foreground border-primary" : ""
+                                            }`}
+                                          >
+                                            {subItem.label}
+                                          </label>
+                                        </div>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              )}
+                            </div>
+                          </li>
+                        );
+                      })}
                     </ul>
                   </div>
                 )}
@@ -380,77 +412,90 @@ export default function CategoryRadioDemoPage() {
                   <div>
                     <h3 className="text-sm font-medium text-foreground mb-3">2단계 카테고리</h3>
                     <ul className="space-y-3" aria-label="2단계">
-                      {goodLevel2Options.map((item) => (
-                        <li key={item.value}>
-                          <div className="flex items-center space-x-2">
-                            <input
-                              type="radio"
-                              name="good-category"
-                              value={item.value}
-                              id={`good-level2-${item.value}`}
-                              checked={goodSelected === item.value}
-                              onChange={() => handleGoodLevel2Selection(item.value)}
-                              className="hidden"
-                            />
-                            <label 
-                              htmlFor={`good-level2-${item.value}`} 
-                              role="button"
-                              tabIndex={0}
-                              onKeyDown={(e) => {
-                                if (e.key === ' ' || e.key === 'Enter') {
-                                  e.preventDefault();
-                                  handleGoodLevel2Selection(item.value);
-                                }
-                              }}
-                              className={`text-base cursor-pointer px-4 py-2 border rounded hover:bg-gray-50 w-full text-left focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
-                                goodSelected === item.value ? "bg-primary text-primary-foreground border-primary" : ""
-                              }`}
-                            >
-                              {item.label}
-                            </label>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {/* 3단계 */}
-                {goodLevel3Options.length > 0 && (
-                  <div>
-                    <h3 className="text-sm font-medium text-foreground mb-3">3단계 카테고리</h3>
-                    <ul className="space-y-3" aria-label="3단계">
-                      {goodLevel3Options.map((item) => (
-                        <li key={item.value}>
-                          <div className="flex items-center space-x-2">
-                            <input
-                              type="radio"
-                              name="good-category"
-                              value={item.value}
-                              id={`good-level3-${item.value}`}
-                              checked={goodSelected === item.value}
-                              onChange={() => handleGoodLevel3Selection(item.value)}
-                              className="hidden"
-                            />
-                            <label 
-                              htmlFor={`good-level3-${item.value}`} 
-                              role="button"
-                              tabIndex={0}
-                              onKeyDown={(e) => {
-                                if (e.key === ' ' || e.key === 'Enter') {
-                                  e.preventDefault();
-                                  handleGoodLevel3Selection(item.value);
-                                }
-                              }}
-                              className={`text-base cursor-pointer px-4 py-2 border rounded hover:bg-gray-50 w-full text-left focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
-                                goodSelected === item.value ? "bg-primary text-primary-foreground border-primary" : ""
-                              }`}
-                            >
-                              {item.label}
-                            </label>
-                          </div>
-                        </li>
-                      ))}
+                      {goodLevel2Options.map((item) => {
+                        const isSelected = goodSelected === item.value;
+                        const hasLevel3 = goodSelectedLevel2 === item.value && goodLevel3Options.length > 0;
+                        const isOtherSelected = goodSelectedLevel2 && goodSelectedLevel2 !== item.value;
+                        
+                        // 다른 2단계가 선택되고 3단계가 표시중이면 숨김
+                        if (isOtherSelected && goodLevel3Options.length > 0) {
+                          return null;
+                        }
+                        
+                        return (
+                          <li key={item.value}>
+                            <div className="space-y-3">
+                              <div className="flex items-center space-x-2">
+                                <input
+                                  type="radio"
+                                  name="good-category"
+                                  value={item.value}
+                                  id={`good-level2-${item.value}`}
+                                  checked={isSelected}
+                                  onChange={() => handleGoodLevel2Selection(item.value)}
+                                  className="hidden"
+                                />
+                                <label 
+                                  htmlFor={`good-level2-${item.value}`} 
+                                  role="button"
+                                  tabIndex={0}
+                                  onKeyDown={(e) => {
+                                    if (e.key === ' ' || e.key === 'Enter') {
+                                      e.preventDefault();
+                                      handleGoodLevel2Selection(item.value);
+                                    }
+                                  }}
+                                  className={`text-base cursor-pointer px-4 py-2 border rounded hover:bg-gray-50 w-full text-left focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
+                                    isSelected ? "bg-primary text-primary-foreground border-primary" : ""
+                                  }`}
+                                >
+                                  {item.label}
+                                </label>
+                              </div>
+                              
+                              {/* 3단계 - 선택된 2단계 바로 아래에 표시 */}
+                              {hasLevel3 && (
+                                <div className="ml-6 space-y-2">
+                                  <h4 className="text-sm font-medium text-muted-foreground">3단계 카테고리</h4>
+                                  <ul className="space-y-2" aria-label="3단계">
+                                    {goodLevel3Options.map((subItem) => (
+                                      <li key={subItem.value}>
+                                        <div className="flex items-center space-x-2">
+                                          <input
+                                            type="radio"
+                                            name="good-category"
+                                            value={subItem.value}
+                                            id={`good-level3-${subItem.value}`}
+                                            checked={goodSelected === subItem.value}
+                                            onChange={() => handleGoodLevel3Selection(subItem.value)}
+                                            className="hidden"
+                                          />
+                                          <label 
+                                            htmlFor={`good-level3-${subItem.value}`} 
+                                            role="button"
+                                            tabIndex={0}
+                                            onKeyDown={(e) => {
+                                              if (e.key === ' ' || e.key === 'Enter') {
+                                                e.preventDefault();
+                                                handleGoodLevel3Selection(subItem.value);
+                                              }
+                                            }}
+                                            className={`text-sm cursor-pointer px-3 py-2 border rounded hover:bg-gray-50 w-full text-left focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
+                                              goodSelected === subItem.value ? "bg-primary text-primary-foreground border-primary" : ""
+                                            }`}
+                                          >
+                                            {subItem.label}
+                                          </label>
+                                        </div>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              )}
+                            </div>
+                          </li>
+                        );
+                      })}
                     </ul>
                   </div>
                 )}

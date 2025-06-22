@@ -103,6 +103,9 @@ This is a full-stack web application demonstrating web accessibility issues and 
 - June 22, 2025. Implemented CategoryRadioDemoPage with hierarchical category selection using radio buttons
 - June 22, 2025. Added 3-level category structure (cosmetics/perfume → subcategories → specific items)
 - June 22, 2025. Applied accessibility patterns: hidden radio buttons, role="button" labels, aria-labels for lists
+- June 22, 2025. Improved hierarchical display: 3rd level categories now appear directly under selected 2nd level
+- June 22, 2025. Implemented server-side data fetching simulation for dynamic 3rd level category loading
+- June 22, 2025. Added logic to hide other 2nd level categories when 3rd level is displayed
 
 ## User Preferences
 
