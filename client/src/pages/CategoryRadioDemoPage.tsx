@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -110,6 +110,10 @@ export default function CategoryRadioDemoPage() {
   const [goodLevel3Options, setGoodLevel3Options] = useState<any[]>([]);
   const [goodSelectedLevel2, setGoodSelectedLevel2] = useState<string>(""); // 현재 선택된 2단계
 
+  // 트리거 버튼 참조
+  const badTriggerRef = useRef<HTMLButtonElement>(null);
+  const goodTriggerRef = useRef<HTMLButtonElement>(null);
+
   // 서버에서 데이터를 받아오는 함수 (실제로는 API 호출)
   const fetchLevel3Data = async (level2Value: string) => {
     // 실제 구현에서는 API 호출
@@ -147,6 +151,10 @@ export default function CategoryRadioDemoPage() {
   // 접근성 미적용 - 적용 버튼
   const handleBadApply = () => {
     setBadSheetOpen(false);
+    // 포커스 복원
+    setTimeout(() => {
+      badTriggerRef.current?.focus();
+    }, 100);
   };
 
   // 접근성 미적용 - 취소 버튼  
@@ -156,6 +164,10 @@ export default function CategoryRadioDemoPage() {
     setBadLevel3Options([]);
     setBadSelectedLevel2("");
     setBadSheetOpen(false);
+    // 포커스 복원
+    setTimeout(() => {
+      badTriggerRef.current?.focus();
+    }, 100);
   };
 
   // 접근성 적용 - 1단계 선택 (기본값으로 복귀)
@@ -184,6 +196,10 @@ export default function CategoryRadioDemoPage() {
   // 접근성 적용 - 적용 버튼
   const handleGoodApply = () => {
     setGoodSheetOpen(false);
+    // 포커스 복원
+    setTimeout(() => {
+      goodTriggerRef.current?.focus();
+    }, 100);
   };
 
   // 접근성 적용 - 취소 버튼
@@ -193,6 +209,10 @@ export default function CategoryRadioDemoPage() {
     setGoodLevel3Options([]);
     setGoodSelectedLevel2("");
     setGoodSheetOpen(false);
+    // 포커스 복원
+    setTimeout(() => {
+      goodTriggerRef.current?.focus();
+    }, 100);
   };
 
   // 바텀 시트 열 때 2단계 옵션 초기화
@@ -261,7 +281,7 @@ export default function CategoryRadioDemoPage() {
           
           <Sheet open={badSheetOpen} onOpenChange={setBadSheetOpen}>
             <SheetTrigger asChild>
-              <Button variant="outline" className="w-full" onClick={openBadSheet}>
+              <Button ref={badTriggerRef} variant="outline" className="w-full" onClick={openBadSheet}>
                 <ChevronRight className="mr-2 h-4 w-4" />
                 카테고리 선택
               </Button>
@@ -407,7 +427,7 @@ export default function CategoryRadioDemoPage() {
           
           <Sheet open={goodSheetOpen} onOpenChange={setGoodSheetOpen}>
             <SheetTrigger asChild>
-              <Button variant="outline" className="w-full" onClick={openGoodSheet}>
+              <Button ref={goodTriggerRef} variant="outline" className="w-full" onClick={openGoodSheet}>
                 <ChevronRight className="mr-2 h-4 w-4" />
                 카테고리 선택 (접근성 적용)
               </Button>

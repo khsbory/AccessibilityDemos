@@ -111,6 +111,7 @@ This is a full-stack web application demonstrating web accessibility issues and 
 - June 22, 2025. Added aria-current="true" to selected categories in accessibility-enabled version
 - June 22, 2025. Fixed missing aria-current on 1st level category button in accessibility version
 - June 22, 2025. Completed removal of all category level headings (h3, h4) for cleaner visual hierarchy
+- June 22, 2025. Added focus restoration to Apply/Cancel buttons for proper keyboard navigation accessibility
 
 ## User Preferences
 
