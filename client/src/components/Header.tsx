@@ -5,6 +5,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Menu, Accessibility, ChevronDown, Smartphone, Monitor, Globe, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { skipToMainContent } from "@/lib/focus-utils";
 
 export default function Header() {
   const [location] = useLocation();
@@ -267,35 +268,7 @@ export default function Header() {
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[60] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary-foreground"
         onClick={(e) => {
           e.preventDefault();
-          const mainContent = document.getElementById('main-content');
-          if (mainContent) {
-            // 1. 먼저 클릭 가능한 요소 찾기
-            const focusableElement = mainContent.querySelector(
-              'a, button, input, textarea, select, [tabindex]:not([tabindex="-1"])'
-            );
-            
-            if (focusableElement) {
-              focusableElement.focus();
-            } else {
-              // 2. 클릭 가능한 요소가 없으면 첫 번째 텍스트 요소 찾기
-              const textElement = mainContent.querySelector(
-                'h1, h2, h3, h4, h5, h6, p, span, div'
-              );
-              
-              if (textElement) {
-                // 3. 동적으로 tabindex="-1" 추가하고 포커스
-                textElement.setAttribute('tabindex', '-1');
-                textElement.focus();
-                
-                // 4. 포커스 후 tabindex 제거
-                textElement.addEventListener('blur', () => {
-                  textElement.removeAttribute('tabindex');
-                }, { once: true });
-              }
-            }
-            
-            mainContent.scrollIntoView({ behavior: 'smooth' });
-          }
+          skipToMainContent();
         }}
       >
         본문 바로가기
