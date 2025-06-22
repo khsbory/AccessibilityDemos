@@ -97,6 +97,9 @@ This is a full-stack web application demonstrating web accessibility issues and 
 - June 22, 2025. Restructured navigation from single "데모" page to direct category access (소개, 모바일 데모, PC 웹 데모, 공통 웹 데모)
 - June 22, 2025. Improved HTML semantics by separating button and link elements for better accessibility
 - June 22, 2025. Implemented dropdown navigation system with direct access to demos from header menu
+- June 22, 2025. Added accessibility features: aria-current="page", skip to main content link, parent category active state
+- June 22, 2025. Created reusable demo components for consistent structure across all demo pages
+- June 22, 2025. Refactored RadioDemoPage with standard HTML inputs and keyboard control override
 
 ## User Preferences
 
