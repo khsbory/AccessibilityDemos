@@ -372,6 +372,23 @@ export default function CategoryRadioDemoPage() {
                     </ul>
                   </div>
                 )}
+
+                {/* 적용/취소 버튼 - 접근성 미적용 */}
+                <div className="flex gap-3 mt-8 pt-4 border-t">
+                  <Button 
+                    variant="outline" 
+                    onClick={handleBadCancel}
+                    className="flex-1"
+                  >
+                    취소
+                  </Button>
+                  <Button 
+                    onClick={handleBadApply}
+                    className="flex-1"
+                  >
+                    적용
+                  </Button>
+                </div>
               </div>
             </SheetContent>
           </Sheet>
@@ -527,6 +544,23 @@ export default function CategoryRadioDemoPage() {
                     </ul>
                   </div>
                 )}
+
+                {/* 적용/취소 버튼 - 접근성 적용 */}
+                <div className="flex gap-3 mt-8 pt-4 border-t">
+                  <Button 
+                    variant="outline" 
+                    onClick={handleGoodCancel}
+                    className="flex-1"
+                  >
+                    취소
+                  </Button>
+                  <Button 
+                    onClick={handleGoodApply}
+                    className="flex-1"
+                  >
+                    적용
+                  </Button>
+                </div>
               </div>
             </SheetContent>
           </Sheet>
