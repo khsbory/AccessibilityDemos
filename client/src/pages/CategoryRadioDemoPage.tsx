@@ -141,6 +141,20 @@ export default function CategoryRadioDemoPage() {
   // 접근성 미적용 - 3단계 선택
   const handleBadLevel3Selection = (value: string) => {
     setBadSelected(value);
+    // 바텀 시트는 자동으로 닫지 않음
+  };
+
+  // 접근성 미적용 - 적용 버튼
+  const handleBadApply = () => {
+    setBadSheetOpen(false);
+  };
+
+  // 접근성 미적용 - 취소 버튼  
+  const handleBadCancel = () => {
+    setBadSelected("cosmetics/perfume"); // 기본값으로 복원
+    setBadLevel2Options([]);
+    setBadLevel3Options([]);
+    setBadSelectedLevel2("");
     setBadSheetOpen(false);
   };
 
@@ -164,6 +178,20 @@ export default function CategoryRadioDemoPage() {
   // 접근성 적용 - 3단계 선택
   const handleGoodLevel3Selection = (value: string) => {
     setGoodSelected(value);
+    // 바텀 시트는 자동으로 닫지 않음
+  };
+
+  // 접근성 적용 - 적용 버튼
+  const handleGoodApply = () => {
+    setGoodSheetOpen(false);
+  };
+
+  // 접근성 적용 - 취소 버튼
+  const handleGoodCancel = () => {
+    setGoodSelected("cosmetics/perfume"); // 기본값으로 복원
+    setGoodLevel2Options([]);
+    setGoodLevel3Options([]);
+    setGoodSelectedLevel2("");
     setGoodSheetOpen(false);
   };
 
@@ -510,16 +538,18 @@ export default function CategoryRadioDemoPage() {
           { step: "1단계", description: '"카테고리 선택" 버튼에 포커스 후 Enter 키로 바텀시트 열기' },
           { step: "2단계", description: "바텀시트가 열리면 화장품/향수가 기본 선택된 상태" },
           { step: "3단계", description: "2단계 카테고리 중 하나를 클릭하여 선택" },
-          { step: "4단계", description: "3단계 카테고리가 나타나면 원하는 항목 선택" }
+          { step: "4단계", description: "3단계 카테고리가 나타나면 원하는 항목 선택" },
+          { step: "5단계", description: '"적용" 버튼을 클릭하여 선택 완료' }
         ]}
         goodSteps={[
           { step: "1단계", description: '"카테고리 선택 (접근성 적용)" 버튼에 포커스 후 Enter 키로 바텀시트 열기' },
           { step: "2단계", description: "Tab 키로 2단계 카테고리 목록 탐색" },
           { step: "3단계", description: "스페이스바나 Enter로 2단계 카테고리 선택" },
-          { step: "4단계", description: "3단계 카테고리 목록에서 Tab으로 탐색 후 스페이스바로 선택" }
+          { step: "4단계", description: "3단계 카테고리 목록에서 Tab으로 탐색 후 스페이스바로 선택" },
+          { step: "5단계", description: 'Tab으로 "적용" 버튼에 포커스 후 Enter로 선택 완료' }
         ]}
-        badResult="라디오 버튼이 스크린리더에서 인식되지 않아 키보드로만 탐색 가능"
-        goodResult="모든 옵션이 스크린리더에서 읽히고 키보드로 완전히 조작 가능"
+        badResult="라디오 버튼이 스크린리더에서 인식되지 않아 키보드로만 탐색 가능하며, 적용/취소 버튼으로 명시적 완료"
+        goodResult="모든 옵션이 스크린리더에서 읽히고 키보드로 완전히 조작 가능하며, 적용/취소 버튼까지 접근 가능"
         additionalNotes={[
           "스크린리더 사용자: 각 단계별로 '2단계', '3단계' 라벨이 읽힘",
           "키보드 사용자: Tab으로 탐색, 스페이스바/Enter로 선택 가능",

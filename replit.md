@@ -106,6 +106,7 @@ This is a full-stack web application demonstrating web accessibility issues and 
 - June 22, 2025. Improved hierarchical display: 3rd level categories now appear directly under selected 2nd level
 - June 22, 2025. Implemented server-side data fetching simulation for dynamic 3rd level category loading
 - June 22, 2025. Added logic to hide other 2nd level categories when 3rd level is displayed
+- June 22, 2025. Removed auto-close on 3rd level selection and added Apply/Cancel buttons for explicit user control
 
 ## User Preferences
 
