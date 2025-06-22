@@ -107,6 +107,8 @@ This is a full-stack web application demonstrating web accessibility issues and 
 - June 22, 2025. Implemented server-side data fetching simulation for dynamic 3rd level category loading
 - June 22, 2025. Added logic to hide other 2nd level categories when 3rd level is displayed
 - June 22, 2025. Removed auto-close on 3rd level selection and added Apply/Cancel buttons for explicit user control
+- June 22, 2025. Removed category level titles and used visual indentation for hierarchy distinction
+- June 22, 2025. Added aria-current="true" to selected categories in accessibility-enabled version
 
 ## User Preferences
 

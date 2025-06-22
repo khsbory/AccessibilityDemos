@@ -299,7 +299,6 @@ export default function CategoryRadioDemoPage() {
                 {/* 2단계 */}
                 {badLevel2Options.length > 0 && (
                   <div>
-                    <h3 className="text-sm font-medium text-foreground mb-3">2단계 카테고리</h3>
                     <ul className="space-y-3">
                       {badLevel2Options.map((item) => {
                         const isSelected = badSelected === item.value;
@@ -455,7 +454,6 @@ export default function CategoryRadioDemoPage() {
                 {/* 2단계 */}
                 {goodLevel2Options.length > 0 && (
                   <div>
-                    <h3 className="text-sm font-medium text-foreground mb-3">2단계 카테고리</h3>
                     <ul className="space-y-3" aria-label="2단계">
                       {goodLevel2Options.map((item) => {
                         const isSelected = goodSelected === item.value;
@@ -484,6 +482,7 @@ export default function CategoryRadioDemoPage() {
                                   htmlFor={`good-level2-${item.value}`} 
                                   role="button"
                                   tabIndex={0}
+                                  aria-current={isSelected ? "true" : undefined}
                                   onKeyDown={(e) => {
                                     if (e.key === ' ' || e.key === 'Enter') {
                                       e.preventDefault();
@@ -519,6 +518,7 @@ export default function CategoryRadioDemoPage() {
                                             htmlFor={`good-level3-${subItem.value}`} 
                                             role="button"
                                             tabIndex={0}
+                                            aria-current={goodSelected === subItem.value ? "true" : undefined}
                                             onKeyDown={(e) => {
                                               if (e.key === ' ' || e.key === 'Enter') {
                                                 e.preventDefault();
