@@ -116,12 +116,14 @@ export default function Header() {
             <div key={demo.id} className="w-full">
               <Collapsible open={expandedDemo === demo.id} onOpenChange={() => toggleDemo(demo.id)}>
                 <CollapsibleTrigger asChild>
-                  <button className={`w-full flex items-center justify-between py-2 px-3 rounded-md text-left transition-colors focus:outline-none focus:ring-2 focus:ring-primary ${
-                    isParentActive(demo.id) 
-                      ? "text-primary bg-primary/10" 
-                      : "text-foreground hover:text-primary hover:bg-muted"
-                  }`}
-                  aria-current={isParentActive(demo.id) ? "page" : undefined}
+                  <button 
+                    ref={(el) => buttonRefs.current[demo.id] = el}
+                    className={`w-full flex items-center justify-between py-2 px-3 rounded-md text-left transition-colors focus:outline-none focus:ring-2 focus:ring-primary ${
+                      isParentActive(demo.id) 
+                        ? "text-primary bg-primary/10" 
+                        : "text-foreground hover:text-primary hover:bg-muted"
+                    }`}
+                    aria-current={isParentActive(demo.id) ? "page" : undefined}
                   >
                     <div className="flex items-center">
                       <demo.icon className="h-4 w-4 mr-2" aria-hidden="true" />
