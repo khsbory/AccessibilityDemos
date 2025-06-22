@@ -434,6 +434,7 @@ export default function CategoryRadioDemoPage() {
                       htmlFor="good-level1-cosmetics-perfume"
                       role="button"
                       tabIndex={0}
+                      aria-current={goodSelected === "cosmetics/perfume" ? "true" : undefined}
                       onKeyDown={(e) => {
                         if (e.key === ' ' || e.key === 'Enter') {
                           e.preventDefault();
