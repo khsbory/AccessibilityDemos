@@ -51,12 +51,10 @@ export default function Header() {
     const wasExpanded = expandedDemo === demoId;
     setExpandedDemo(wasExpanded ? "" : demoId);
     
-    // 메뉴를 닫을 때 해당 버튼으로 초점 복원
-    if (wasExpanded) {
-      setTimeout(() => {
-        buttonRefs.current[demoId]?.focus();
-      }, 100);
-    }
+    // 확장/축소 모든 경우에 해당 버튼으로 초점 복원
+    setTimeout(() => {
+      buttonRefs.current[demoId]?.focus();
+    }, 100);
   };
 
   // 다른 곳 클릭시 메뉴 닫기 및 키보드 이벤트 처리
