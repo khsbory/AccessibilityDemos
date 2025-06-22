@@ -99,10 +99,14 @@ export default function Header() {
       // 모바일에서는 기존 방식 유지
       return (
         <nav className="flex flex-col space-y-2" role="navigation" aria-label="주요 메뉴">
-          <Link href="/" onClick={onItemClick} className="w-full text-decoration-none">
+          <Link 
+            href="/" 
+            onClick={onItemClick} 
+            className="w-full text-decoration-none"
+            aria-current={isActive("/") ? "page" : undefined}
+          >
             <span 
               className={`block w-full py-2 px-3 rounded-md text-left ${isActive("/") ? "text-primary bg-primary/10" : "text-foreground hover:text-primary hover:bg-muted"} transition-colors cursor-pointer`}
-              aria-current={isActive("/") ? "page" : undefined}
             >
               소개
             </span>
@@ -162,10 +166,13 @@ export default function Header() {
     // 데스크톱에서는 새로운 확장 방식
     return (
       <nav className="hidden md:flex items-center space-x-6" role="navigation" aria-label="주요 메뉴">
-        <Link href="/" className="text-decoration-none">
+        <Link 
+          href="/" 
+          className="text-decoration-none"
+          aria-current={isActive("/") ? "page" : undefined}
+        >
           <span 
             className={`py-2 px-3 rounded-md ${isActive("/") ? "text-primary bg-primary/10" : "text-foreground hover:text-primary hover:bg-muted"} transition-colors cursor-pointer`}
-            aria-current={isActive("/") ? "page" : undefined}
           >
             소개
           </span>
