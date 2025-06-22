@@ -269,7 +269,31 @@ export default function Header() {
           e.preventDefault();
           const mainContent = document.getElementById('main-content');
           if (mainContent) {
-            mainContent.focus();
+            // 1. 먼저 클릭 가능한 요소 찾기
+            const focusableElement = mainContent.querySelector(
+              'a, button, input, textarea, select, [tabindex]:not([tabindex="-1"])'
+            );
+            
+            if (focusableElement) {
+              focusableElement.focus();
+            } else {
+              // 2. 클릭 가능한 요소가 없으면 첫 번째 텍스트 요소 찾기
+              const textElement = mainContent.querySelector(
+                'h1, h2, h3, h4, h5, h6, p, span, div'
+              );
+              
+              if (textElement) {
+                // 3. 동적으로 tabindex="-1" 추가하고 포커스
+                textElement.setAttribute('tabindex', '-1');
+                textElement.focus();
+                
+                // 4. 포커스 후 tabindex 제거
+                textElement.addEventListener('blur', () => {
+                  textElement.removeAttribute('tabindex');
+                }, { once: true });
+              }
+            }
+            
             mainContent.scrollIntoView({ behavior: 'smooth' });
           }
         }}

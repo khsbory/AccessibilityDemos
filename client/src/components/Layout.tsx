@@ -10,7 +10,6 @@ export default function Layout({ children }: LayoutProps) {
       <Header />
       <main 
         id="main-content" 
-        tabIndex={-1}
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 focus:outline-none"
       >
         {children}
