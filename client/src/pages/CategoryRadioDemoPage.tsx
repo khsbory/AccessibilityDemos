@@ -231,10 +231,10 @@ export default function CategoryRadioDemoPage() {
   };
 
   const problemList = [
-    "라디오 버튼이 화면에 보이지만 스크린리더에서 접근 불가",
-    "레이블 클릭 시 키보드 포커스 관리 부재",
-    "계층적 구조에 대한 적절한 의미 전달 부족",
-    "카테고리 그룹화에 대한 명확한 구조 정보 부재"
+    "라디오 버튼 자동 선택으로 인한 2단계 카테고리 연속 탐색 불가",
+    "DOM 갱신으로 포커스 위치 리셋되어 키보드 사용자 혼란",
+    "키보드 포커스가 시각적으로 보이지 않아 현재 위치 파악 어려움",
+    "화살표 키로 이동할 때마다 즉시 선택되어 다른 옵션 탐색 불가능"
   ];
 
   const getSelectedLabel = (selected: string) => {
@@ -263,13 +263,13 @@ export default function CategoryRadioDemoPage() {
       description="계층형 카테고리에서 라디오 버튼의 접근성 구현 방법을 확인해보세요."
     >
       <ProblemIntroSection 
-        description="계층형 카테고리에서 라디오 버튼을 구현할 때, 적절한 접근성 속성과 키보드 탐색이 없으면 스크린리더 사용자가 구조를 이해하고 탐색하기 어려운 문제가 발생합니다."
+        description="계층형 카테고리에서 라디오 버튼이 자동 선택되면서 DOM이 갱신될 때, 키보드 사용자가 2단계 카테고리를 연속적으로 탐색할 수 없고 포커스 위치를 파악하기 어려운 문제가 발생합니다."
         problemList={problemList}
       />
 
       <ExampleSection 
         type="bad"
-        problemText="라디오 버튼이 화면에 표시되지만 스크린리더에서 인식되지 않고, 계층 구조에 대한 정보가 부족합니다."
+        problemText="화살표 키로 라디오 버튼 이동 시 자동 선택되면서 DOM이 갱신되어 2단계 카테고리를 연속적으로 탐색할 수 없고, 키보드 포커스가 시각적으로 보이지 않습니다."
       >
         <div className="space-y-4">
           <div>
@@ -367,7 +367,24 @@ export default function CategoryRadioDemoPage() {
                                             id={`bad-level3-${subItem.value}`}
                                             checked={badSelected === subItem.value}
                                             onChange={() => handleBadLevel3Selection(subItem.value)}
-                                            className="sr-only"
+                                            onKeyDown={(e) => {
+                                              if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                                                e.preventDefault();
+                                                // 화살표 키는 탐색만, 선택하지 않음
+                                                const currentIndex = badLevel3Options.findIndex(opt => opt.value === subItem.value);
+                                                const nextIndex = e.key === 'ArrowDown' 
+                                                  ? (currentIndex + 1) % badLevel3Options.length
+                                                  : (currentIndex - 1 + badLevel3Options.length) % badLevel3Options.length;
+                                                const nextElement = document.getElementById(`bad-level3-${badLevel3Options[nextIndex].value}`);
+                                                nextElement?.focus();
+                                              }
+                                              // 스페이스바로만 선택
+                                              else if (e.key === ' ') {
+                                                e.preventDefault();
+                                                handleBadLevel3Selection(subItem.value);
+                                              }
+                                            }}
+                                            className="w-4 h-4 text-primary border-2 border-primary focus:ring-2 focus:ring-primary focus:ring-offset-2"
                                           />
                                           <label 
                                             htmlFor={`bad-level3-${subItem.value}`} 
@@ -415,7 +432,7 @@ export default function CategoryRadioDemoPage() {
 
       <ExampleSection 
         type="good"
-        solutionText="라디오 버튼을 숨기고 레이블에 button 역할과 키보드 접근성을 적용하여 스크린리더와 키보드 사용자 모두가 접근할 수 있습니다."
+        solutionText="스페이스바로만 선택되도록 하여 화살표 키로 자유로운 탐색이 가능하고, 포커스 스타일링으로 현재 위치를 명확히 표시합니다."
       >
         <div className="space-y-4">
           <div>
@@ -589,10 +606,11 @@ export default function CategoryRadioDemoPage() {
       <TestGuideSection
         badSteps={[
           { step: "1단계", description: '"카테고리 선택" 버튼에 포커스 후 Enter 키로 바텀시트 열기' },
-          { step: "2단계", description: "바텀시트가 열리면 화장품/향수가 기본 선택된 상태" },
-          { step: "3단계", description: "2단계 카테고리 중 하나를 클릭하여 선택" },
-          { step: "4단계", description: "3단계 카테고리가 나타나면 원하는 항목 선택" },
-          { step: "5단계", description: '"적용" 버튼을 클릭하여 선택 완료' }
+          { step: "2단계", description: "Tab 키로 2단계 라디오 버튼에 포커스" },
+          { step: "3단계", description: "↓ ↑ 화살표 키로 2단계 카테고리 탐색 (자동 선택되지 않음)" },
+          { step: "4단계", description: "스페이스바로 원하는 2단계 카테고리 선택" },
+          { step: "5단계", description: "3단계 카테고리에서 화살표 키로 탐색 후 스페이스바로 선택" },
+          { step: "6단계", description: '"적용" 버튼을 클릭하여 선택 완료' }
         ]}
         goodSteps={[
           { step: "1단계", description: '"카테고리 선택 (접근성 적용)" 버튼에 포커스 후 Enter 키로 바텀시트 열기' },
@@ -601,66 +619,69 @@ export default function CategoryRadioDemoPage() {
           { step: "4단계", description: "3단계 카테고리 목록에서 Tab으로 탐색 후 스페이스바로 선택" },
           { step: "5단계", description: 'Tab으로 "적용" 버튼에 포커스 후 Enter로 선택 완료' }
         ]}
-        badResult="라디오 버튼이 스크린리더에서 인식되지 않아 키보드로만 탐색 가능하며, 적용/취소 버튼으로 명시적 완료"
+        badResult="화살표 키로 탐색은 가능하지만 여전히 스페이스바로만 선택되어 연속 탐색 제한, 포커스는 시각적으로 확인 가능"
         goodResult="모든 옵션이 스크린리더에서 읽히고 키보드로 완전히 조작 가능하며, 적용/취소 버튼까지 접근 가능"
         additionalNotes={[
-          "스크린리더 사용자: 각 단계별로 '2단계', '3단계' 라벨이 읽힘",
-          "키보드 사용자: Tab으로 탐색, 스페이스바/Enter로 선택 가능",
-          "계층 구조가 명확하게 전달됨"
+          "접근성 미적용: 화살표 키 탐색은 가능하지만 DOM 갱신으로 인한 제약 존재",
+          "접근성 적용: 스크린리더에서 각 단계별 '2단계', '3단계' 라벨 읽힘",
+          "키보드 사용자: 스페이스바로만 선택하여 연속 탐색 가능",
+          "포커스 스타일링으로 현재 위치 시각적 확인 가능"
         ]}
       />
 
       <CodeExampleSection
         badExample={{
           title: "접근성 미적용 코드",
-          code: `// 라디오 버튼이 sr-only로 숨겨져 있어 스크린리더에서 접근 불가
+          code: `// 기본 라디오 버튼 동작으로 화살표 키 이동 시 자동 선택
 <input
   type="radio"
-  className="sr-only"
   onChange={handleSelection}
+  className="sr-only" // 포커스 스타일 없음
 />
 <label className="cursor-pointer">
   카테고리명
 </label>
 
-// UL에 의미 정보 없음
-<ul className="space-y-3">
-  <li>카테고리 항목</li>
-</ul>`
+// 자동 선택으로 DOM 갱신되어 연속 탐색 불가
+const handleSelection = (value) => {
+  setSelected(value); // 즉시 상태 변경
+  loadNextLevel(value); // DOM 갱신
+};`
         }}
         goodExample={{
           title: "접근성 적용 코드",
-          code: `// 라디오 버튼을 완전히 숨기고 레이블에 button 역할 부여
+          code: `// 화살표 키는 탐색만, 스페이스바로만 선택
 <input
   type="radio"
-  className="hidden"
-  onChange={handleSelection}
+  onKeyDown={(e) => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      // 화살표 키로 포커스만 이동
+      moveToNextOption(e.key);
+    } else if (e.key === ' ') {
+      e.preventDefault();
+      handleSelection(value); // 스페이스바로만 선택
+    }
+  }}
+  className="focus:ring-2 focus:ring-primary" // 포커스 스타일
 />
+
+// 레이블에 button 역할과 키보드 접근성
 <label 
   role="button"
   tabIndex={0}
-  onKeyDown={(e) => {
-    if (e.key === ' ' || e.key === 'Enter') {
-      e.preventDefault();
-      handleSelection(value);
-    }
-  }}
+  aria-current={isSelected ? "true" : undefined}
   className="focus:ring-2 focus:ring-primary"
 >
   카테고리명
-</label>
-
-// UL에 aria-label로 단계 정보 제공
-<ul aria-label="2단계">
-  <li>카테고리 항목</li>
-</ul>`
+</label>`
         }}
         guidelines={[
-          "라디오 버튼을 hidden으로 숨기고 레이블에 role='button' 적용",
-          "tabIndex={0}으로 키보드 포커스 가능하게 설정",
-          "onKeyDown으로 스페이스바/Enter 키 이벤트 처리",
-          "UL 태그에 aria-label로 계층 정보 제공",
-          "포커스 스타일링으로 현재 위치 명확히 표시"
+          "화살표 키는 탐색용으로만 사용, 스페이스바로만 선택 가능하게 구현",
+          "라디오 버튼에 포커스 스타일 적용하여 현재 위치 시각적 표시",
+          "DOM 갱신을 최소화하여 연속적인 키보드 탐색 가능하게 구현",
+          "aria-current로 현재 선택된 항목 명확히 표시",
+          "UL 태그에 aria-label로 계층 구조 정보 제공"
         ]}
       />
     </DemoPageLayout>
