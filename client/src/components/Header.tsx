@@ -33,7 +33,7 @@ export default function Header() {
       title: '모바일 데모',
       icon: Smartphone,
       items: [
-        { title: '캐러셀에 버튼 추가', href: '/demos/payment-carousel' }
+        { title: '모바일 캐러셀 접근성', href: '/demos/payment-carousel' }
       ]
     },
     {

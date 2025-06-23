@@ -61,11 +61,11 @@ export default function PaymentCarouselDemoPage() {
 
   return (
     <DemoPageLayout 
-      title="캐러셀에 버튼 추가"
-      description="모바일 환경에서 캐러셀 내비게이션 버튼의 디자인과 접근성을 고려한 구현 방법을 비교해보세요."
+      title="모바일 캐러셀 접근성"
+      description="모바일에서는 스와이프가 가장 자연스러운 상호작용입니다. 기본적으로 스와이프만 제공하되, 키보드나 스크린 리더 사용자를 위해 접근성 버튼을 추가하는 방법을 비교해보세요."
     >
       <ProblemIntroSection 
-        description="모바일에서 캐러셀을 사용할 때 이전/다음 버튼의 배치와 접근성 처리가 중요합니다. 스와이프 기능은 일반 사용자에게 직관적이지만, 접근성이 필요한 사용자를 위한 대체 수단도 제공해야 합니다."
+        description="모바일 캐러셀에서 스와이프는 직관적이고 효과적인 상호작용 방식입니다. 하지만 모든 사용자가 스와이프를 사용할 수 있는 것은 아닙니다. 접근성을 고려한 대안적 조작 방법이 필요한 이유를 알아보세요."
         problemList={problemList}
       />
 
