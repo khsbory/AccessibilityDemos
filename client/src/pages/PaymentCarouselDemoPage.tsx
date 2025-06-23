@@ -28,23 +28,32 @@ export default function PaymentCarouselDemoPage() {
   const prevButtonRef = useRef<HTMLButtonElement>(null);
   const nextButtonRef = useRef<HTMLButtonElement>(null);
 
-  // 포커스 관리: 버튼이 사라질 때 반대쪽 버튼으로 포커스 이동
-  useEffect(() => {
-    const handleFocusManagement = () => {
-      // 첫 번째 카드에서 이전 버튼이 사라지면 다음 버튼에 포커스
-      if (selectedGoodCard === 0 && nextButtonRef.current && document.activeElement === prevButtonRef.current) {
-        nextButtonRef.current.focus();
-      }
-      // 마지막 카드에서 다음 버튼이 사라지면 이전 버튼에 포커스
-      if (selectedGoodCard === paymentCards.length - 1 && prevButtonRef.current && document.activeElement === nextButtonRef.current) {
-        prevButtonRef.current.focus();
-      }
-    };
+  // 포커스 관리 함수들
+  const handlePrevClick = () => {
+    setAriaLive("polite");
+    goodSwiperRef.current?.slidePrev();
+    setTimeout(() => setAriaLive("off"), 1000);
+    
+    // 첫 번째 카드로 이동하면 이전 버튼이 사라지므로 다음 버튼에 포커스
+    if (selectedGoodCard === 1 && nextButtonRef.current) {
+      setTimeout(() => {
+        nextButtonRef.current?.focus();
+      }, 100);
+    }
+  };
 
-    // 약간의 지연을 두어 렌더링 완료 후 포커스 이동
-    const timer = setTimeout(handleFocusManagement, 50);
-    return () => clearTimeout(timer);
-  }, [selectedGoodCard]);
+  const handleNextClick = () => {
+    setAriaLive("polite");
+    goodSwiperRef.current?.slideNext();
+    setTimeout(() => setAriaLive("off"), 1000);
+    
+    // 마지막 카드로 이동하면 다음 버튼이 사라지므로 이전 버튼에 포커스
+    if (selectedGoodCard === paymentCards.length - 2 && prevButtonRef.current) {
+      setTimeout(() => {
+        prevButtonRef.current?.focus();
+      }, 100);
+    }
+  };
 
   const paymentCards = [
     { id: 1, name: "신한카드", number: "**** **** **** 1234", type: "VISA" },
@@ -163,11 +172,7 @@ export default function PaymentCarouselDemoPage() {
             {selectedGoodCard > 0 && (
               <button
                 ref={prevButtonRef}
-                onClick={() => {
-                  setAriaLive("polite");
-                  goodSwiperRef.current?.slidePrev();
-                  setTimeout(() => setAriaLive("off"), 1000);
-                }}
+                onClick={handlePrevClick}
                 className="absolute left-1 top-1/2 -translate-y-1/2 z-10 bg-black/20 hover:bg-black/40 text-white p-1.5 rounded-full transition-all duration-200 opacity-60 hover:opacity-100"
                 aria-label="이전 결제 수단"
               >
@@ -177,11 +182,7 @@ export default function PaymentCarouselDemoPage() {
             {selectedGoodCard < paymentCards.length - 1 && (
               <button
                 ref={nextButtonRef}
-                onClick={() => {
-                  setAriaLive("polite");
-                  goodSwiperRef.current?.slideNext();
-                  setTimeout(() => setAriaLive("off"), 1000);
-                }}
+                onClick={handleNextClick}
                 className="absolute right-1 top-1/2 -translate-y-1/2 z-10 bg-black/20 hover:bg-black/40 text-white p-1.5 rounded-full transition-all duration-200 opacity-60 hover:opacity-100"
                 aria-label="다음 결제 수단"
               >
@@ -287,22 +288,28 @@ export default function PaymentCarouselDemoPage() {
   </button>
 )}
 
-// 포커스 관리: 버튼이 사라질 때 반대쪽 버튼으로 포커스 이동
-useEffect(() => {
-  const handleFocusManagement = () => {
-    if (selectedIndex === 0 && nextButtonRef.current && 
-        document.activeElement === prevButtonRef.current) {
-      nextButtonRef.current.focus();
-    }
-    if (selectedIndex === cards.length - 1 && prevButtonRef.current && 
-        document.activeElement === nextButtonRef.current) {
-      prevButtonRef.current.focus();
-    }
-  };
+// 포커스 관리를 포함한 클릭 핸들러
+const handlePrevClick = () => {
+  setAriaLive("polite");
+  swiperRef.current?.slidePrev();
+  setTimeout(() => setAriaLive("off"), 1000);
   
-  const timer = setTimeout(handleFocusManagement, 50);
-  return () => clearTimeout(timer);
-}, [selectedIndex]);
+  // 첫 번째 카드로 이동하면 이전 버튼이 사라지므로 다음 버튼에 포커스
+  if (selectedIndex === 1 && nextButtonRef.current) {
+    setTimeout(() => nextButtonRef.current?.focus(), 100);
+  }
+};
+
+const handleNextClick = () => {
+  setAriaLive("polite");
+  swiperRef.current?.slideNext();
+  setTimeout(() => setAriaLive("off"), 1000);
+  
+  // 마지막 카드로 이동하면 다음 버튼이 사라지므로 이전 버튼에 포커스
+  if (selectedIndex === cards.length - 2 && prevButtonRef.current) {
+    setTimeout(() => prevButtonRef.current?.focus(), 100);
+  }
+};
 
 {/* 장점: 조건부 버튼으로 논리적 탐색 + 포커스 관리 */}
 {/* 스와이프: 일반 사용자, 조건부 버튼: 접근성 사용자 */}`
