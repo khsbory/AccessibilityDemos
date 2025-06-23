@@ -32,10 +32,10 @@ export default function PaymentCarouselDemoPage() {
   ];
 
   const problemList = [
-    "모바일 환경에서 스와이프가 주요 상호작용임에도 불필요한 버튼 추가",
-    "터치 기반 환경에서 버튼은 UI를 복잡하게 만들고 혼란 야기",
-    "접근성이 필요하지 않은 상황에서도 버튼을 기본으로 제공",
-    "비활성 슬라이드에서 포커스 가능한 요소들이 접근 가능"
+    "스와이프만으로는 키보드 사용자가 캐러셀을 조작할 수 없음",
+    "스크린 리더 사용자에게 캐러셀 변경 사항이 전달되지 않음",
+    "손목이나 손가락에 제약이 있는 사용자가 스와이프하기 어려움",
+    "접근성 도구 없이는 캐러셀이 단순한 정적 콘텐츠로만 인식됨"
   ];
 
   const PaymentCard = ({ card, isActive, isInert = false }: { card: typeof paymentCards[0], isActive: boolean, isInert?: boolean }) => {
@@ -71,7 +71,7 @@ export default function PaymentCarouselDemoPage() {
 
       <ExampleSection 
         type="bad" 
-        problemText="모바일에서 불필요한 버튼이 추가되어 화면 공간을 차지하고 UI를 복잡하게 만듭니다. 스와이프가 주요 상호작용인 환경에서 버튼은 혼란을 야기할 수 있습니다."
+        problemText="모바일에서는 스와이프가 직관적이고 자연스러운 상호작용 방식입니다. 버튼이 없어도 사용에 문제가 없지만, 접근성이 필요한 사용자를 위한 대안이 제공되지 않습니다."
       >
         <div className="bg-gray-50 p-4 rounded-lg">
           <h4 className="text-lg font-semibold mb-4">결제 수단 선택</h4>
@@ -106,7 +106,7 @@ export default function PaymentCarouselDemoPage() {
 
       <ExampleSection 
         type="good" 
-        solutionText="미니멀한 버튼으로 시각적 방해를 최소화하고, inert 속성으로 비활성 슬라이드의 접근성을 제한하여 사용자 경험을 개선합니다."
+        solutionText="기본 스와이프 기능은 유지하면서, 접근성이 필요한 사용자를 위해 미니멀한 버튼을 추가합니다. aria-live 속성과 inert로 적절한 접근성을 제공합니다."
       >
         <div className="bg-gray-50 p-4 rounded-lg">
           <h4 className="text-lg font-semibold mb-4">결제 수단 선택</h4>
@@ -172,26 +172,26 @@ export default function PaymentCarouselDemoPage() {
       <TestGuideSection
         badSteps={[
           { step: "1", description: "캐러셀을 스와이프하여 카드를 변경해보세요" },
-          { step: "2", description: "모바일 환경에서 스와이프만으로 충분한지 확인하세요" },
-          { step: "3", description: "버튼이 없어도 사용에 문제가 없는지 확인하세요" }
+          { step: "2", description: "Tab 키로 키보드 탐색을 시도해보세요" },
+          { step: "3", description: "스크린 리더로 캐러셀 변경을 확인해보세요" }
         ]}
         goodSteps={[
-          { step: "1", description: "Tab 키를 눌러 결제 카드로 포커스 이동해보세요" },
-          { step: "2", description: "활성 카드(흰색 테두리)만 포커스되는지 확인하세요" },
-          { step: "3", description: "비활성 카드들이 반투명하고 접근 불가한지 확인하세요" }
+          { step: "1", description: "캐러셀을 스와이프하여 카드를 변경해보세요" },
+          { step: "2", description: "미니멀한 이전/다음 버튼을 클릭해보세요" },
+          { step: "3", description: "Tab 키로 활성 카드만 접근되는지 확인하세요" }
         ]}
-        badResult="모바일에서는 스와이프만으로 충분하며, 불필요한 버튼이 없어 깔끔합니다. 하지만 접근성이 필요한 사용자는 제외됩니다."
-        goodResult="활성 카드만 Tab으로 접근 가능하고, 미니멀한 버튼으로 깔끔한 디자인을 유지합니다."
+        badResult="스와이프는 완벽하게 작동하지만, 키보드나 스크린 리더 사용자는 캐러셀을 조작할 방법이 없습니다."
+        goodResult="스와이프와 버튼 모두 사용 가능하며, 접근성 도구로도 원활하게 조작할 수 있습니다."
         additionalNotes={[
-          "모바일 우선: 스와이프가 직관적이고 자연스러운 상호작용",
-          "버튼 추가는 접근성이 필요한 경우에만 선택적으로 제공",
-          "깔끔한 UI를 위해 기본적으로는 버튼 없는 디자인 권장"
+          "모바일에서 스와이프는 가장 직관적인 상호작용 방식",
+          "접근성 버튼은 필수가 아닌 '추가 지원'의 개념",
+          "두 방식이 서로 간섭하지 않도록 설계하는 것이 핵심"
         ]}
       />
 
       <CodeExampleSection
         badExample={{
-          title: "접근성 미적용",
+          title: "스와이프 전용",
           code: `<Swiper
   spaceBetween={16}
   slidesPerView={1.2}
@@ -204,10 +204,11 @@ export default function PaymentCarouselDemoPage() {
   ))}
 </Swiper>
 
-{/* 버튼 없음 - 스와이프만 사용 */}`
+{/* 장점: 깔끔한 UI, 직관적 스와이프 */}
+{/* 단점: 접근성 도구 지원 부족 */}`
         }}
         goodExample={{
-          title: "접근성 적용",
+          title: "스와이프 + 접근성 버튼",
           code: `<Swiper
   modules={[Navigation]}
   spaceBetween={16}
@@ -226,7 +227,7 @@ export default function PaymentCarouselDemoPage() {
   ))}
 </Swiper>
 
-{/* 미니멀한 버튼들 */}
+{/* 접근성을 위한 미니멀 버튼 */}
 <button 
   onClick={() => {
     setAriaLive("polite");
@@ -236,14 +237,17 @@ export default function PaymentCarouselDemoPage() {
   className="absolute left-1 top-1/2 bg-black/20 p-1.5 rounded-full opacity-60"
 >
   <ChevronLeft className="w-3 h-3" />
-</button>`
+</button>
+
+{/* 장점: 모든 사용자 지원 */}
+{/* 스와이프: 직관적, 버튼: 접근성 */}`
         }}
         guidelines={[
-          "모바일 기본: 버튼 없이 스와이프만 제공",
-          "접근성 필요시: 미니멀한 버튼 추가",
-          "aria-live='off' 기본값, 버튼 클릭 시 'polite'로 변경",
-          "Swiper의 기본 접근성 모드 비활성화 (a11y={false})",
-          "inert 속성으로 비활성 슬라이드의 키보드 접근 제한"
+          "1단계: 스와이프 기능으로 기본 사용성 확보",
+          "2단계: 접근성이 필요한 사용자를 위한 미니멀 버튼 추가",
+          "aria-live 동적 제어로 필요할 때만 음성 안내",
+          "inert로 비활성 슬라이드 접근 제한하여 혼란 방지",
+          "모바일 우선 + 포용적 디자인의 균형점 찾기"
         ]}
       />
     </DemoPageLayout>
