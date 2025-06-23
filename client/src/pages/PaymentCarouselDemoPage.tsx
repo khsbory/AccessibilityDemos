@@ -31,9 +31,9 @@ export default function PaymentCarouselDemoPage() {
   ];
 
   const problemList = [
-    "모바일에서 이전/다음 버튼이 화면 공간을 과도하게 차지",
-    "버튼이 콘텐츠와 겹쳐서 시각적으로 부자연스러움",
-    "터치 기반 환경에서 불필요한 UI 요소로 인한 혼란",
+    "모바일 환경에서 스와이프가 주요 상호작용임에도 불필요한 버튼 추가",
+    "터치 기반 환경에서 버튼은 UI를 복잡하게 만들고 혼란 야기",
+    "접근성이 필요하지 않은 상황에서도 버튼을 기본으로 제공",
     "비활성 슬라이드에서 포커스 가능한 요소들이 접근 가능"
   ];
 
@@ -70,7 +70,7 @@ export default function PaymentCarouselDemoPage() {
 
       <ExampleSection 
         type="bad" 
-        problemText="큰 버튼이 화면 공간을 차지하고 콘텐츠와 겹쳐서 사용성을 해칩니다. 또한 비활성 슬라이드의 요소들에도 접근할 수 있어 혼란을 야기합니다."
+        problemText="모바일에서 불필요한 버튼이 추가되어 화면 공간을 차지하고 UI를 복잡하게 만듭니다. 스와이프가 주요 상호작용인 환경에서 버튼은 혼란을 야기할 수 있습니다."
       >
         <div className="bg-gray-50 p-4 rounded-lg">
           <h4 className="text-lg font-semibold mb-4">결제 수단 선택</h4>
@@ -92,21 +92,7 @@ export default function PaymentCarouselDemoPage() {
               ))}
             </Swiper>
             
-            {/* 큰 버튼들이 콘텐츠 위에 겹침 */}
-            <button
-              onClick={() => badSwiperRef.current?.slidePrev()}
-              className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-black/60 text-white p-3 rounded-full hover:bg-black/80 transition-colors"
-              aria-label="이전 카드"
-            >
-              <ChevronLeft className="w-6 h-6" />
-            </button>
-            <button
-              onClick={() => badSwiperRef.current?.slideNext()}
-              className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-black/60 text-white p-3 rounded-full hover:bg-black/80 transition-colors"
-              aria-label="다음 카드"
-            >
-              <ChevronRight className="w-6 h-6" />
-            </button>
+
           </div>
           
           <div className="mt-4 text-center">
@@ -174,21 +160,21 @@ export default function PaymentCarouselDemoPage() {
 
       <TestGuideSection
         badSteps={[
-          { step: "1", description: "Tab 키를 눌러 각 결제 카드로 포커스 이동해보세요" },
-          { step: "2", description: "모든 카드(활성/비활성)에 접근 가능한지 확인하세요" },
-          { step: "3", description: "큰 버튼들이 카드 내용과 겹치는지 확인하세요" }
+          { step: "1", description: "캐러셀을 스와이프하여 카드를 변경해보세요" },
+          { step: "2", description: "모바일 환경에서 스와이프만으로 충분한지 확인하세요" },
+          { step: "3", description: "버튼이 없어도 사용에 문제가 없는지 확인하세요" }
         ]}
         goodSteps={[
           { step: "1", description: "Tab 키를 눌러 결제 카드로 포커스 이동해보세요" },
           { step: "2", description: "활성 카드(흰색 테두리)만 포커스되는지 확인하세요" },
           { step: "3", description: "비활성 카드들이 반투명하고 접근 불가한지 확인하세요" }
         ]}
-        badResult="모든 카드에 Tab으로 접근할 수 있어 키보드 사용자가 혼란스러울 수 있고, 큰 버튼이 시각적으로 방해됩니다."
+        badResult="모바일에서는 스와이프만으로 충분하며, 불필요한 버튼이 없어 깔끔합니다. 하지만 접근성이 필요한 사용자는 제외됩니다."
         goodResult="활성 카드만 Tab으로 접근 가능하고, 미니멀한 버튼으로 깔끔한 디자인을 유지합니다."
         additionalNotes={[
-          "모바일에서는 스와이프가 주요 상호작용 방식입니다",
-          "버튼은 접근성을 위한 보조 수단으로 제공되어야 합니다",
-          "inert 속성으로 비활성 콘텐츠의 접근을 제한할 수 있습니다"
+          "모바일 우선: 스와이프가 직관적이고 자연스러운 상호작용",
+          "버튼 추가는 접근성이 필요한 경우에만 선택적으로 제공",
+          "깔끔한 UI를 위해 기본적으로는 버튼 없는 디자인 권장"
         ]}
       />
 
@@ -207,10 +193,7 @@ export default function PaymentCarouselDemoPage() {
   ))}
 </Swiper>
 
-{/* 큰 버튼들이 콘텐츠 위에 겹침 */}
-<button className="absolute left-2 top-1/2 bg-black/60 p-3 rounded-full">
-  <ChevronLeft className="w-6 h-6" />
-</button>`
+{/* 버튼 없음 - 스와이프만 사용 */}`
         }}
         goodExample={{
           title: "접근성 적용",
@@ -236,11 +219,11 @@ export default function PaymentCarouselDemoPage() {
 </button>`
         }}
         guidelines={[
+          "모바일 기본: 버튼 없이 스와이프만 제공",
+          "접근성 필요시: 미니멀한 버튼 추가",
           "Swiper의 기본 접근성 모드 비활성화 (a11y={false})",
           "inert 속성으로 비활성 슬라이드의 키보드 접근 제한",
-          "카드는 단순 정보 표시용으로 role 없이 구현",
-          "미니멀한 버튼 디자인으로 시각적 방해 최소화",
-          "적절한 aria-label로 버튼과 카드의 목적 명시"
+          "카드는 단순 정보 표시용으로 role 없이 구현"
         ]}
       />
     </DemoPageLayout>
