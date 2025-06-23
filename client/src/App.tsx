@@ -7,6 +7,7 @@ import Layout from "@/components/Layout";
 import HomePage from "@/pages/HomePage";
 import RadioDemoPage from "@/pages/RadioDemoPage";
 import CategoryRadioDemoPage from "@/pages/CategoryRadioDemoPage";
+import PaymentCarouselDemoPage from "@/pages/PaymentCarouselDemoPage";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -16,6 +17,7 @@ function Router() {
         <Route path="/" component={HomePage} />
         <Route path="/demos/radio-auto-select" component={RadioDemoPage} />
         <Route path="/demos/category-radio" component={CategoryRadioDemoPage} />
+        <Route path="/demos/payment-carousel" component={PaymentCarouselDemoPage} />
         <Route component={NotFound} />
       </Switch>
     </Layout>

@@ -32,7 +32,9 @@ export default function Header() {
       id: 'mobile',
       title: '모바일 데모',
       icon: Smartphone,
-      items: []
+      items: [
+        { title: '캐러셀에 버튼 추가', href: '/demos/payment-carousel' }
+      ]
     },
     {
       id: 'pc',
