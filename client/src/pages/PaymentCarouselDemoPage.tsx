@@ -174,14 +174,14 @@ export default function PaymentCarouselDemoPage() {
 
       <TestGuideSection
         badSteps={[
-          { step: "1", description: "캐러셀을 스와이프하여 카드를 변경해보세요" },
-          { step: "2", description: "스크린 리더로 슬라이드 변경을 시도해보세요" },
+          { step: "1", description: "보이스오버(iOS) 또는 톡백(Android)을 켜고 한 손가락 스와이프로 탐색해보세요" },
+          { step: "2", description: "캐러셀에서 다른 카드로 이동할 방법을 시도해보세요" },
           { step: "3", description: "가려진 카드의 내용이 읽히는지 확인해보세요" }
         ]}
         goodSteps={[
-          { step: "1", description: "캐러셀을 스와이프하여 카드를 변경해보세요" },
-          { step: "2", description: "미니멀한 이전/다음 버튼을 클릭해보세요" },
-          { step: "3", description: "스크린 리더로 변경사항이 안내되는지 확인하세요" }
+          { step: "1", description: "보이스오버(iOS) 또는 톡백(Android)을 켜고 한 손가락 스와이프로 탐색해보세요" },
+          { step: "2", description: "미니멀한 이전/다음 버튼을 통해 카드를 변경해보세요" },
+          { step: "3", description: "카드 변경 시 변경사항이 스크린 리더로 안내되는지 확인하세요" }
         ]}
         badResult="스와이프는 잘 작동하지만, 스크린 리더나 손이 불편한 사용자는 슬라이드를 조작할 수 없고 가려진 내용까지 접근됩니다."
         goodResult="모든 사용자가 캐러셀을 조작할 수 있고, 현재 보이는 카드에만 접근하도록 제한됩니다."
