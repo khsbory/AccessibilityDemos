@@ -32,10 +32,10 @@ export default function PaymentCarouselDemoPage() {
   ];
 
   const problemList = [
-    "스와이프만으로는 키보드 사용자가 캐러셀을 조작할 수 없음",
-    "스크린 리더 사용자에게 캐러셀 변경 사항이 전달되지 않음",
+    "모바일 캐러셀에서 일반적으로 버튼을 제공하지 않음",
+    "스크린 리더 사용자가 슬라이드를 넘길 방법이 없음",
     "손목이나 손가락에 제약이 있는 사용자가 스와이프하기 어려움",
-    "접근성 도구 없이는 캐러셀이 단순한 정적 콘텐츠로만 인식됨"
+    "가려진 슬라이드의 콘텐츠에도 접근할 수 있어 혼란 야기"
   ];
 
   const PaymentCard = ({ card, isActive, isInert = false }: { card: typeof paymentCards[0], isActive: boolean, isInert?: boolean }) => {
@@ -62,16 +62,16 @@ export default function PaymentCarouselDemoPage() {
   return (
     <DemoPageLayout 
       title="모바일 캐러셀 접근성"
-      description="모바일에서는 스와이프가 가장 자연스러운 상호작용입니다. 기본적으로 스와이프만 제공하되, 키보드나 스크린 리더 사용자를 위해 접근성 버튼을 추가하는 방법을 비교해보세요."
+      description="모바일 캐러셀에서는 일반적으로 스와이프만 제공하고 버튼을 두지 않습니다. 하지만 이렇게 되면 스크린 리더 사용자나 손이 불편한 사용자는 슬라이드를 넘길 수 없는 문제가 발생합니다."
     >
       <ProblemIntroSection 
-        description="모바일 캐러셀에서 스와이프는 직관적이고 효과적인 상호작용 방식입니다. 하지만 모든 사용자가 스와이프를 사용할 수 있는 것은 아닙니다. 접근성을 고려한 대안적 조작 방법이 필요한 이유를 알아보세요."
+        description="모바일 캐러셀에서는 깔끔한 UI를 위해 일반적으로 버튼을 두지 않고 스와이프만 제공합니다. 하지만 이런 접근법은 스크린 리더 사용자나 손이 불편한 사용자를 배제하는 문제가 있습니다."
         problemList={problemList}
       />
 
       <ExampleSection 
         type="bad" 
-        problemText="모바일에서는 스와이프가 직관적이고 자연스러운 상호작용 방식입니다. 버튼이 없어도 사용에 문제가 없지만, 접근성이 필요한 사용자를 위한 대안이 제공되지 않습니다."
+        problemText="모바일에서 일반적인 캐러셀 구현으로 깔끔하고 직관적입니다. 하지만 스크린 리더 사용자나 손이 불편한 사용자는 슬라이드를 넘길 방법이 없고, 가려진 슬라이드에도 접근할 수 있어 혼란을 야기합니다."
       >
         <div className="bg-gray-50 p-4 rounded-lg">
           <h4 className="text-lg font-semibold mb-4">결제 수단 선택</h4>
@@ -106,7 +106,7 @@ export default function PaymentCarouselDemoPage() {
 
       <ExampleSection 
         type="good" 
-        solutionText="기본 스와이프 기능은 유지하면서, 접근성이 필요한 사용자를 위해 미니멀한 버튼을 추가합니다. aria-live 속성과 inert로 적절한 접근성을 제공합니다."
+        solutionText="스와이프 기능은 그대로 유지하면서, 스크린 리더와 손이 불편한 사용자를 위해 미니멀한 버튼을 추가합니다. aria-live로 변경사항을 알리고, inert로 가려진 슬라이드 접근을 차단합니다."
       >
         <div className="bg-gray-50 p-4 rounded-lg">
           <h4 className="text-lg font-semibold mb-4">결제 수단 선택</h4>
@@ -172,20 +172,20 @@ export default function PaymentCarouselDemoPage() {
       <TestGuideSection
         badSteps={[
           { step: "1", description: "캐러셀을 스와이프하여 카드를 변경해보세요" },
-          { step: "2", description: "Tab 키로 키보드 탐색을 시도해보세요" },
-          { step: "3", description: "스크린 리더로 캐러셀 변경을 확인해보세요" }
+          { step: "2", description: "스크린 리더로 슬라이드 변경을 시도해보세요" },
+          { step: "3", description: "가려진 카드의 내용이 읽히는지 확인해보세요" }
         ]}
         goodSteps={[
           { step: "1", description: "캐러셀을 스와이프하여 카드를 변경해보세요" },
           { step: "2", description: "미니멀한 이전/다음 버튼을 클릭해보세요" },
-          { step: "3", description: "Tab 키로 활성 카드만 접근되는지 확인하세요" }
+          { step: "3", description: "스크린 리더로 변경사항이 안내되는지 확인하세요" }
         ]}
-        badResult="스와이프는 완벽하게 작동하지만, 키보드나 스크린 리더 사용자는 캐러셀을 조작할 방법이 없습니다."
-        goodResult="스와이프와 버튼 모두 사용 가능하며, 접근성 도구로도 원활하게 조작할 수 있습니다."
+        badResult="스와이프는 잘 작동하지만, 스크린 리더나 손이 불편한 사용자는 슬라이드를 조작할 수 없고 가려진 내용까지 접근됩니다."
+        goodResult="모든 사용자가 캐러셀을 조작할 수 있고, 현재 보이는 카드에만 접근하도록 제한됩니다."
         additionalNotes={[
-          "모바일에서 스와이프는 가장 직관적인 상호작용 방식",
-          "접근성 버튼은 필수가 아닌 '추가 지원'의 개념",
-          "두 방식이 서로 간섭하지 않도록 설계하는 것이 핵심"
+          "모바일 캐러셀은 일반적으로 버튼 없이 깔끔하게 구현",
+          "하지만 이런 접근법은 일부 사용자를 배제하는 문제 존재",
+          "미니멀한 버튼 추가로 모든 사용자를 포용하는 설계 가능"
         ]}
       />
 
@@ -205,7 +205,7 @@ export default function PaymentCarouselDemoPage() {
 </Swiper>
 
 {/* 장점: 깔끔한 UI, 직관적 스와이프 */}
-{/* 단점: 접근성 도구 지원 부족 */}`
+{/* 단점: 스크린 리더, 손 불편한 사용자 배제 */}`
         }}
         goodExample={{
           title: "스와이프 + 접근성 버튼",
@@ -240,14 +240,14 @@ export default function PaymentCarouselDemoPage() {
 </button>
 
 {/* 장점: 모든 사용자 지원 */}
-{/* 스와이프: 직관적, 버튼: 접근성 */}`
+{/* 스와이프: 일반 사용자, 버튼: 접근성 사용자 */}`
         }}
         guidelines={[
-          "1단계: 스와이프 기능으로 기본 사용성 확보",
-          "2단계: 접근성이 필요한 사용자를 위한 미니멀 버튼 추가",
-          "aria-live 동적 제어로 필요할 때만 음성 안내",
-          "inert로 비활성 슬라이드 접근 제한하여 혼란 방지",
-          "모바일 우선 + 포용적 디자인의 균형점 찾기"
+          "모바일 기본: 깔끔한 UI를 위해 스와이프만 제공",
+          "접근성 개선: 스크린 리더와 손이 불편한 사용자를 위한 버튼 추가",
+          "aria-live로 버튼 사용시에만 변경사항 음성 안내",
+          "inert로 가려진 슬라이드 접근 차단하여 혼란 방지",
+          "일반 사용자와 접근성 사용자 모두를 고려한 설계"
         ]}
       />
     </DemoPageLayout>
