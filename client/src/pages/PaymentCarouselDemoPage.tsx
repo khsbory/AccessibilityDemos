@@ -40,10 +40,8 @@ export default function PaymentCarouselDemoPage() {
   const PaymentCard = ({ card, isActive, isInert = false }: { card: typeof paymentCards[0], isActive: boolean, isInert?: boolean }) => (
     <div 
       className={`bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-4 text-white min-h-[120px] ${isActive ? 'ring-2 ring-white' : ''} ${isInert ? 'opacity-70' : ''}`} 
-      {...(isInert && { inert: true })}
-      tabIndex={isInert ? -1 : 0}
-      role="button"
-      aria-label={`${card.name} 결제 카드 선택`}
+      inert={isInert}
+      aria-label={`${card.name} 결제 카드`}
     >
       <div className="flex justify-between items-start mb-3">
         <div className="text-sm opacity-80">{card.name}</div>
