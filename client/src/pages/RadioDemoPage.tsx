@@ -107,7 +107,7 @@ export default function RadioDemoPage() {
 
       <ExampleSection 
         type="good"
-        solutionText="표준 HTML input을 사용하면서 화살표 키 기본 동작만 차단했습니다. 스페이스바로만 선택되어 키보드 사용자가 연속적으로 옵션을 탐색할 수 있습니다."
+        solutionText="표준 HTML input을 사용하면서 마우스 클릭과 키보드 입력을 구분합니다. 마우스 사용자는 클릭으로, 키보드 사용자는 스페이스바로 선택할 수 있어 모든 사용자에게 최적화된 경험을 제공합니다."
       >
         <div className="space-y-4">
           <div>
@@ -140,7 +140,14 @@ export default function RadioDemoPage() {
                           value={period.value}
                           id={`good-${period.value}`}
                           checked={goodSelectedPeriod === period.value}
-                          onChange={() => {}} // 기본 onChange 무시
+                          onChange={(e) => {
+                            // 마우스 클릭인지 키보드인지 구분
+                            if (e.nativeEvent instanceof MouseEvent) {
+                              // 마우스 클릭은 허용
+                              handleGoodSelection(period.value);
+                            }
+                            // 키보드 이벤트는 onKeyDown에서 처리
+                          }}
                           onKeyDown={(e) => {
                             // 화살표 키 기본 동작 차단
                             if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
@@ -218,12 +225,19 @@ export default function RadioDemoPage() {
         }}
         goodExample={{
           title: "올바른 구현",
-          code: `// 표준 HTML + 키보드 동작 제어
+          code: `// 마우스 클릭과 키보드 입력 구분 처리
 <input 
   type="radio" 
   name="period"
   value="1month"
-  onChange={() => {}} // 기본 onChange 무시
+  onChange={(e) => {
+    // 마우스 클릭인지 키보드인지 구분
+    if (e.nativeEvent instanceof MouseEvent) {
+      // 마우스 클릭은 허용
+      handleSelection("1month");
+    }
+    // 키보드 이벤트는 onKeyDown에서 처리
+  }}
   onKeyDown={(e) => {
     // 화살표 키 기본 동작 차단
     if (['ArrowUp', 'ArrowDown'].includes(e.key)) {
@@ -242,8 +256,9 @@ export default function RadioDemoPage() {
         }}
         guidelines={[
           "표준 HTML input[type=\"radio\"] 사용으로 완벽한 접근성 보장",
-          "화살표 키 기본 동작만 preventDefault()로 차단",
-          "스페이스바로만 선택되도록 제어",
+          "nativeEvent instanceof MouseEvent로 마우스/키보드 구분",
+          "마우스 클릭은 onChange에서 즉시 처리",
+          "키보드는 화살표 키 탐색 + 스페이스바 선택으로 분리",
           "fieldset과 legend로 그룹 의미 전달",
           "ARIA 없이도 모든 스크린 리더에서 완벽 지원"
         ]}
