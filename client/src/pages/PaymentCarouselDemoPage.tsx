@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { CreditCard, ChevronLeft, ChevronRight } from "lucide-react";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, A11y } from 'swiper/modules';
+import { Navigation } from 'swiper/modules';
 import type { Swiper as SwiperType } from 'swiper';
 
 // Import Swiper styles
@@ -128,15 +128,12 @@ export default function PaymentCarouselDemoPage() {
               onBeforeInit={(swiper) => {
                 goodSwiperRef.current = swiper;
               }}
-              modules={[Navigation, A11y]}
+              modules={[Navigation]}
               spaceBetween={16}
               slidesPerView={1.2}
               centeredSlides={true}
               onSlideChange={(swiper) => setSelectedGoodCard(swiper.activeIndex)}
-              a11y={{
-                prevSlideMessage: '이전 결제 수단',
-                nextSlideMessage: '다음 결제 수단',
-              }}
+              a11y={false}
               className="payment-swiper-good"
             >
               {paymentCards.map((card, index) => (
@@ -218,14 +215,11 @@ export default function PaymentCarouselDemoPage() {
         goodExample={{
           title: "접근성 적용",
           code: `<Swiper
-  modules={[Navigation, A11y]}
+  modules={[Navigation]}
   spaceBetween={16}
   slidesPerView={1.2}
   centeredSlides={true}
-  a11y={{
-    prevSlideMessage: '이전 결제 수단',
-    nextSlideMessage: '다음 결제 수단',
-  }}
+  a11y={false}
 >
   {cards.map((card, index) => (
     <SwiperSlide key={card.id}>
@@ -242,7 +236,7 @@ export default function PaymentCarouselDemoPage() {
 </button>`
         }}
         guidelines={[
-          "Swiper의 A11y 모듈을 사용하여 스크린 리더 지원",
+          "Swiper의 기본 접근성 모드 비활성화 (a11y={false})",
           "inert 속성으로 비활성 슬라이드의 키보드 접근 제한",
           "카드는 단순 정보 표시용으로 role 없이 구현",
           "미니멀한 버튼 디자인으로 시각적 방해 최소화",
