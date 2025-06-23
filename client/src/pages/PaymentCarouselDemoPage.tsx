@@ -19,6 +19,7 @@ import CodeExampleSection from "@/components/demo/CodeExampleSection";
 export default function PaymentCarouselDemoPage() {
   const [selectedBadCard, setSelectedBadCard] = useState(0);
   const [selectedGoodCard, setSelectedGoodCard] = useState(0);
+  const [ariaLive, setAriaLive] = useState<"off" | "polite">("off");
   const badSwiperRef = useRef<SwiperType>();
   const goodSwiperRef = useRef<SwiperType>();
 
@@ -121,6 +122,8 @@ export default function PaymentCarouselDemoPage() {
               onSlideChange={(swiper) => setSelectedGoodCard(swiper.activeIndex)}
               a11y={false}
               className="payment-swiper-good"
+              aria-live={ariaLive}
+              aria-label="결제 수단 캐러셀"
             >
               {paymentCards.map((card, index) => (
                 <SwiperSlide key={card.id}>
@@ -135,14 +138,22 @@ export default function PaymentCarouselDemoPage() {
             
             {/* 미니멀한 버튼들 */}
             <button
-              onClick={() => goodSwiperRef.current?.slidePrev()}
+              onClick={() => {
+                setAriaLive("polite");
+                goodSwiperRef.current?.slidePrev();
+                setTimeout(() => setAriaLive("off"), 1000);
+              }}
               className="absolute left-1 top-1/2 -translate-y-1/2 z-10 bg-black/20 hover:bg-black/40 text-white p-1.5 rounded-full transition-all duration-200 opacity-60 hover:opacity-100"
               aria-label="이전 결제 수단"
             >
               <ChevronLeft className="w-3 h-3" />
             </button>
             <button
-              onClick={() => goodSwiperRef.current?.slideNext()}
+              onClick={() => {
+                setAriaLive("polite");
+                goodSwiperRef.current?.slideNext();
+                setTimeout(() => setAriaLive("off"), 1000);
+              }}
               className="absolute right-1 top-1/2 -translate-y-1/2 z-10 bg-black/20 hover:bg-black/40 text-white p-1.5 rounded-full transition-all duration-200 opacity-60 hover:opacity-100"
               aria-label="다음 결제 수단"
             >
@@ -203,6 +214,8 @@ export default function PaymentCarouselDemoPage() {
   slidesPerView={1.2}
   centeredSlides={true}
   a11y={false}
+  aria-live={ariaLive}
+  aria-label="결제 수단 캐러셀"
 >
   {cards.map((card, index) => (
     <SwiperSlide key={card.id}>
@@ -214,16 +227,23 @@ export default function PaymentCarouselDemoPage() {
 </Swiper>
 
 {/* 미니멀한 버튼들 */}
-<button className="absolute left-1 top-1/2 bg-black/20 p-1.5 rounded-full opacity-60">
+<button 
+  onClick={() => {
+    setAriaLive("polite");
+    swiperRef.current?.slidePrev();
+    setTimeout(() => setAriaLive("off"), 1000);
+  }}
+  className="absolute left-1 top-1/2 bg-black/20 p-1.5 rounded-full opacity-60"
+>
   <ChevronLeft className="w-3 h-3" />
 </button>`
         }}
         guidelines={[
           "모바일 기본: 버튼 없이 스와이프만 제공",
           "접근성 필요시: 미니멀한 버튼 추가",
+          "aria-live='off' 기본값, 버튼 클릭 시 'polite'로 변경",
           "Swiper의 기본 접근성 모드 비활성화 (a11y={false})",
-          "inert 속성으로 비활성 슬라이드의 키보드 접근 제한",
-          "카드는 단순 정보 표시용으로 role 없이 구현"
+          "inert 속성으로 비활성 슬라이드의 키보드 접근 제한"
         ]}
       />
     </DemoPageLayout>
