@@ -15,10 +15,7 @@ import ProblemIntroSection from "@/components/demo/ProblemIntroSection";
 import ExampleSection from "@/components/demo/ExampleSection";
 import TestGuideSection from "@/components/demo/TestGuideSection";
 import CodeExampleSection from "@/components/demo/CodeExampleSection";
-import { useDocumentTitle } from "@/hooks/use-document-title";
-
 export default function PaymentCarouselDemoPage() {
-  useDocumentTitle("모바일 캐러셀 접근성");
   
   const [selectedBadCard, setSelectedBadCard] = useState(0);
   const [selectedGoodCard, setSelectedGoodCard] = useState(0);

@@ -21,7 +21,8 @@ export function useDocumentTitle(title: string) {
 export const PAGE_TITLES: Record<string, string> = {
   "/": "소개",
   "/demos/radio-auto-select": "라디오버튼 자동 선택 문제",
-  "/demos/category-radio": "카테고리 라디오버튼"
+  "/demos/category-radio": "카테고리 라디오버튼",
+  "/demos/payment-carousel": "모바일 캐러셀 접근성"
 };
 
 /**
