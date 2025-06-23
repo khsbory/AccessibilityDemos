@@ -53,13 +53,9 @@ export default function Header() {
     }
   ];
 
-  // 디바이스별 데모 필터링
+  // 모든 데모 항상 표시 (디바이스 구분 없음)
   const getVisibleDemos = (isMobile: boolean) => {
-    return demoItems.filter(demo => {
-      if (demo.id === 'mobile') return isMobile;  // 모바일에서만 표시
-      if (demo.id === 'pc') return !isMobile;    // PC에서만 표시
-      return true; // 공통 데모는 항상 표시
-    });
+    return demoItems;
   };
 
   const toggleDemo = (demoId: string) => {
