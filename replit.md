@@ -126,6 +126,10 @@ This is a full-stack web application demonstrating web accessibility issues and 
 - June 23, 2025. Created mobile-first approach: no buttons by default, minimal buttons only for accessibility
 - June 23, 2025. Applied inert attribute to inactive slides for proper keyboard navigation control
 - June 23, 2025. Added 5 payment card examples (신한, KB국민, 우리, 하나, 삼성) with realistic card data
+- June 23, 2025. Updated demo focus: mobile carousels typically don't include buttons for clean UI
+- June 23, 2025. Corrected problem description: screen reader users and users with hand limitations cannot navigate slides
+- June 23, 2025. Removed keyboard references for mobile context, focused on swipe vs accessibility button approach
+- June 23, 2025. Updated inert explanation: prevents access to hidden/covered slide content that causes confusion
 
 ## User Preferences
 
