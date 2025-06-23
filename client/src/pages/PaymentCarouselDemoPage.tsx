@@ -37,8 +37,14 @@ export default function PaymentCarouselDemoPage() {
     "비활성 슬라이드에서 포커스 가능한 요소들이 접근 가능"
   ];
 
-  const PaymentCard = ({ card, isActive }: { card: typeof paymentCards[0], isActive: boolean }) => (
-    <div className={`bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-4 text-white min-h-[120px] ${isActive ? 'ring-2 ring-white' : ''}`}>
+  const PaymentCard = ({ card, isActive, isInert = false }: { card: typeof paymentCards[0], isActive: boolean, isInert?: boolean }) => (
+    <div 
+      className={`bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-4 text-white min-h-[120px] ${isActive ? 'ring-2 ring-white' : ''} ${isInert ? 'opacity-70' : ''}`} 
+      {...(isInert && { inert: true })}
+      tabIndex={isInert ? -1 : 0}
+      role="button"
+      aria-label={`${card.name} 결제 카드 선택`}
+    >
       <div className="flex justify-between items-start mb-3">
         <div className="text-sm opacity-80">{card.name}</div>
         <div className="text-xs bg-white/20 px-2 py-1 rounded">{card.type}</div>
@@ -131,9 +137,11 @@ export default function PaymentCarouselDemoPage() {
             >
               {paymentCards.map((card, index) => (
                 <SwiperSlide key={card.id}>
-                  <div {...(index !== selectedGoodCard && { inert: true })}>
-                    <PaymentCard card={card} isActive={index === selectedGoodCard} />
-                  </div>
+                  <PaymentCard 
+                    card={card} 
+                    isActive={index === selectedGoodCard} 
+                    isInert={index !== selectedGoodCard}
+                  />
                 </SwiperSlide>
               ))}
             </Swiper>
@@ -165,17 +173,17 @@ export default function PaymentCarouselDemoPage() {
 
       <TestGuideSection
         badSteps={[
-          { step: "1", description: "캐러셀을 터치하여 스와이프해보세요" },
-          { step: "2", description: "큰 이전/다음 버튼이 콘텐츠를 가리는지 확인하세요" },
-          { step: "3", description: "Tab 키로 비활성 슬라이드의 요소에 접근되는지 확인하세요" }
+          { step: "1", description: "Tab 키를 눌러 각 결제 카드로 포커스 이동해보세요" },
+          { step: "2", description: "모든 카드(활성/비활성)에 접근 가능한지 확인하세요" },
+          { step: "3", description: "큰 버튼들이 카드 내용과 겹치는지 확인하세요" }
         ]}
         goodSteps={[
-          { step: "1", description: "캐러셀을 터치하여 스와이프해보세요" },
-          { step: "2", description: "미니멀한 버튼이 자연스럽게 배치되었는지 확인하세요" },
-          { step: "3", description: "Tab 키로 활성 슬라이드만 접근되는지 확인하세요" }
+          { step: "1", description: "Tab 키를 눌러 결제 카드로 포커스 이동해보세요" },
+          { step: "2", description: "활성 카드(흰색 테두리)만 포커스되는지 확인하세요" },
+          { step: "3", description: "비활성 카드들이 반투명하고 접근 불가한지 확인하세요" }
         ]}
-        badResult="큰 버튼이 시각적으로 방해가 되고, 비활성 슬라이드에도 접근할 수 있어 혼란스럽습니다."
-        goodResult="미니멀한 디자인으로 콘텐츠에 집중할 수 있고, 접근성도 적절히 제한됩니다."
+        badResult="모든 카드에 Tab으로 접근할 수 있어 키보드 사용자가 혼란스러울 수 있고, 큰 버튼이 시각적으로 방해됩니다."
+        goodResult="활성 카드만 Tab으로 접근 가능하고, 미니멀한 버튼으로 깔끔한 디자인을 유지합니다."
         additionalNotes={[
           "모바일에서는 스와이프가 주요 상호작용 방식입니다",
           "버튼은 접근성을 위한 보조 수단으로 제공되어야 합니다",
