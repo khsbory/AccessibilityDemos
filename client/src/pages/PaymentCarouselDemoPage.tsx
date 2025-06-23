@@ -173,6 +173,7 @@ export default function PaymentCarouselDemoPage() {
       </ExampleSection>
 
       <TestGuideSection
+        testTitle="스크린 리더로 테스트하기"
         badSteps={[
           { step: "1", description: "보이스오버(iOS) 또는 톡백(Android)을 켜고 한 손가락 스와이프로 탐색해보세요" },
           { step: "2", description: "캐러셀에서 다른 카드로 이동할 방법을 시도해보세요" },

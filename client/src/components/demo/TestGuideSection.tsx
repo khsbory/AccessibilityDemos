@@ -14,6 +14,7 @@ interface TestGuideProps {
   badResult: string;
   goodResult: string;
   additionalNotes?: string[];
+  testTitle?: string;
 }
 
 export default function TestGuideSection({ 
@@ -21,7 +22,8 @@ export default function TestGuideSection({
   goodSteps, 
   badResult, 
   goodResult,
-  additionalNotes = []
+  additionalNotes = [],
+  testTitle = "키보드로 테스트하기"
 }: TestGuideProps) {
   return (
     <DemoSection title="테스트 가이드" icon={Calendar} iconColor="text-blue-600">
@@ -33,7 +35,7 @@ export default function TestGuideSection({
           </div>
           <Card className="bg-red-50 border-red-200">
             <CardContent className="p-4">
-              <h4 className="font-medium text-foreground mb-3">키보드로 테스트하기:</h4>
+              <h4 className="font-medium text-foreground mb-3">{testTitle}:</h4>
               <ol className="text-sm text-muted-foreground space-y-2">
                 {badSteps.map((step, index) => (
                   <li key={index}><strong>{step.step}:</strong> {step.description}</li>
@@ -54,7 +56,7 @@ export default function TestGuideSection({
           </div>
           <Card className="bg-emerald-50 border-emerald-200">
             <CardContent className="p-4">
-              <h4 className="font-medium text-foreground mb-3">키보드로 테스트하기:</h4>
+              <h4 className="font-medium text-foreground mb-3">{testTitle}:</h4>
               <ol className="text-sm text-muted-foreground space-y-2">
                 {goodSteps.map((step, index) => (
                   <li key={index}><strong>{step.step}:</strong> {step.description}</li>
