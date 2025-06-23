@@ -130,6 +130,11 @@ This is a full-stack web application demonstrating web accessibility issues and 
 - June 23, 2025. Corrected problem description: screen reader users and users with hand limitations cannot navigate slides
 - June 23, 2025. Removed keyboard references for mobile context, focused on swipe vs accessibility button approach
 - June 23, 2025. Updated inert explanation: prevents access to hidden/covered slide content that causes confusion
+- June 23, 2025. Implemented conditional button display: hide prev button on first card, hide next button on last card
+- June 23, 2025. Added focus management in click handlers: predict next state and move focus to remaining button
+- June 23, 2025. Fixed timing issues with focus management using 100ms delay for DOM update completion
+- June 23, 2025. Updated TestGuideSection component to accept testTitle prop for page-specific test instructions
+- June 23, 2025. Changed test guide to "스크린 리더로 테스트하기" with VoiceOver/TalkBack instructions for mobile context
 
 ## User Preferences
 
