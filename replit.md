@@ -122,6 +122,10 @@ This is a full-stack web application demonstrating web accessibility issues and 
 - June 22, 2025. Corrected problem description: radio button arrow key movement causes automatic selection
 - June 22, 2025. Fixed test guides to show auto-focus and arrow key auto-selection causing DOM updates
 - June 22, 2025. Updated solution to emphasize hidden radio buttons with label role="button" and Tab-only navigation
+- June 23, 2025. Implemented PaymentCarouselDemoPage with Swiper library for mobile carousel demo
+- June 23, 2025. Created mobile-first approach: no buttons by default, minimal buttons only for accessibility
+- June 23, 2025. Applied inert attribute to inactive slides for proper keyboard navigation control
+- June 23, 2025. Added 5 payment card examples (신한, KB국민, 우리, 하나, 삼성) with realistic card data
 
 ## User Preferences
 
