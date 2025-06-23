@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { CreditCard, ChevronLeft, ChevronRight } from "lucide-react";
@@ -25,6 +25,26 @@ export default function PaymentCarouselDemoPage() {
   const [ariaLive, setAriaLive] = useState<"off" | "polite">("off");
   const badSwiperRef = useRef<SwiperType>();
   const goodSwiperRef = useRef<SwiperType>();
+  const prevButtonRef = useRef<HTMLButtonElement>(null);
+  const nextButtonRef = useRef<HTMLButtonElement>(null);
+
+  // 포커스 관리: 버튼이 사라질 때 반대쪽 버튼으로 포커스 이동
+  useEffect(() => {
+    const handleFocusManagement = () => {
+      // 첫 번째 카드에서 이전 버튼이 사라지면 다음 버튼에 포커스
+      if (selectedGoodCard === 0 && nextButtonRef.current && document.activeElement === prevButtonRef.current) {
+        nextButtonRef.current.focus();
+      }
+      // 마지막 카드에서 다음 버튼이 사라지면 이전 버튼에 포커스
+      if (selectedGoodCard === paymentCards.length - 1 && prevButtonRef.current && document.activeElement === nextButtonRef.current) {
+        prevButtonRef.current.focus();
+      }
+    };
+
+    // 약간의 지연을 두어 렌더링 완료 후 포커스 이동
+    const timer = setTimeout(handleFocusManagement, 50);
+    return () => clearTimeout(timer);
+  }, [selectedGoodCard]);
 
   const paymentCards = [
     { id: 1, name: "신한카드", number: "**** **** **** 1234", type: "VISA" },
@@ -139,29 +159,35 @@ export default function PaymentCarouselDemoPage() {
               ))}
             </Swiper>
             
-            {/* 미니멀한 버튼들 */}
-            <button
-              onClick={() => {
-                setAriaLive("polite");
-                goodSwiperRef.current?.slidePrev();
-                setTimeout(() => setAriaLive("off"), 1000);
-              }}
-              className="absolute left-1 top-1/2 -translate-y-1/2 z-10 bg-black/20 hover:bg-black/40 text-white p-1.5 rounded-full transition-all duration-200 opacity-60 hover:opacity-100"
-              aria-label="이전 결제 수단"
-            >
-              <ChevronLeft className="w-3 h-3" />
-            </button>
-            <button
-              onClick={() => {
-                setAriaLive("polite");
-                goodSwiperRef.current?.slideNext();
-                setTimeout(() => setAriaLive("off"), 1000);
-              }}
-              className="absolute right-1 top-1/2 -translate-y-1/2 z-10 bg-black/20 hover:bg-black/40 text-white p-1.5 rounded-full transition-all duration-200 opacity-60 hover:opacity-100"
-              aria-label="다음 결제 수단"
-            >
-              <ChevronRight className="w-3 h-3" />
-            </button>
+            {/* 조건부 미니멀한 버튼들 */}
+            {selectedGoodCard > 0 && (
+              <button
+                ref={prevButtonRef}
+                onClick={() => {
+                  setAriaLive("polite");
+                  goodSwiperRef.current?.slidePrev();
+                  setTimeout(() => setAriaLive("off"), 1000);
+                }}
+                className="absolute left-1 top-1/2 -translate-y-1/2 z-10 bg-black/20 hover:bg-black/40 text-white p-1.5 rounded-full transition-all duration-200 opacity-60 hover:opacity-100"
+                aria-label="이전 결제 수단"
+              >
+                <ChevronLeft className="w-3 h-3" />
+              </button>
+            )}
+            {selectedGoodCard < paymentCards.length - 1 && (
+              <button
+                ref={nextButtonRef}
+                onClick={() => {
+                  setAriaLive("polite");
+                  goodSwiperRef.current?.slideNext();
+                  setTimeout(() => setAriaLive("off"), 1000);
+                }}
+                className="absolute right-1 top-1/2 -translate-y-1/2 z-10 bg-black/20 hover:bg-black/40 text-white p-1.5 rounded-full transition-all duration-200 opacity-60 hover:opacity-100"
+                aria-label="다음 결제 수단"
+              >
+                <ChevronRight className="w-3 h-3" />
+              </button>
+            )}
           </div>
           
           <div className="mt-4 text-center">
@@ -212,7 +238,7 @@ export default function PaymentCarouselDemoPage() {
 {/* 단점: 스크린 리더, 손 불편한 사용자 배제 */}`
         }}
         goodExample={{
-          title: "스와이프 + 접근성 버튼",
+          title: "스와이프 + 조건부 접근성 버튼",
           code: `<Swiper
   modules={[Navigation]}
   spaceBetween={16}
@@ -231,24 +257,61 @@ export default function PaymentCarouselDemoPage() {
   ))}
 </Swiper>
 
-{/* 접근성을 위한 미니멀 버튼 */}
-<button 
-  onClick={() => {
-    setAriaLive("polite");
-    swiperRef.current?.slidePrev();
-    setTimeout(() => setAriaLive("off"), 1000);
-  }}
-  className="absolute left-1 top-1/2 bg-black/20 p-1.5 rounded-full opacity-60"
->
-  <ChevronLeft className="w-3 h-3" />
-</button>
+{/* 조건부 미니멀 버튼들 */}
+{selectedIndex > 0 && (
+  <button 
+    ref={prevButtonRef}
+    onClick={() => {
+      setAriaLive("polite");
+      swiperRef.current?.slidePrev();
+      setTimeout(() => setAriaLive("off"), 1000);
+    }}
+    className="absolute left-1 top-1/2 bg-black/20 p-1.5 rounded-full opacity-60"
+    aria-label="이전 결제 수단"
+  >
+    <ChevronLeft className="w-3 h-3" />
+  </button>
+)}
+{selectedIndex < cards.length - 1 && (
+  <button 
+    ref={nextButtonRef}
+    onClick={() => {
+      setAriaLive("polite");
+      swiperRef.current?.slideNext();
+      setTimeout(() => setAriaLive("off"), 1000);
+    }}
+    className="absolute right-1 top-1/2 bg-black/20 p-1.5 rounded-full opacity-60"
+    aria-label="다음 결제 수단"
+  >
+    <ChevronRight className="w-3 h-3" />
+  </button>
+)}
 
-{/* 장점: 모든 사용자 지원 */}
-{/* 스와이프: 일반 사용자, 버튼: 접근성 사용자 */}`
+// 포커스 관리: 버튼이 사라질 때 반대쪽 버튼으로 포커스 이동
+useEffect(() => {
+  const handleFocusManagement = () => {
+    if (selectedIndex === 0 && nextButtonRef.current && 
+        document.activeElement === prevButtonRef.current) {
+      nextButtonRef.current.focus();
+    }
+    if (selectedIndex === cards.length - 1 && prevButtonRef.current && 
+        document.activeElement === nextButtonRef.current) {
+      prevButtonRef.current.focus();
+    }
+  };
+  
+  const timer = setTimeout(handleFocusManagement, 50);
+  return () => clearTimeout(timer);
+}, [selectedIndex]);
+
+{/* 장점: 조건부 버튼으로 논리적 탐색 + 포커스 관리 */}
+{/* 스와이프: 일반 사용자, 조건부 버튼: 접근성 사용자 */}`
         }}
         guidelines={[
           "모바일 기본: 깔끔한 UI를 위해 스와이프만 제공",
-          "접근성 개선: 스크린 리더와 손이 불편한 사용자를 위한 버튼 추가",
+          "접근성 개선: 스크린 리더와 손이 불편한 사용자를 위한 조건부 버튼 추가",
+          "논리적 탐색: 첫 번째 카드에서 이전 버튼, 마지막 카드에서 다음 버튼 숨김",
+          "포커스 관리: 버튼이 사라질 때 반대쪽 버튼으로 자동 포커스 이동",
           "aria-live로 버튼 사용시에만 변경사항 음성 안내",
           "inert로 가려진 슬라이드 접근 차단하여 혼란 방지",
           "일반 사용자와 접근성 사용자 모두를 고려한 설계"
