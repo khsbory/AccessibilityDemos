@@ -131,7 +131,7 @@ export default function PaymentCarouselDemoPage() {
             >
               {paymentCards.map((card, index) => (
                 <SwiperSlide key={card.id}>
-                  <div inert={index !== selectedGoodCard ? "" : undefined}>
+                  <div {...(index !== selectedGoodCard && { inert: true })}>
                     <PaymentCard card={card} isActive={index === selectedGoodCard} />
                   </div>
                 </SwiperSlide>
@@ -217,7 +217,7 @@ export default function PaymentCarouselDemoPage() {
 >
   {cards.map((card, index) => (
     <SwiperSlide key={card.id}>
-      <div inert={index !== activeIndex ? "" : undefined}>
+      <div {...(index !== activeIndex && { inert: true })}>
         <PaymentCard card={card} />
       </div>
     </SwiperSlide>
