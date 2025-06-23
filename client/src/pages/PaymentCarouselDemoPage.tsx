@@ -37,20 +37,26 @@ export default function PaymentCarouselDemoPage() {
     "비활성 슬라이드에서 포커스 가능한 요소들이 접근 가능"
   ];
 
-  const PaymentCard = ({ card, isActive, isInert = false }: { card: typeof paymentCards[0], isActive: boolean, isInert?: boolean }) => (
-    <div 
-      className={`bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-4 text-white min-h-[120px] ${isActive ? 'ring-2 ring-white' : ''} ${isInert ? 'opacity-70' : ''}`} 
-      inert={isInert}
-      aria-label={`${card.name} 결제 카드`}
-    >
-      <div className="flex justify-between items-start mb-3">
-        <div className="text-sm opacity-80">{card.name}</div>
-        <div className="text-xs bg-white/20 px-2 py-1 rounded">{card.type}</div>
+  const PaymentCard = ({ card, isActive, isInert = false }: { card: typeof paymentCards[0], isActive: boolean, isInert?: boolean }) => {
+    const cardProps = isInert 
+      ? { inert: "" as any } 
+      : {};
+    
+    return (
+      <div 
+        className={`bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-4 text-white min-h-[120px] ${isActive ? 'ring-2 ring-white' : ''} ${isInert ? 'opacity-70' : ''}`} 
+        {...cardProps}
+        aria-label={`${card.name} 결제 카드`}
+      >
+        <div className="flex justify-between items-start mb-3">
+          <div className="text-sm opacity-80">{card.name}</div>
+          <div className="text-xs bg-white/20 px-2 py-1 rounded">{card.type}</div>
+        </div>
+        <div className="text-lg font-mono mb-2">{card.number}</div>
+        <div className="text-xs opacity-80">결제 카드</div>
       </div>
-      <div className="text-lg font-mono mb-2">{card.number}</div>
-      <div className="text-xs opacity-80">결제 카드</div>
-    </div>
-  );
+    );
+  };
 
   return (
     <DemoPageLayout 
@@ -237,10 +243,10 @@ export default function PaymentCarouselDemoPage() {
         }}
         guidelines={[
           "Swiper의 A11y 모듈을 사용하여 스크린 리더 지원",
-          "inert 속성으로 비활성 슬라이드의 접근성 제한",
+          "inert 속성으로 비활성 슬라이드의 키보드 접근 제한",
+          "카드는 단순 정보 표시용으로 role 없이 구현",
           "미니멀한 버튼 디자인으로 시각적 방해 최소화",
-          "적절한 aria-label로 버튼의 목적 명시",
-          "호버 효과로 버튼의 상호작용성 표현"
+          "적절한 aria-label로 버튼과 카드의 목적 명시"
         ]}
       />
     </DemoPageLayout>
