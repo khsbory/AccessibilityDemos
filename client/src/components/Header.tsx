@@ -3,7 +3,7 @@ import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Menu, Accessibility, ChevronDown, Smartphone, Monitor, Globe, ArrowRight } from "lucide-react";
+import { Menu, Accessibility, ChevronDown, RadioIcon, Images, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { skipToMainContent } from "@/lib/focus-utils";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -22,36 +22,30 @@ export default function Header() {
     return false;
   };
 
-  const isParentActive = (demoId: string) => {
-    const demo = demoItems.find(d => d.id === demoId);
-    return demo?.items.some(item => isActive(item.href)) || false;
-  };
-
   const demoItems = [
     {
-      id: 'mobile',
-      title: '모바일 데모',
-      icon: Smartphone,
-      items: [
-        { title: '모바일 캐러셀 접근성', href: '/demos/payment-carousel' }
-      ]
-    },
-    {
-      id: 'pc',
-      title: 'PC 웹 데모',
-      icon: Monitor,
+      id: 'radio',
+      title: '라디오 데모',
+      icon: RadioIcon,
       items: [
         { title: '라디오 버튼 자동 선택 이슈', href: '/demos/radio-auto-select' },
         { title: '라디오 버튼 계층형 카테고리', href: '/demos/category-radio' }
       ]
     },
     {
-      id: 'common',
-      title: '공통 웹 데모',
-      icon: Globe,
-      items: []
+      id: 'carousel',
+      title: '캐러셀 데모',
+      icon: Images,
+      items: [
+        { title: '모바일 캐러셀 접근성', href: '/demos/payment-carousel' }
+      ]
     }
   ];
+
+  const isParentActive = (demoId: string) => {
+    const demo = demoItems.find(d => d.id === demoId);
+    return demo?.items.some(item => isActive(item.href)) || false;
+  };
 
   // 모든 데모 항상 표시 (디바이스 구분 없음)
   const getVisibleDemos = (isMobile: boolean) => {
