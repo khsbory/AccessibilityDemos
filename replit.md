@@ -147,6 +147,11 @@ This is a full-stack web application demonstrating web accessibility issues and 
 - June 29, 2025. Added tabindex="-1" and programmatic focus to heading elements after smooth scrolling
 - June 29, 2025. Added CSS focus styles for headings with tabindex="-1" for visual focus indication
 - June 29, 2025. Implemented URL hash-based focus management for external page navigation to sections
+- June 29, 2025. Added NotificationSettingsDemoPage with bottom sheet modal accessibility demo
+- June 29, 2025. Implemented React Portal-based bottom sheet with proper focus management and inert attributes
+- June 29, 2025. Created accessible vs inaccessible bottom sheet comparison for notification settings
+- June 29, 2025. Added new "모달 데모" category to header navigation with Settings icon
+- June 29, 2025. Implemented comprehensive ARIA attributes, keyboard navigation, and focus trap for modal accessibility
 
 ## User Preferences
 
