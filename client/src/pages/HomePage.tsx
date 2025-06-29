@@ -73,7 +73,7 @@ export default function HomePage() {
                       section?.scrollIntoView({ behavior: 'smooth' });
                       
                       setTimeout(() => {
-                        const heading = section?.querySelector('h4');
+                        const heading = section?.querySelector('h4') as HTMLElement;
                         if (heading) {
                           heading.setAttribute('tabindex', '-1');
                           heading.focus();
@@ -94,7 +94,7 @@ export default function HomePage() {
                       section?.scrollIntoView({ behavior: 'smooth' });
                       
                       setTimeout(() => {
-                        const heading = section?.querySelector('h4');
+                        const heading = section?.querySelector('h4') as HTMLElement;
                         if (heading) {
                           heading.setAttribute('tabindex', '-1');
                           heading.focus();
@@ -115,7 +115,7 @@ export default function HomePage() {
                       section?.scrollIntoView({ behavior: 'smooth' });
                       
                       setTimeout(() => {
-                        const heading = section?.querySelector('h4');
+                        const heading = section?.querySelector('h4') as HTMLElement;
                         if (heading) {
                           heading.setAttribute('tabindex', '-1');
                           heading.focus();
@@ -136,7 +136,7 @@ export default function HomePage() {
                       section?.scrollIntoView({ behavior: 'smooth' });
                       
                       setTimeout(() => {
-                        const heading = section?.querySelector('h4');
+                        const heading = section?.querySelector('h4') as HTMLElement;
                         if (heading) {
                           heading.setAttribute('tabindex', '-1');
                           heading.focus();

@@ -22,7 +22,7 @@ export default function Layout({ children }: LayoutProps) {
       section?.scrollIntoView({ behavior: 'smooth' });
       
       setTimeout(() => {
-        const heading = section?.querySelector('h3');
+        const heading = section?.querySelector('h3') as HTMLElement;
         if (heading) {
           heading.setAttribute('tabindex', '-1');
           heading.focus();

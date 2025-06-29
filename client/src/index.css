@@ -48,6 +48,18 @@
   --radius: 0.5rem;
 }
 
+/* 접근성 초점 스타일 - 헤딩 요소용 */
+h1[tabindex="-1"]:focus,
+h2[tabindex="-1"]:focus,
+h3[tabindex="-1"]:focus,
+h4[tabindex="-1"]:focus,
+h5[tabindex="-1"]:focus,
+h6[tabindex="-1"]:focus {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 @layer base {
   * {
     @apply border-border;
