@@ -152,6 +152,7 @@ This is a full-stack web application demonstrating web accessibility issues and 
 - June 29, 2025. Created accessible vs inaccessible bottom sheet comparison for notification settings
 - June 29, 2025. Added new "모달 데모" category to header navigation with Settings icon
 - June 29, 2025. Implemented comprehensive ARIA attributes, keyboard navigation, and focus trap for modal accessibility
+- June 29, 2025. Updated notification settings demo to remove mobile-specific language, clarified as PC/mobile common demo
 
 ## User Preferences
 
