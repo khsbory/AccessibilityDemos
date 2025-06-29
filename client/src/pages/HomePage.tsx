@@ -50,12 +50,54 @@ export default function HomePage() {
             <div className="space-y-8">
               <div>
                 <h4 className="text-lg font-medium text-foreground mb-3">Windows</h4>
-                <p className="text-muted-foreground">콘텐츠 준비중입니다.</p>
+                <div className="text-muted-foreground space-y-3">
+                  <p>
+                    <a 
+                      href="https://nvda.or.kr/voicewith/" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="text-primary hover:underline"
+                    >
+                      경북점자도서관
+                    </a>
+                    으로 들어가서 보이스위드를 다운받아 설치하여 테스트할 수 있습니다. 
+                    보이스위드는 NVDA를 한글화한 버전입니다.
+                  </p>
+                  <p>
+                    보이스위드 음성출력되는 텍스트를 화면에 자막으로 표시해 주는 애드온을 설치하면 편리합니다. 
+                    <a 
+                      href="https://khsruru.com/material/download.php?id=686127373bac2" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="text-primary hover:underline ml-1"
+                    >
+                      다운로드
+                    </a>
+                  </p>
+                  <div className="bg-muted p-4 rounded-lg">
+                    <p className="font-medium mb-2">설치 방법:</p>
+                    <ol className="list-decimal list-inside space-y-1 text-sm">
+                      <li>보이스위드를 먼저 설치</li>
+                      <li>보이스위드 실행한 상태로 해당 추가 기능을 설치</li>
+                      <li>작업 표시줄에서 보이스위드 아이콘을 눌러 환경 설정 → 설정 메뉴를 열기</li>
+                      <li>Speech Caption 카테고리에서 자막 켜기를 체크</li>
+                    </ol>
+                  </div>
+                </div>
               </div>
               
               <div>
                 <h4 className="text-lg font-medium text-foreground mb-3">iPhone</h4>
-                <p className="text-muted-foreground">콘텐츠 준비중입니다.</p>
+                <div className="text-muted-foreground space-y-3">
+                  <p>
+                    설정 → 손쉬운 사용 → 손쉬운 사용 단축키에서 보이스오버를 단축키로 설정하면 
+                    필요할 때마다 잠금 버튼을 세 번 눌러서 보이스오버를 켜거나 끌 수 있습니다.
+                  </p>
+                  <p>
+                    설정 → 손쉬운 사용 → 보이스오버 설정에서 자막 패널을 켜면 
+                    보이스오버로 출력되는 내용을 화면으로 볼 수 있어 편리합니다.
+                  </p>
+                </div>
               </div>
               
               <div>
