@@ -135,6 +135,14 @@ This is a full-stack web application demonstrating web accessibility issues and 
 - June 23, 2025. Fixed timing issues with focus management using 100ms delay for DOM update completion
 - June 23, 2025. Updated TestGuideSection component to accept testTitle prop for page-specific test instructions
 - June 23, 2025. Changed test guide to "스크린 리더로 테스트하기" with VoiceOver/TalkBack instructions for mobile context
+- June 29, 2025. Updated Windows screen reader setup section with VoiceWith (NVDA Korean version) installation guide
+- June 29, 2025. Added 경북점자도서관 link for VoiceWith download and subtitle addon download link
+- June 29, 2025. Updated iPhone VoiceOver setup with accessibility shortcuts and caption panel settings
+- June 29, 2025. Added Android TalkBack setup instructions for Galaxy devices with shortcut configuration
+- June 29, 2025. Implemented table of contents navigation for HomePage with smooth scrolling to sections
+- June 29, 2025. Added section IDs for all screen reader setup platforms (Windows, iPhone, Android, macOS)
+- June 29, 2025. Created fixed floating button in Layout component for quick access to screen reader setup
+- June 29, 2025. Fixed button navigates to home page screen reader section from any page in the site
 
 ## User Preferences
 
