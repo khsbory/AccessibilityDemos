@@ -18,7 +18,16 @@ export default function Layout({ children }: LayoutProps) {
   const handleScreenReaderSetupClick = () => {
     if (location === '/') {
       // 현재 홈페이지에 있는 경우 스크롤
-      document.getElementById('screen-reader-setup')?.scrollIntoView({ behavior: 'smooth' });
+      const section = document.getElementById('screen-reader-setup');
+      section?.scrollIntoView({ behavior: 'smooth' });
+      
+      setTimeout(() => {
+        const heading = section?.querySelector('h3');
+        if (heading) {
+          heading.setAttribute('tabindex', '-1');
+          heading.focus();
+        }
+      }, 500);
     } else {
       // 다른 페이지에 있는 경우 홈페이지로 이동하고 스크롤
       window.location.href = '/#screen-reader-setup';

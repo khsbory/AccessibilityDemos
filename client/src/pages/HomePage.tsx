@@ -1,7 +1,30 @@
+import { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Target, Map, Star, CheckCircle, Code, Accessibility, Smartphone, Monitor, Globe, Headphones, List } from "lucide-react";
 
 export default function HomePage() {
+  // URL 해시에 따른 접근성 초점 이동 처리
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash) {
+      const targetId = hash.substring(1); // # 제거
+      const section = document.getElementById(targetId);
+      if (section) {
+        setTimeout(() => {
+          section.scrollIntoView({ behavior: 'smooth' });
+          
+          setTimeout(() => {
+            const heading = section.querySelector('h3, h4') as HTMLElement;
+            if (heading) {
+              heading.setAttribute('tabindex', '-1');
+              heading.focus();
+            }
+          }, 500);
+        }, 100);
+      }
+    }
+  }, []);
+
   return (
     <div>
       <div className="mb-12">
@@ -25,7 +48,16 @@ export default function HomePage() {
                     className="text-primary hover:underline"
                     onClick={(e) => {
                       e.preventDefault();
-                      document.getElementById('site-purpose')?.scrollIntoView({ behavior: 'smooth' });
+                      const section = document.getElementById('site-purpose');
+                      section?.scrollIntoView({ behavior: 'smooth' });
+                      
+                      setTimeout(() => {
+                        const heading = section?.querySelector('h3') as HTMLElement;
+                        if (heading) {
+                          heading.setAttribute('tabindex', '-1');
+                          heading.focus();
+                        }
+                      }, 500);
                     }}
                   >
                     사이트 목적
@@ -37,7 +69,16 @@ export default function HomePage() {
                     className="text-primary hover:underline"
                     onClick={(e) => {
                       e.preventDefault();
-                      document.getElementById('windows-setup')?.scrollIntoView({ behavior: 'smooth' });
+                      const section = document.getElementById('windows-setup');
+                      section?.scrollIntoView({ behavior: 'smooth' });
+                      
+                      setTimeout(() => {
+                        const heading = section?.querySelector('h4');
+                        if (heading) {
+                          heading.setAttribute('tabindex', '-1');
+                          heading.focus();
+                        }
+                      }, 500);
                     }}
                   >
                     Windows 스크린 리더 환경 설정
@@ -49,7 +90,16 @@ export default function HomePage() {
                     className="text-primary hover:underline"
                     onClick={(e) => {
                       e.preventDefault();
-                      document.getElementById('iphone-setup')?.scrollIntoView({ behavior: 'smooth' });
+                      const section = document.getElementById('iphone-setup');
+                      section?.scrollIntoView({ behavior: 'smooth' });
+                      
+                      setTimeout(() => {
+                        const heading = section?.querySelector('h4');
+                        if (heading) {
+                          heading.setAttribute('tabindex', '-1');
+                          heading.focus();
+                        }
+                      }, 500);
                     }}
                   >
                     iPhone 보이스오버 환경 설정
@@ -61,7 +111,16 @@ export default function HomePage() {
                     className="text-primary hover:underline"
                     onClick={(e) => {
                       e.preventDefault();
-                      document.getElementById('android-setup')?.scrollIntoView({ behavior: 'smooth' });
+                      const section = document.getElementById('android-setup');
+                      section?.scrollIntoView({ behavior: 'smooth' });
+                      
+                      setTimeout(() => {
+                        const heading = section?.querySelector('h4');
+                        if (heading) {
+                          heading.setAttribute('tabindex', '-1');
+                          heading.focus();
+                        }
+                      }, 500);
                     }}
                   >
                     Android 톡백 환경 설정
@@ -73,7 +132,16 @@ export default function HomePage() {
                     className="text-primary hover:underline"
                     onClick={(e) => {
                       e.preventDefault();
-                      document.getElementById('macos-setup')?.scrollIntoView({ behavior: 'smooth' });
+                      const section = document.getElementById('macos-setup');
+                      section?.scrollIntoView({ behavior: 'smooth' });
+                      
+                      setTimeout(() => {
+                        const heading = section?.querySelector('h4');
+                        if (heading) {
+                          heading.setAttribute('tabindex', '-1');
+                          heading.focus();
+                        }
+                      }, 500);
                     }}
                   >
                     macOS 보이스오버 환경 설정
