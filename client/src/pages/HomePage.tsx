@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Target, Map, Star, CheckCircle, Code, Accessibility, Smartphone, Monitor, Globe, Headphones } from "lucide-react";
+import { Target, Map, Star, CheckCircle, Code, Accessibility, Smartphone, Monitor, Globe, Headphones, List } from "lucide-react";
 
 export default function HomePage() {
   return (
@@ -9,8 +9,84 @@ export default function HomePage() {
         <p className="text-lg text-muted-foreground mb-8">웹 접근성의 중요성을 이해하고 올바른 구현 방법을 학습할 수 있는 데모 사이트입니다.</p>
       </div>
 
-      {/* Purpose Section */}
+      {/* Table of Contents Section */}
       <section className="mb-12">
+        <Card>
+          <CardContent className="p-6">
+            <h3 className="text-2xl font-semibold text-foreground mb-4 flex items-center">
+              <List className="text-primary mr-3 h-6 w-6" aria-hidden="true" />
+              목차
+            </h3>
+            <nav aria-label="페이지 목차">
+              <ul className="space-y-2 text-muted-foreground">
+                <li>
+                  <a 
+                    href="#site-purpose" 
+                    className="text-primary hover:underline"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      document.getElementById('site-purpose')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    사이트 목적
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="#windows-setup" 
+                    className="text-primary hover:underline"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      document.getElementById('windows-setup')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    Windows 스크린 리더 환경 설정
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="#iphone-setup" 
+                    className="text-primary hover:underline"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      document.getElementById('iphone-setup')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    iPhone 보이스오버 환경 설정
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="#android-setup" 
+                    className="text-primary hover:underline"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      document.getElementById('android-setup')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    Android 톡백 환경 설정
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="#macos-setup" 
+                    className="text-primary hover:underline"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      document.getElementById('macos-setup')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    macOS 보이스오버 환경 설정
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* Purpose Section */}
+      <section id="site-purpose" className="mb-12">
         <Card>
           <CardContent className="p-6">
             <h3 className="text-2xl font-semibold text-foreground mb-4 flex items-center">
@@ -39,7 +115,7 @@ export default function HomePage() {
       </section>
 
       {/* Screen Reader Environment Setup Section */}
-      <section className="mb-12">
+      <section id="screen-reader-setup" className="mb-12">
         <Card>
           <CardContent className="p-6">
             <h3 className="text-2xl font-semibold text-foreground mb-4 flex items-center">
@@ -48,7 +124,7 @@ export default function HomePage() {
             </h3>
             
             <div className="space-y-8">
-              <div>
+              <div id="windows-setup">
                 <h4 className="text-lg font-medium text-foreground mb-3">Windows</h4>
                 <div className="text-muted-foreground space-y-3">
                   <p>
@@ -86,7 +162,7 @@ export default function HomePage() {
                 </div>
               </div>
               
-              <div>
+              <div id="iphone-setup">
                 <h4 className="text-lg font-medium text-foreground mb-3">iPhone</h4>
                 <div className="text-muted-foreground space-y-3">
                   <p>
@@ -100,12 +176,22 @@ export default function HomePage() {
                 </div>
               </div>
               
-              <div>
+              <div id="android-setup">
                 <h4 className="text-lg font-medium text-foreground mb-3">Android</h4>
-                <p className="text-muted-foreground">콘텐츠 준비중입니다.</p>
+                <div className="text-muted-foreground space-y-3">
+                  <p>
+                    갤럭시 기준으로 설정 → 접근성 → 고급 설정에서 음량 올리기와 내리기 또는 
+                    측면 버튼과 음량 올리기 버튼 단축키에 톡백을 할당해 놓으면 
+                    보이스오버와 마찬가지로 빠르게 켜고 끌 수 있습니다.
+                  </p>
+                  <p>
+                    톡백 설정 → 고급 → 개발자 설정에서 음성 출력 표시를 체크하면 
+                    보이스오버와 마찬가지로 음성 출력되는 소리를 자막으로 표시해 줍니다.
+                  </p>
+                </div>
               </div>
               
-              <div>
+              <div id="macos-setup">
                 <h4 className="text-lg font-medium text-foreground mb-3">macOS</h4>
                 <p className="text-muted-foreground">콘텐츠 준비중입니다.</p>
               </div>
