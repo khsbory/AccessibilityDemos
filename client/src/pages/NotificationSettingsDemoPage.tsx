@@ -35,6 +35,7 @@ function BottomSheet({ isOpen, onClose, onConfirm, currentSetting, accessible, t
   const bottomSheetRef = useRef<HTMLDivElement>(null);
   const cancelButtonRef = useRef<HTMLButtonElement>(null);
   const confirmButtonRef = useRef<HTMLButtonElement>(null);
+  const firstRadioRef = useRef<HTMLInputElement>(null);
   const originalActiveElementRef = useRef<Element | null>(null);
 
   useEffect(() => {
@@ -43,9 +44,9 @@ function BottomSheet({ isOpen, onClose, onConfirm, currentSetting, accessible, t
       setSelectedOption(currentSetting);
 
       if (accessible) {
-        // Focus management for accessible version
+        // Focus management for accessible version - focus first radio button
         setTimeout(() => {
-          cancelButtonRef.current?.focus();
+          firstRadioRef.current?.focus();
         }, 100);
 
         // Add inert to background content
@@ -150,7 +151,7 @@ function BottomSheet({ isOpen, onClose, onConfirm, currentSetting, accessible, t
             )}
 
             <div className="space-y-3 mb-6">
-              {(['all', 'important', 'none'] as NotificationOption[]).map((option) => (
+              {(['all', 'important', 'none'] as NotificationOption[]).map((option, index) => (
                 <label
                   key={option}
                   className={`flex items-center space-x-3 p-3 rounded-lg cursor-pointer transition-colors ${
@@ -158,12 +159,14 @@ function BottomSheet({ isOpen, onClose, onConfirm, currentSetting, accessible, t
                   }`}
                 >
                   <input
+                    ref={index === 0 ? firstRadioRef : undefined}
                     type="radio"
                     name="notification"
                     value={option}
                     checked={selectedOption === option}
                     onChange={() => handleRadioChange(option)}
-                    className="sr-only"
+                    className={accessible ? "sr-only" : "sr-only"}
+                    tabIndex={accessible ? 0 : -1}
                   />
                   <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
                     selectedOption === option ? 'border-primary bg-primary' : 'border-muted-foreground'
