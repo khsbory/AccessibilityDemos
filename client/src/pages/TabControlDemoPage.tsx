@@ -160,7 +160,7 @@ function GoodTabControl() {
                 <span className="text-foreground">{item}</span>
                 <button
                   aria-pressed={isFavorite}
-                  aria-label={isFavorite ? `${item} 찜 취소하기` : `${item} 찜하기`}
+                  aria-label={`${item} 찜하기`}
                   onClick={() => toggleFavorite(item)}
                   className={`p-1 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
                     isFavorite
@@ -275,7 +275,7 @@ const { getTabProps, getTabListProps, getTabPanelProps } = useTabAccessibility({
         <span>{item}</span>
         <button
           aria-pressed={favorites.has(item)}
-          aria-label={isFavorite ? \`\${item} 찜 취소하기\` : \`\${item} 찜하기\`}
+          aria-label={\`\${item} 찜하기\`}
         >
           <Heart className="h-4 w-4" />
         </button>
@@ -296,7 +296,7 @@ const { getTabProps, getTabListProps, getTabPanelProps } = useTabAccessibility({
           "useTabAccessibility 훅으로 복잡한 ARIA 로직 간소화",
           "getTabProps, getTabListProps, getTabPanelProps로 속성 자동 적용",
           "aria-pressed로 토글 버튼 상태 명시",
-          "동적 aria-label로 버튼 상태에 따른 명확한 설명 제공 (찜하기/찜 취소하기)"
+          "aria-label은 '찜하기'로 고정, aria-pressed로 상태 구분"
         ]}
       />
 
