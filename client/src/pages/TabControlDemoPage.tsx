@@ -159,12 +159,14 @@ function GoodTabControl() {
         <ul className="space-y-2">
           {activeTabData.items.map((item) => {
             const isFavorite = favorites.has(item);
+            const itemId = `${activeTab}-${item.replace(/\s/g, '-')}`;
             return (
               <li key={item} className="flex items-center justify-between py-2 px-3 bg-muted/50 rounded">
-                <span className="text-foreground">{item}</span>
+                <span id={itemId} className="text-foreground">{item}</span>
                 <button
                   aria-pressed={isFavorite}
-                  aria-label={`${item} 찜하기`}
+                  aria-label="찜하기"
+                  aria-describedby={itemId}
                   onClick={() => toggleFavorite(item)}
                   className={`p-1 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
                     isFavorite
@@ -275,17 +277,21 @@ const { getTabProps, getTabListProps, getTabPanelProps } = useTabAccessibility({
 <!-- 탭 패널 - 훅으로 자동 관계 설정 -->
 <div {...getTabPanelProps(activeTab)}>
   <ul>
-    {activeTabData.items.map((item) => (
-      <li key={item}>
-        <span>{item}</span>
-        <button
-          aria-pressed={favorites.has(item)}
-          aria-label={\`\${item} 찜하기\`}
-        >
-          <Heart className="h-4 w-4" />
-        </button>
-      </li>
-    ))}
+    {activeTabData.items.map((item) => {
+      const itemId = \`\${activeTab}-\${item.replace(/\\s/g, '-')}\`;
+      return (
+        <li key={item}>
+          <span id={itemId}>{item}</span>
+          <button
+            aria-pressed={favorites.has(item)}
+            aria-label="찜하기"
+            aria-describedby={itemId}
+          >
+            <Heart className="h-4 w-4" />
+          </button>
+        </li>
+      );
+    })}
   </ul>
 </div>
 
@@ -301,7 +307,7 @@ const { getTabProps, getTabListProps, getTabPanelProps } = useTabAccessibility({
           "useTabAccessibility 훅으로 복잡한 ARIA 로직 간소화",
           "getTabProps, getTabListProps, getTabPanelProps로 속성 자동 적용",
           "aria-pressed로 토글 버튼 상태 명시",
-          "aria-label은 '찜하기'로 고정, aria-pressed로 상태 구분"
+          "aria-label은 '찜하기'로 고정, aria-describedby로 품목명 연결, aria-pressed로 상태 구분"
         ]}
       />
 
