@@ -153,6 +153,13 @@ This is a full-stack web application demonstrating web accessibility issues and 
 - June 29, 2025. Added new "모달 데모" category to header navigation with Settings icon
 - June 29, 2025. Implemented comprehensive ARIA attributes, keyboard navigation, and focus trap for modal accessibility
 - June 29, 2025. Updated notification settings demo to remove mobile-specific language, clarified as PC/mobile common demo
+- July 6, 2025. Created TabControlDemoPage with comprehensive ARIA implementation and keyboard navigation
+- July 6, 2025. Added new "탭 데모" category to header navigation with LayoutGrid icon
+- July 6, 2025. Implemented useTabAccessibility reusable React hook for automatic tab accessibility
+- July 6, 2025. Updated all role="presentation" to role="none" for better semantic clarity
+- July 6, 2025. Enhanced aria-label for favorite buttons to include "찜하기/찜 취소하기" distinction
+- July 6, 2025. Added copyable hook code section for developers to implement tab accessibility in their projects
+- July 6, 2025. Implemented WAI-ARIA compliant tab controls with arrow key navigation, Home/End support, and proper focus management
 
 ## User Preferences
 

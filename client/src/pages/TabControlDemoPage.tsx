@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Heart, HeartIcon } from "lucide-react";
 import { useDocumentTitle } from "@/hooks/use-document-title";
+import { useTabAccessibility } from "@/hooks/use-tab-accessibility";
 
 type TabId = "fruits" | "vegetables" | "meat";
 
@@ -99,14 +100,16 @@ function BadTabControl() {
   );
 }
 
-// Good Example: Full ARIA implementation with keyboard navigation
+// Good Example: Full ARIA implementation with keyboard navigation using reusable hook
 function GoodTabControl() {
   const [activeTab, setActiveTab] = useState<TabId>("fruits");
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
-  const tabRefs = useRef<Record<TabId, HTMLButtonElement | null>>({
-    fruits: null,
-    vegetables: null,
-    meat: null
+  
+  const tabIds = tabsData.map(tab => tab.id);
+  const { getTabProps, getTabListProps, getTabPanelProps } = useTabAccessibility({
+    tabIds,
+    activeTab,
+    onTabChange: setActiveTab
   });
 
   const toggleFavorite = (item: string) => {
@@ -121,54 +124,17 @@ function GoodTabControl() {
     });
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent, tabId: TabId) => {
-    const tabIds = tabsData.map(tab => tab.id);
-    const currentIndex = tabIds.indexOf(tabId);
-    let newIndex = currentIndex;
-
-    switch (e.key) {
-      case "ArrowRight":
-        e.preventDefault();
-        newIndex = (currentIndex + 1) % tabIds.length;
-        break;
-      case "ArrowLeft":
-        e.preventDefault();
-        newIndex = currentIndex === 0 ? tabIds.length - 1 : currentIndex - 1;
-        break;
-      case "Home":
-        e.preventDefault();
-        newIndex = 0;
-        break;
-      case "End":
-        e.preventDefault();
-        newIndex = tabIds.length - 1;
-        break;
-      default:
-        return;
-    }
-
-    const newTabId = tabIds[newIndex];
-    setActiveTab(newTabId);
-    tabRefs.current[newTabId]?.focus();
-  };
-
   const activeTabData = tabsData.find(tab => tab.id === activeTab)!;
 
   return (
     <div className="w-full max-w-md mx-auto bg-background border rounded-lg p-4">
       {/* Tab List with proper ARIA */}
-      <ul role="tablist" className="flex border-b mb-4">
+      <ul {...getTabListProps()} className="flex border-b mb-4">
         {tabsData.map((tab) => (
-          <li key={tab.id} role="presentation" className="flex-1">
+          <li key={tab.id} role="none" className="flex-1">
             <button
-              ref={(el) => tabRefs.current[tab.id] = el}
-              role="tab"
-              id={`tab-${tab.id}`}
-              aria-selected={activeTab === tab.id}
-              aria-controls={`panel-${tab.id}`}
-              tabIndex={activeTab === tab.id ? 0 : -1}
+              {...getTabProps(tab.id)}
               onClick={() => setActiveTab(tab.id)}
-              onKeyDown={(e) => handleKeyDown(e, tab.id)}
               className={`w-full py-2 px-4 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
                 activeTab === tab.id
                   ? "text-primary border-b-2 border-primary bg-primary/5"
@@ -183,12 +149,10 @@ function GoodTabControl() {
 
       {/* Tab Panel with proper ARIA */}
       <div
-        role="tabpanel"
-        id={`panel-${activeTab}`}
-        aria-labelledby={`tab-${activeTab}`}
+        {...getTabPanelProps(activeTab)}
         className="min-h-[200px]"
       >
-        <ul role="presentation" className="space-y-2">
+        <ul role="none" className="space-y-2">
           {activeTabData.items.map((item) => {
             const isFavorite = favorites.has(item);
             return (
@@ -196,7 +160,7 @@ function GoodTabControl() {
                 <span className="text-foreground">{item}</span>
                 <button
                   aria-pressed={isFavorite}
-                  aria-label={isFavorite ? `${item} 찜 취소` : `${item} 찜하기`}
+                  aria-label={isFavorite ? `${item} 찜 취소하기` : `${item} 찜하기`}
                   onClick={() => toggleFavorite(item)}
                   className={`p-1 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
                     isFavorite
@@ -231,7 +195,7 @@ export default function TabControlDemoPage() {
       description="탭 인터페이스의 키보드 네비게이션과 ARIA 속성 적용을 통한 접근성 개선사항을 비교해보세요."
     >
       <ProblemIntroSection
-        description="일반적인 탭 컨트롤은 마우스 클릭으로만 조작 가능하고, 보조기기가 탭과 패널의 관계를 인식하지 못하는 문제가 있습니다."
+        description="일반적인 탭컨트롤의 경우 선택됨 상태를 읽어주지 않거나 단순히 버튼으로만 읽어주고 있어 화면의 레이아웃을 이해하기 어려운 경우가 많습니다. 또한 키보드 접근성이 제대로 되어 있지 않아 어려움을 겪기도 합니다."
         problemList={problemList}
       />
 
@@ -281,20 +245,21 @@ export default function TabControlDemoPage() {
 - 찜하기 버튼 상태 정보 없음`
         }}
         goodExample={{
-          title: "접근성 적용 - 완전한 ARIA 구현",
-          code: `<!-- 탭 목록 - ARIA 완전 적용 -->
-<ul role="tablist" className="flex border-b mb-4">
+          title: "접근성 적용 - 범용 훅 사용",
+          code: `// 범용 탭 접근성 훅 사용
+const { getTabProps, getTabListProps, getTabPanelProps } = useTabAccessibility({
+  tabIds: tabsData.map(tab => tab.id),
+  activeTab,
+  onTabChange: setActiveTab
+});
+
+<!-- 탭 목록 - 훅으로 자동 ARIA 적용 -->
+<ul {...getTabListProps()} className="flex border-b mb-4">
   {tabsData.map((tab) => (
-    <li key={tab.id} role="presentation" className="flex-1">
+    <li key={tab.id} role="none" className="flex-1">
       <button
-        ref={(el) => tabRefs.current[tab.id] = el}
-        role="tab"
-        id={\`tab-\${tab.id}\`}
-        aria-selected={activeTab === tab.id}
-        aria-controls={\`panel-\${tab.id}\`}
-        tabIndex={activeTab === tab.id ? 0 : -1}
+        {...getTabProps(tab.id)}
         onClick={() => setActiveTab(tab.id)}
-        onKeyDown={(e) => handleKeyDown(e, tab.id)}
       >
         {tab.label}
       </button>
@@ -302,19 +267,15 @@ export default function TabControlDemoPage() {
   ))}
 </ul>
 
-<!-- 탭 패널 - 관계 명시 -->
-<div
-  role="tabpanel"
-  id={\`panel-\${activeTab}\`}
-  aria-labelledby={\`tab-\${activeTab}\`}
->
-  <ul role="presentation">
+<!-- 탭 패널 - 훅으로 자동 관계 설정 -->
+<div {...getTabPanelProps(activeTab)}>
+  <ul role="none">
     {activeTabData.items.map((item) => (
       <li key={item}>
         <span>{item}</span>
         <button
           aria-pressed={favorites.has(item)}
-          aria-label={isFavorite ? \`\${item} 찜 취소\` : \`\${item} 찜하기\`}
+          aria-label={isFavorite ? \`\${item} 찜 취소하기\` : \`\${item} 찜하기\`}
         >
           <Heart className="h-4 w-4" />
         </button>
@@ -323,26 +284,104 @@ export default function TabControlDemoPage() {
   </ul>
 </div>
 
-/* 키보드 내비게이션 */
-const handleKeyDown = (e, tabId) => {
-  switch (e.key) {
-    case "ArrowRight": // 다음 탭
-    case "ArrowLeft":  // 이전 탭  
-    case "Home":       // 첫 번째 탭
-    case "End":        // 마지막 탭
-  }
-}`
+/* 훅이 자동으로 처리하는 기능들 */
+- role="tablist", role="tab" 자동 적용
+- aria-selected, aria-controls, aria-labelledby 자동 설정  
+- tabindex 관리 (활성 탭: 0, 나머지: -1)
+- 키보드 내비게이션 (←→, Home/End) 자동 구현
+- 포커스 관리 자동 처리`
         }}
         guidelines={[
-          "role='tablist'로 탭 컨테이너 정의",
-          "role='tab'과 aria-selected로 각 탭의 상태 명시",
-          "aria-controls와 aria-labelledby로 탭과 패널 관계 연결",
-          "활성 탭만 tabindex='0', 나머지는 tabindex='-1'",
-          "화살표 키로 탭 간 이동, Home/End로 처음/끝 이동",
+          "role='none'으로 불필요한 목록 의미 제거 (presentation 대신)",
+          "useTabAccessibility 훅으로 복잡한 ARIA 로직 간소화",
+          "getTabProps, getTabListProps, getTabPanelProps로 속성 자동 적용",
           "aria-pressed로 토글 버튼 상태 명시",
-          "동적 aria-label로 버튼 상태에 따른 명확한 설명 제공"
+          "동적 aria-label로 버튼 상태에 따른 명확한 설명 제공 (찜하기/찜 취소하기)"
         ]}
       />
+
+      {/* 범용 훅 코드 복사 영역 */}
+      <DemoSection title="범용 탭 접근성 훅" icon={Heart} iconColor="text-blue-500">
+        <div className="bg-muted/50 rounded-lg p-4 mb-4">
+          <p className="text-sm text-muted-foreground mb-3">
+            아래 훅을 복사하여 프로젝트에서 사용하면 탭 접근성을 자동으로 구현할 수 있습니다.
+          </p>
+          <div className="bg-background border rounded p-4 text-xs font-mono overflow-x-auto">
+            <pre className="whitespace-pre-wrap">{`import { useRef, useCallback } from 'react';
+
+interface UseTabAccessibilityOptions {
+  tabIds: string[];
+  activeTab: string;
+  onTabChange: (tabId: string) => void;
+}
+
+/**
+ * 탭 접근성을 위한 범용 React 훅
+ * role="tablist"와 role="tab", aria-selected 마크업이 되어 있으면
+ * 자동으로 키보드 접근성을 추가해주는 훅입니다.
+ */
+export function useTabAccessibility({
+  tabIds,
+  activeTab,
+  onTabChange
+}: UseTabAccessibilityOptions) {
+  const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent, tabId: string) => {
+    const currentIndex = tabIds.indexOf(tabId);
+    let newIndex = currentIndex;
+
+    switch (e.key) {
+      case 'ArrowRight':
+        e.preventDefault();
+        newIndex = (currentIndex + 1) % tabIds.length;
+        break;
+      case 'ArrowLeft':
+        e.preventDefault();
+        newIndex = currentIndex === 0 ? tabIds.length - 1 : currentIndex - 1;
+        break;
+      case 'Home':
+        e.preventDefault();
+        newIndex = 0;
+        break;
+      case 'End':
+        e.preventDefault();
+        newIndex = tabIds.length - 1;
+        break;
+      default:
+        return;
+    }
+
+    const newTabId = tabIds[newIndex];
+    onTabChange(newTabId);
+    setTimeout(() => tabRefs.current[newTabId]?.focus(), 0);
+  }, [tabIds, onTabChange]);
+
+  const getTabProps = useCallback((tabId: string) => ({
+    ref: (el: HTMLButtonElement | null) => { tabRefs.current[tabId] = el; },
+    role: 'tab' as const,
+    id: \`tab-\${tabId}\`,
+    'aria-selected': activeTab === tabId,
+    'aria-controls': \`panel-\${tabId}\`,
+    tabIndex: activeTab === tabId ? 0 : -1,
+    onKeyDown: (e: React.KeyboardEvent) => handleKeyDown(e, tabId)
+  }), [activeTab, handleKeyDown]);
+
+  const getTabListProps = useCallback(() => ({
+    role: 'tablist' as const
+  }), []);
+
+  const getTabPanelProps = useCallback((tabId: string) => ({
+    role: 'tabpanel' as const,
+    id: \`panel-\${tabId}\`,
+    'aria-labelledby': \`tab-\${tabId}\`
+  }), []);
+
+  return { getTabProps, getTabListProps, getTabPanelProps };
+}`}</pre>
+          </div>
+        </div>
+      </DemoSection>
 
       <TestGuideSection
         testTitle="키보드와 스크린 리더로 테스트하기"
