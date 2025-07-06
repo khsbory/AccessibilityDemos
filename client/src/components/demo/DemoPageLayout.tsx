@@ -1,4 +1,4 @@
-import { useDocumentTitle } from "@/hooks/use-document-title";
+import { useEffect } from "react";
 
 interface DemoPageLayoutProps {
   title: string;
@@ -9,9 +9,17 @@ interface DemoPageLayoutProps {
 
 export default function DemoPageLayout({ title, description, children, setDocumentTitle = true }: DemoPageLayoutProps) {
   // 자동으로 페이지 타이틀 설정
-  if (setDocumentTitle) {
-    useDocumentTitle(title);
-  }
+  useEffect(() => {
+    if (setDocumentTitle) {
+      const prevTitle = document.title;
+      document.title = title;
+      
+      // 컴포넌트 언마운트 시 이전 타이틀로 복원
+      return () => {
+        document.title = prevTitle;
+      };
+    }
+  }, [title, setDocumentTitle]);
 
   return (
     <div>
