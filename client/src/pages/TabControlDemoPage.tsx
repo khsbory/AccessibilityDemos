@@ -7,7 +7,7 @@ import TestGuideSection from "@/components/demo/TestGuideSection";
 import ProblemIntroSection from "@/components/demo/ProblemIntroSection";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Heart, HeartIcon } from "lucide-react";
+import { Heart, HeartIcon, Copy, Check } from "lucide-react";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useTabAccessibility } from "@/hooks/use-tab-accessibility";
 
@@ -152,7 +152,7 @@ function GoodTabControl() {
         {...getTabPanelProps(activeTab)}
         className="min-h-[200px]"
       >
-        <ul role="none" className="space-y-2">
+        <ul className="space-y-2">
           {activeTabData.items.map((item) => {
             const isFavorite = favorites.has(item);
             return (
@@ -181,6 +181,8 @@ function GoodTabControl() {
 
 export default function TabControlDemoPage() {
   useDocumentTitle("탭 컨트롤 접근성");
+  const { toast } = useToast();
+  const [copied, setCopied] = useState(false);
 
   const problemList = [
     "키보드로 탭 간 이동이 불가능 (화살표 키, Home/End 키 미지원)",
@@ -269,7 +271,7 @@ const { getTabProps, getTabListProps, getTabPanelProps } = useTabAccessibility({
 
 <!-- 탭 패널 - 훅으로 자동 관계 설정 -->
 <div {...getTabPanelProps(activeTab)}>
-  <ul role="none">
+  <ul>
     {activeTabData.items.map((item) => (
       <li key={item}>
         <span>{item}</span>
@@ -303,9 +305,109 @@ const { getTabProps, getTabListProps, getTabPanelProps } = useTabAccessibility({
       {/* 범용 훅 코드 복사 영역 */}
       <DemoSection title="범용 탭 접근성 훅" icon={Heart} iconColor="text-blue-500">
         <div className="bg-muted/50 rounded-lg p-4 mb-4">
-          <p className="text-sm text-muted-foreground mb-3">
-            아래 훅을 복사하여 프로젝트에서 사용하면 탭 접근성을 자동으로 구현할 수 있습니다.
-          </p>
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-sm text-muted-foreground">
+              아래 훅을 복사하여 프로젝트에서 사용하면 탭 접근성을 자동으로 구현할 수 있습니다.
+            </p>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={async () => {
+                const hookCode = `import { useRef, useCallback } from 'react';
+
+interface UseTabAccessibilityOptions {
+  tabIds: string[];
+  activeTab: string;
+  onTabChange: (tabId: string) => void;
+}
+
+/**
+ * 탭 접근성을 위한 범용 React 훅
+ * role="tablist"와 role="tab", aria-selected 마크업이 되어 있으면
+ * 자동으로 키보드 접근성을 추가해주는 훅입니다.
+ */
+export function useTabAccessibility({
+  tabIds,
+  activeTab,
+  onTabChange
+}: UseTabAccessibilityOptions) {
+  const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent, tabId: string) => {
+    const currentIndex = tabIds.indexOf(tabId);
+    let newIndex = currentIndex;
+
+    switch (e.key) {
+      case 'ArrowRight':
+        e.preventDefault();
+        newIndex = (currentIndex + 1) % tabIds.length;
+        break;
+      case 'ArrowLeft':
+        e.preventDefault();
+        newIndex = currentIndex === 0 ? tabIds.length - 1 : currentIndex - 1;
+        break;
+      case 'Home':
+        e.preventDefault();
+        newIndex = 0;
+        break;
+      case 'End':
+        e.preventDefault();
+        newIndex = tabIds.length - 1;
+        break;
+      default:
+        return;
+    }
+
+    const newTabId = tabIds[newIndex];
+    onTabChange(newTabId);
+    setTimeout(() => tabRefs.current[newTabId]?.focus(), 0);
+  }, [tabIds, onTabChange]);
+
+  const getTabProps = useCallback((tabId: string) => ({
+    ref: (el: HTMLButtonElement | null) => { tabRefs.current[tabId] = el; },
+    role: 'tab' as const,
+    id: \`tab-\${tabId}\`,
+    'aria-selected': activeTab === tabId,
+    'aria-controls': \`panel-\${tabId}\`,
+    tabIndex: activeTab === tabId ? 0 : -1,
+    onKeyDown: (e: React.KeyboardEvent) => handleKeyDown(e, tabId)
+  }), [activeTab, handleKeyDown]);
+
+  const getTabListProps = useCallback(() => ({
+    role: 'tablist' as const
+  }), []);
+
+  const getTabPanelProps = useCallback((tabId: string) => ({
+    role: 'tabpanel' as const,
+    id: \`panel-\${tabId}\`,
+    'aria-labelledby': \`tab-\${tabId}\`
+  }), []);
+
+  return { getTabProps, getTabListProps, getTabPanelProps };
+}`;
+                
+                try {
+                  await navigator.clipboard.writeText(hookCode);
+                  setCopied(true);
+                  toast({
+                    title: "코드 복사 완료",
+                    description: "useTabAccessibility 훅 코드가 클립보드에 복사되었습니다."
+                  });
+                  setTimeout(() => setCopied(false), 2000);
+                } catch (err) {
+                  toast({
+                    title: "복사 실패",
+                    description: "코드 복사에 실패했습니다. 수동으로 복사해주세요.",
+                    variant: "destructive"
+                  });
+                }
+              }}
+              className="shrink-0"
+            >
+              {copied ? <Check className="h-4 w-4 mr-1" /> : <Copy className="h-4 w-4 mr-1" />}
+              {copied ? "복사됨" : "코드 복사"}
+            </Button>
+          </div>
           <div className="bg-background border rounded p-4 text-xs font-mono overflow-x-auto">
             <pre className="whitespace-pre-wrap">{`import { useRef, useCallback } from 'react';
 
