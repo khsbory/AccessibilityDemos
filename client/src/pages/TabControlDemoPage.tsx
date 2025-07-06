@@ -8,7 +8,7 @@ import ProblemIntroSection from "@/components/demo/ProblemIntroSection";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Heart, HeartIcon, Copy, Check } from "lucide-react";
-import { useDocumentTitle } from "@/hooks/use-document-title";
+
 import { useTabAccessibility } from "@/hooks/use-tab-accessibility";
 
 type TabId = "fruits" | "vegetables" | "meat";
@@ -106,10 +106,14 @@ function GoodTabControl() {
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   
   const tabIds = tabsData.map(tab => tab.id);
+  const handleTabChange = (tabId: string) => {
+    setActiveTab(tabId as TabId);
+  };
+  
   const { getTabProps, getTabListProps, getTabPanelProps } = useTabAccessibility({
     tabIds,
     activeTab,
-    onTabChange: setActiveTab
+    onTabChange: handleTabChange
   });
 
   const toggleFavorite = (item: string) => {
@@ -180,7 +184,6 @@ function GoodTabControl() {
 }
 
 export default function TabControlDemoPage() {
-  useDocumentTitle("탭 컨트롤 접근성");
   const { toast } = useToast();
   const [copied, setCopied] = useState(false);
 
