@@ -38,8 +38,8 @@ export default function InfiniteCarouselDemoPage() {
     "반려동물", "건강", "육아", "도서", "취미", "자동차", "여행"
   ];
 
-  // 무한 루프를 위해 카테고리를 5번 반복 (총 75개)
-  const categories = Array.from({ length: 5 }, (_, setIndex) => 
+  // 무한 루프를 위해 카테고리를 30번 반복 (총 450개) - Swiper 안정적 동작을 위해
+  const categories = Array.from({ length: 30 }, (_, setIndex) => 
     baseCategories.map((category, index) => ({
       id: setIndex * baseCategories.length + index,
       name: category,
@@ -69,17 +69,21 @@ export default function InfiniteCarouselDemoPage() {
     
     setAriaLive("polite");
     
-    // 7개씩 이전으로 이동
-    for (let i = 0; i < 7; i++) {
-      goodSwiperRef.current.slidePrev();
-    }
+    // 현재 realIndex에서 7개 그룹 이전으로 이동
+    const currentRealIndex = goodSwiperRef.current.realIndex;
+    const baseCategories = 15; // 기본 카테고리 수
+    const currentGroup = Math.floor((currentRealIndex % baseCategories) / 7);
+    const prevGroup = currentGroup > 0 ? currentGroup - 1 : Math.floor((baseCategories - 1) / 7);
+    const targetIndex = prevGroup * 7;
+    
+    goodSwiperRef.current.slideTo(targetIndex);
     
     setTimeout(() => setAriaLive("off"), 1000);
     
     // 포커스를 첫 번째 보이는 카테고리 버튼으로 이동
     setTimeout(() => {
-      const activeSlides = bottomSheetRef.current?.querySelectorAll('.swiper-slide-active, .swiper-slide-next, .swiper-slide-duplicate-active');
-      const firstVisibleButton = activeSlides?.[0]?.querySelector('button') as HTMLElement;
+      const activeSlide = bottomSheetRef.current?.querySelector('.swiper-slide-active');
+      const firstVisibleButton = activeSlide?.querySelector('button') as HTMLElement;
       firstVisibleButton?.focus();
     }, 300);
   };
@@ -89,17 +93,22 @@ export default function InfiniteCarouselDemoPage() {
     
     setAriaLive("polite");
     
-    // 7개씩 다음으로 이동
-    for (let i = 0; i < 7; i++) {
-      goodSwiperRef.current.slideNext();
-    }
+    // 현재 realIndex에서 7개 그룹 다음으로 이동
+    const currentRealIndex = goodSwiperRef.current.realIndex;
+    const baseCategories = 15; // 기본 카테고리 수
+    const currentGroup = Math.floor((currentRealIndex % baseCategories) / 7);
+    const totalGroups = Math.ceil(baseCategories / 7);
+    const nextGroup = currentGroup < totalGroups - 1 ? currentGroup + 1 : 0;
+    const targetIndex = nextGroup * 7;
+    
+    goodSwiperRef.current.slideTo(targetIndex);
     
     setTimeout(() => setAriaLive("off"), 1000);
     
     // 포커스를 첫 번째 보이는 카테고리 버튼으로 이동
     setTimeout(() => {
-      const activeSlides = bottomSheetRef.current?.querySelectorAll('.swiper-slide-active, .swiper-slide-next, .swiper-slide-duplicate-active');
-      const firstVisibleButton = activeSlides?.[0]?.querySelector('button') as HTMLElement;
+      const activeSlide = bottomSheetRef.current?.querySelector('.swiper-slide-active');
+      const firstVisibleButton = activeSlide?.querySelector('button') as HTMLElement;
       firstVisibleButton?.focus();
     }, 300);
   };
@@ -266,7 +275,7 @@ export default function InfiniteCarouselDemoPage() {
                   slidesPerGroup={1}
                   centeredSlides={false}
                   loop={true}
-                  loopedSlides={15} // 기본 카테고리 수만큼 설정
+                  loopAdditionalSlides={30} // 추가 슬라이드 수 설정
                   onSlideChange={(swiper) => {
                     if (accessible) {
                       setSelectedGoodCategory(swiper.realIndex);
@@ -284,7 +293,7 @@ export default function InfiniteCarouselDemoPage() {
                       <CategoryButton 
                         category={category} 
                         isActive={index === selectedIndex} 
-                        isInert={accessible && (index < Math.floor(selectedIndex / 7) * 7 || index >= (Math.floor(selectedIndex / 7) + 1) * 7)}
+                        isInert={accessible && (Math.floor((index % 15) / 7) !== Math.floor((selectedIndex % 15) / 7))}
                       />
                     </SwiperSlide>
                   ))}
@@ -320,7 +329,7 @@ export default function InfiniteCarouselDemoPage() {
                       현재 {selectedIndex + 1}번째 카테고리: {currentCategories[selectedIndex]?.name}
                     </span>
                     <div className="mt-1 text-xs">
-                      그룹 {Math.floor(selectedIndex / 7) + 1} / {Math.ceil(currentCategories.length / 7)}
+                      그룹 {Math.floor((selectedIndex % 15) / 7) + 1} / {Math.ceil(15 / 7)}
                     </div>
                   </div>
                 ) : (
