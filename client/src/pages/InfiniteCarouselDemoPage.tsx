@@ -71,7 +71,7 @@ export default function InfiniteCarouselDemoPage() {
     
     // slideToLoop를 사용하여 loop 모드에서 정확한 이동
     const currentIndex = goodSwiperRef.current.realIndex;
-    const totalItems = currentCategories.length; // 450개
+    const totalItems = categories.length; // 450개
     
     // 현재 위치에서 7개 이전으로 이동
     let targetIndex = currentIndex - 7;
@@ -99,7 +99,7 @@ export default function InfiniteCarouselDemoPage() {
     
     // slideToLoop를 사용하여 loop 모드에서 정확한 이동
     const currentIndex = goodSwiperRef.current.realIndex;
-    const totalItems = currentCategories.length; // 450개
+    const totalItems = categories.length; // 450개
     
     // 현재 위치에서 7개 다음으로 이동
     let targetIndex = currentIndex + 7;
