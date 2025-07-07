@@ -67,47 +67,53 @@ export default function InfiniteCarouselDemoPage() {
   const handlePrevClick = () => {
     if (!goodSwiperRef.current) return;
     
-    console.log('Before Prev - realIndex:', goodSwiperRef.current.realIndex, 'activeIndex:', goodSwiperRef.current.activeIndex);
-    
     setAriaLive("polite");
     
-    // slidesPerGroup이 7로 설정되어 있으므로 한 번의 호출로 7개씩 이동
-    goodSwiperRef.current.slidePrev();
+    const currentIndex = goodSwiperRef.current.realIndex;
+    // 현재 위치에서 7개 이전으로 이동
+    let targetIndex = currentIndex - 7;
+    if (targetIndex < 0) {
+      // 음수가 되면 끝에서부터 계산
+      targetIndex = categories.length + targetIndex;
+    }
     
-    setTimeout(() => {
-      console.log('After Prev - realIndex:', goodSwiperRef.current?.realIndex, 'activeIndex:', goodSwiperRef.current?.activeIndex);
-      setAriaLive("off");
-    }, 100);
+    console.log('Prev - current:', currentIndex, 'target:', targetIndex);
+    goodSwiperRef.current.slideTo(targetIndex, 300);
+    
+    setTimeout(() => setAriaLive("off"), 1000);
     
     // 포커스를 첫 번째 보이는 카테고리 버튼으로 이동
     setTimeout(() => {
       const activeSlide = bottomSheetRef.current?.querySelector('.swiper-slide-active');
       const firstVisibleButton = activeSlide?.querySelector('button') as HTMLElement;
       firstVisibleButton?.focus();
-    }, 300);
+    }, 400);
   };
 
   const handleNextClick = () => {
     if (!goodSwiperRef.current) return;
     
-    console.log('Before Next - realIndex:', goodSwiperRef.current.realIndex, 'activeIndex:', goodSwiperRef.current.activeIndex);
-    
     setAriaLive("polite");
     
-    // slidesPerGroup이 7로 설정되어 있으므로 한 번의 호출로 7개씩 이동
-    goodSwiperRef.current.slideNext();
+    const currentIndex = goodSwiperRef.current.realIndex;
+    // 현재 위치에서 7개 다음으로 이동
+    let targetIndex = currentIndex + 7;
+    if (targetIndex >= categories.length) {
+      // 전체 길이를 넘으면 처음부터
+      targetIndex = targetIndex - categories.length;
+    }
     
-    setTimeout(() => {
-      console.log('After Next - realIndex:', goodSwiperRef.current?.realIndex, 'activeIndex:', goodSwiperRef.current?.activeIndex);
-      setAriaLive("off");
-    }, 100);
+    console.log('Next - current:', currentIndex, 'target:', targetIndex);
+    goodSwiperRef.current.slideTo(targetIndex, 300);
+    
+    setTimeout(() => setAriaLive("off"), 1000);
     
     // 포커스를 첫 번째 보이는 카테고리 버튼으로 이동
     setTimeout(() => {
       const activeSlide = bottomSheetRef.current?.querySelector('.swiper-slide-active');
       const firstVisibleButton = activeSlide?.querySelector('button') as HTMLElement;
       firstVisibleButton?.focus();
-    }, 300);
+    }, 400);
   };
 
   const openBottomSheet = (demo: "bad" | "good") => {
@@ -265,12 +271,11 @@ export default function InfiniteCarouselDemoPage() {
                   modules={accessible ? [Navigation] : []}
                   spaceBetween={8}
                   slidesPerView={7}
-                  slidesPerGroup={7}
+                  slidesPerGroup={1}
                   centeredSlides={false}
                   loop={true}
                   initialSlide={0}
                   onSlideChange={(swiper) => {
-                    console.log('Slide Change - realIndex:', swiper.realIndex, 'activeIndex:', swiper.activeIndex);
                     if (accessible) {
                       setSelectedGoodCategory(swiper.realIndex);
                     } else {
