@@ -1,6 +1,7 @@
 import { useLocation } from "wouter";
+import { useEffect } from "react";
 import Header from "./Header";
-import { useDocumentTitle, PAGE_TITLES, createPageTitle } from "@/hooks/use-document-title";
+import { PAGE_TITLES, createPageTitle } from "@/hooks/use-document-title";
 import { Headphones } from "lucide-react";
 
 interface LayoutProps {
@@ -10,10 +11,18 @@ interface LayoutProps {
 export default function Layout({ children }: LayoutProps) {
   const [location] = useLocation();
   
-  // 현재 경로에 따른 페이지 타이틀 설정
-  const pageTitle = PAGE_TITLES[location];
-  const fullTitle = createPageTitle(pageTitle);
-  useDocumentTitle(fullTitle);
+  // DemoPageLayout이 있는 페이지는 해당 컴포넌트에서 타이틀을 설정하므로
+  // 데모 페이지가 아닌 경우에만 타이틀 설정
+  const isDemoPage = location.startsWith('/demos/');
+  const pageTitle = isDemoPage ? null : PAGE_TITLES[location];
+  const fullTitle = isDemoPage ? '' : createPageTitle(pageTitle);
+  
+  // 데모 페이지가 아닌 경우에만 타이틀 설정
+  useEffect(() => {
+    if (!isDemoPage && fullTitle) {
+      document.title = fullTitle;
+    }
+  }, [fullTitle, isDemoPage]);
 
   const handleScreenReaderSetupClick = () => {
     if (location === '/') {

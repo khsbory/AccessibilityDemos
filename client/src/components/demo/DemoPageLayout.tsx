@@ -13,7 +13,8 @@ export default function DemoPageLayout({ title, description, children, setDocume
   useEffect(() => {
     if (setDocumentTitle) {
       const prevTitle = document.title;
-      document.title = createPageTitle(title);
+      const newTitle = createPageTitle(title);
+      document.title = newTitle;
       
       // 컴포넌트 언마운트 시 이전 타이틀로 복원
       return () => {
