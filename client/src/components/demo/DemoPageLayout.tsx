@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { createPageTitle } from "@/hooks/use-document-title";
 
 interface DemoPageLayoutProps {
   title: string;
@@ -12,7 +13,7 @@ export default function DemoPageLayout({ title, description, children, setDocume
   useEffect(() => {
     if (setDocumentTitle) {
       const prevTitle = document.title;
-      document.title = title;
+      document.title = createPageTitle(title);
       
       // 컴포넌트 언마운트 시 이전 타이틀로 복원
       return () => {
