@@ -23,6 +23,7 @@ export default function InfiniteCarouselDemoPage() {
   const [ariaLive, setAriaLive] = useState<"off" | "polite">("off");
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [currentDemo, setCurrentDemo] = useState<"bad" | "good">("bad");
+  const [currentActiveIndex, setCurrentActiveIndex] = useState(0);
   const badSwiperRef = useRef<SwiperType>();
   const goodSwiperRef = useRef<SwiperType>();
   const prevButtonRef = useRef<HTMLButtonElement>(null);
@@ -64,44 +65,50 @@ export default function InfiniteCarouselDemoPage() {
 
   // 포커스 관리 함수들 (Good 버전용)
   const handlePrevClick = () => {
+    if (!goodSwiperRef.current) return;
+    
     setAriaLive("polite");
     
-    // 현재 그룹 인덱스 계산 (7개씩 그룹)
-    const currentGroupIndex = Math.floor(selectedGoodCategory / 7);
-    const prevGroupIndex = currentGroupIndex > 0 ? currentGroupIndex - 1 : Math.floor((categories.length - 1) / 7);
-    const targetSlideIndex = prevGroupIndex * 7;
+    // 7개씩 이전으로 이동
+    for (let i = 0; i < 7; i++) {
+      goodSwiperRef.current.slidePrev();
+    }
     
-    goodSwiperRef.current?.slideTo(targetSlideIndex);
     setTimeout(() => setAriaLive("off"), 1000);
     
     // 포커스를 첫 번째 보이는 카테고리 버튼으로 이동
     setTimeout(() => {
-      const firstVisibleButton = bottomSheetRef.current?.querySelector('.swiper-slide-active button') as HTMLElement;
+      const activeSlides = bottomSheetRef.current?.querySelectorAll('.swiper-slide-active, .swiper-slide-next, .swiper-slide-duplicate-active');
+      const firstVisibleButton = activeSlides?.[0]?.querySelector('button') as HTMLElement;
       firstVisibleButton?.focus();
-    }, 200);
+    }, 300);
   };
 
   const handleNextClick = () => {
+    if (!goodSwiperRef.current) return;
+    
     setAriaLive("polite");
     
-    // 현재 그룹 인덱스 계산 (7개씩 그룹)
-    const currentGroupIndex = Math.floor(selectedGoodCategory / 7);
-    const totalGroups = Math.ceil(categories.length / 7);
-    const nextGroupIndex = currentGroupIndex < totalGroups - 1 ? currentGroupIndex + 1 : 0;
-    const targetSlideIndex = nextGroupIndex * 7;
+    // 7개씩 다음으로 이동
+    for (let i = 0; i < 7; i++) {
+      goodSwiperRef.current.slideNext();
+    }
     
-    goodSwiperRef.current?.slideTo(targetSlideIndex);
     setTimeout(() => setAriaLive("off"), 1000);
     
     // 포커스를 첫 번째 보이는 카테고리 버튼으로 이동
     setTimeout(() => {
-      const firstVisibleButton = bottomSheetRef.current?.querySelector('.swiper-slide-active button') as HTMLElement;
+      const activeSlides = bottomSheetRef.current?.querySelectorAll('.swiper-slide-active, .swiper-slide-next, .swiper-slide-duplicate-active');
+      const firstVisibleButton = activeSlides?.[0]?.querySelector('button') as HTMLElement;
       firstVisibleButton?.focus();
-    }, 200);
+    }, 300);
   };
 
   const openBottomSheet = (demo: "bad" | "good") => {
     setCurrentDemo(demo);
+    setCurrentActiveIndex(0); // 활성 인덱스 초기화
+    setSelectedBadCategory(0);
+    setSelectedGoodCategory(0);
     setIsBottomSheetOpen(true);
   };
 
@@ -241,6 +248,7 @@ export default function InfiniteCarouselDemoPage() {
               
               <div className="relative">
                 <Swiper
+                  key={`${accessible ? 'good' : 'bad'}-${isBottomSheetOpen}`}
                   onBeforeInit={(swiper) => {
                     if (accessible) {
                       goodSwiperRef.current = swiper;
@@ -248,12 +256,17 @@ export default function InfiniteCarouselDemoPage() {
                       badSwiperRef.current = swiper;
                     }
                   }}
+                  onInit={(swiper) => {
+                    // 초기화 후 첫 번째 슬라이드로 이동
+                    swiper.slideTo(0, 0);
+                  }}
                   modules={accessible ? [Navigation] : []}
                   spaceBetween={8}
                   slidesPerView={7}
                   slidesPerGroup={1}
                   centeredSlides={false}
                   loop={true}
+                  loopedSlides={15} // 기본 카테고리 수만큼 설정
                   onSlideChange={(swiper) => {
                     if (accessible) {
                       setSelectedGoodCategory(swiper.realIndex);
@@ -302,9 +315,14 @@ export default function InfiniteCarouselDemoPage() {
               
               <div className="mt-4 text-center text-sm text-muted-foreground">
                 {accessible ? (
-                  <span aria-live="polite">
-                    현재 {selectedIndex + 1}번째 카테고리: {currentCategories[selectedIndex]?.name}
-                  </span>
+                  <div>
+                    <span aria-live="polite">
+                      현재 {selectedIndex + 1}번째 카테고리: {currentCategories[selectedIndex]?.name}
+                    </span>
+                    <div className="mt-1 text-xs">
+                      그룹 {Math.floor(selectedIndex / 7) + 1} / {Math.ceil(currentCategories.length / 7)}
+                    </div>
+                  </div>
                 ) : (
                   <span>
                     선택된 카테고리: {currentCategories[selectedIndex]?.name}
