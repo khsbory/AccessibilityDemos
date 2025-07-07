@@ -69,9 +69,20 @@ export default function InfiniteCarouselDemoPage() {
     
     setAriaLive("polite");
     
-    // slidesPerGroup이 7로 설정되어 있으므로 slidePrev 사용
-    console.log('Prev - current group:', Math.floor(goodSwiperRef.current.realIndex / 7));
-    goodSwiperRef.current.slidePrev();
+    const currentIndex = goodSwiperRef.current.realIndex;
+    const currentGroup = Math.floor(currentIndex / 7);
+    const targetGroup = currentGroup - 1;
+    const targetIndex = targetGroup * 7;
+    
+    console.log('Prev - current:', currentIndex, 'current group:', currentGroup, 'target group:', targetGroup);
+    
+    if (targetGroup < 0) {
+      // 처음에서 이전으로 가면 마지막 그룹으로
+      const lastGroup = Math.floor((categories.length - 1) / 7);
+      goodSwiperRef.current.slideTo(lastGroup * 7);
+    } else {
+      goodSwiperRef.current.slideTo(targetIndex);
+    }
     
     setTimeout(() => setAriaLive("off"), 1000);
     
@@ -88,9 +99,19 @@ export default function InfiniteCarouselDemoPage() {
     
     setAriaLive("polite");
     
-    // slidesPerGroup이 7로 설정되어 있으므로 slideNext 사용
-    console.log('Next - current group:', Math.floor(goodSwiperRef.current.realIndex / 7));
-    goodSwiperRef.current.slideNext();
+    const currentIndex = goodSwiperRef.current.realIndex;
+    const currentGroup = Math.floor(currentIndex / 7);
+    const targetGroup = currentGroup + 1;
+    const targetIndex = targetGroup * 7;
+    
+    console.log('Next - current:', currentIndex, 'current group:', currentGroup, 'target group:', targetGroup);
+    
+    if (targetIndex >= categories.length) {
+      // 마지막 그룹을 넘어가면 처음으로
+      goodSwiperRef.current.slideTo(0);
+    } else {
+      goodSwiperRef.current.slideTo(targetIndex);
+    }
     
     setTimeout(() => setAriaLive("off"), 1000);
     
@@ -257,7 +278,7 @@ export default function InfiniteCarouselDemoPage() {
                   modules={accessible ? [Navigation] : []}
                   spaceBetween={8}
                   slidesPerView={7}
-                  slidesPerGroup={7}
+                  slidesPerGroup={1}
                   centeredSlides={false}
                   loop={true}
                   loopAddBlankSlides={false}
