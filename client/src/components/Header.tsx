@@ -37,7 +37,8 @@ export default function Header() {
       title: '캐러셀 데모',
       icon: Images,
       items: [
-        { title: '모바일 캐러셀 접근성', href: '/demos/payment-carousel' }
+        { title: '모바일 캐러셀 접근성', href: '/demos/payment-carousel' },
+        { title: '무한 루프 캐러셀 접근성', href: '/demos/infinite-carousel' }
       ]
     },
     {

@@ -8,6 +8,7 @@ import HomePage from "@/pages/HomePage";
 import RadioDemoPage from "@/pages/RadioDemoPage";
 import CategoryRadioDemoPage from "@/pages/CategoryRadioDemoPage";
 import PaymentCarouselDemoPage from "@/pages/PaymentCarouselDemoPage";
+import InfiniteCarouselDemoPage from "@/pages/InfiniteCarouselDemoPage";
 import NotificationSettingsDemoPage from "@/pages/NotificationSettingsDemoPage";
 import TabControlDemoPage from "@/pages/TabControlDemoPage";
 import NotFound from "@/pages/not-found";
@@ -20,6 +21,7 @@ function Router() {
         <Route path="/demos/radio-auto-select" component={RadioDemoPage} />
         <Route path="/demos/category-radio" component={CategoryRadioDemoPage} />
         <Route path="/demos/payment-carousel" component={PaymentCarouselDemoPage} />
+        <Route path="/demos/infinite-carousel" component={InfiniteCarouselDemoPage} />
         <Route path="/demos/notification-settings" component={NotificationSettingsDemoPage} />
         <Route path="/demos/tab-control" component={TabControlDemoPage} />
         <Route component={NotFound} />
