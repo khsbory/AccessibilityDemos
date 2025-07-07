@@ -69,18 +69,9 @@ export default function InfiniteCarouselDemoPage() {
     
     setAriaLive("polite");
     
-    // slideToLoop를 사용하여 loop 모드에서 정확한 이동
-    const currentIndex = goodSwiperRef.current.realIndex;
-    const totalItems = categories.length; // 450개
-    
-    // 현재 위치에서 7개 이전으로 이동
-    let targetIndex = currentIndex - 7;
-    if (targetIndex < 0) {
-      targetIndex = totalItems + targetIndex;
-    }
-    
-    console.log('Prev - current:', currentIndex, 'target:', targetIndex, 'total:', totalItems);
-    goodSwiperRef.current.slideToLoop(targetIndex, 300);
+    // slidesPerGroup이 7로 설정되어 있으므로 slidePrev 사용
+    console.log('Prev - current group:', Math.floor(goodSwiperRef.current.realIndex / 7));
+    goodSwiperRef.current.slidePrev();
     
     setTimeout(() => setAriaLive("off"), 1000);
     
@@ -97,18 +88,9 @@ export default function InfiniteCarouselDemoPage() {
     
     setAriaLive("polite");
     
-    // slideToLoop를 사용하여 loop 모드에서 정확한 이동
-    const currentIndex = goodSwiperRef.current.realIndex;
-    const totalItems = categories.length; // 450개
-    
-    // 현재 위치에서 7개 다음으로 이동
-    let targetIndex = currentIndex + 7;
-    if (targetIndex >= totalItems) {
-      targetIndex = targetIndex % totalItems;
-    }
-    
-    console.log('Next - current:', currentIndex, 'target:', targetIndex, 'total:', totalItems);
-    goodSwiperRef.current.slideToLoop(targetIndex, 300);
+    // slidesPerGroup이 7로 설정되어 있으므로 slideNext 사용
+    console.log('Next - current group:', Math.floor(goodSwiperRef.current.realIndex / 7));
+    goodSwiperRef.current.slideNext();
     
     setTimeout(() => setAriaLive("off"), 1000);
     
@@ -265,7 +247,7 @@ export default function InfiniteCarouselDemoPage() {
               <div className="relative">
                 <Swiper
                   key={`${accessible ? 'good' : 'bad'}-carousel`}
-                  onBeforeInit={(swiper) => {
+                  onSwiper={(swiper) => {
                     if (accessible) {
                       goodSwiperRef.current = swiper;
                     } else {
@@ -275,10 +257,13 @@ export default function InfiniteCarouselDemoPage() {
                   modules={accessible ? [Navigation] : []}
                   spaceBetween={8}
                   slidesPerView={7}
-                  slidesPerGroup={1}
+                  slidesPerGroup={7}
                   centeredSlides={false}
                   loop={true}
+                  loopAddBlankSlides={false}
                   initialSlide={0}
+                  observer={true}
+                  observeParents={true}
                   onSlideChange={(swiper) => {
                     if (accessible) {
                       setSelectedGoodCategory(swiper.realIndex);
