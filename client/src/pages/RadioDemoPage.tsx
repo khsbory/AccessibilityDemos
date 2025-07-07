@@ -3,14 +3,18 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Calendar } from "lucide-react";
+import { Calendar, Copy, Check, Code } from "lucide-react";
 import DemoPageLayout from "@/components/demo/DemoPageLayout";
 import ProblemIntroSection from "@/components/demo/ProblemIntroSection";
 import ExampleSection from "@/components/demo/ExampleSection";
 import TestGuideSection from "@/components/demo/TestGuideSection";
 import CodeExampleSection from "@/components/demo/CodeExampleSection";
+import DemoSection from "@/components/demo/DemoSection";
+import { useToast } from "@/hooks/use-toast";
 
 export default function RadioDemoPage() {
+  const { toast } = useToast();
+  const [copied, setCopied] = useState(false);
   const [badSheetOpen, setBadSheetOpen] = useState(false);
   const [goodSheetOpen, setGoodSheetOpen] = useState(false);
   const [badSelectedPeriod, setBadSelectedPeriod] = useState("");
@@ -263,6 +267,290 @@ export default function RadioDemoPage() {
           "ARIA 없이도 모든 스크린 리더에서 완벽 지원"
         ]}
       />
+
+      <DemoSection
+        title="범용 라디오 버튼 접근성 훅"
+        icon={Code}
+      >
+        <div className="space-y-4">
+          <p className="text-muted-foreground mb-4">
+            위에서 구현한 라디오 버튼 키보드 접근성 로직을 범용 React 훅으로 추출했습니다. 이 훅을 사용하면 모든 라디오 버튼 그룹에서 동일한 접근성 기능을 쉽게 적용할 수 있습니다.
+          </p>
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-semibold">useRadioAccessibility 훅</h3>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={async () => {
+                const hookCode = `import { useRef, useCallback } from 'react';
+
+interface UseRadioAccessibilityOptions {
+  radioIds: string[];
+  selectedValue: string;
+  onValueChange: (value: string) => void;
+  name: string;
+}
+
+/**
+ * 라디오 버튼 접근성을 위한 범용 React 훅
+ * 마우스 클릭과 키보드 입력을 구분하여 처리하고,
+ * 화살표 키 네비게이션과 스페이스바 선택 기능을 제공합니다.
+ * 
+ * @param radioIds - 라디오 버튼 ID 목록
+ * @param selectedValue - 현재 선택된 값
+ * @param onValueChange - 값 변경 핸들러
+ * @param name - 라디오 버튼 그룹 name 속성
+ */
+export function useRadioAccessibility({
+  radioIds,
+  selectedValue,
+  onValueChange,
+  name
+}: UseRadioAccessibilityOptions) {
+  const radioRefs = useRef<Record<string, HTMLInputElement | null>>({});
+
+  /**
+   * 키보드 이벤트 핸들러
+   * 화살표 키로 포커스 이동, 스페이스바로 선택
+   */
+  const handleKeyDown = useCallback((e: React.KeyboardEvent, value: string) => {
+    const currentIndex = radioIds.indexOf(value);
+    let newIndex = currentIndex;
+
+    // 화살표 키 기본 동작 차단 및 포커스 이동
+    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // 다음 인덱스 계산 (순환)
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+        newIndex = (currentIndex + 1) % radioIds.length;
+      } else {
+        newIndex = currentIndex === 0 ? radioIds.length - 1 : currentIndex - 1;
+      }
+      
+      // 포커스 이동 (선택하지 않음)
+      const nextElement = radioRefs.current[radioIds[newIndex]];
+      nextElement?.focus();
+    }
+    // 스페이스바로만 선택
+    else if (e.key === ' ') {
+      e.preventDefault();
+      onValueChange(value);
+    }
+  }, [radioIds, onValueChange]);
+
+  /**
+   * 변경 이벤트 핸들러
+   * 마우스 클릭과 키보드 입력을 구분하여 처리
+   */
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>, value: string) => {
+    // 마우스 클릭인지 키보드인지 구분
+    if (e.nativeEvent instanceof MouseEvent) {
+      // 마우스 클릭은 허용
+      onValueChange(value);
+    }
+    // 키보드 이벤트는 onKeyDown에서 처리
+  }, [onValueChange]);
+
+  /**
+   * 라디오 버튼에 적용할 props 생성
+   */
+  const getRadioProps = useCallback((value: string, id: string) => ({
+    ref: (el: HTMLInputElement | null) => { radioRefs.current[value] = el; },
+    type: 'radio' as const,
+    name,
+    value,
+    id,
+    checked: selectedValue === value,
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, value),
+    onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => handleKeyDown(e, value),
+    className: "w-4 h-4 text-primary border-2 border-primary focus:ring-2 focus:ring-primary focus:ring-offset-2"
+  }), [selectedValue, name, handleChange, handleKeyDown]);
+
+  return { getRadioProps };
+}
+
+// 사용 예시:
+const MyRadioGroup = () => {
+  const [selectedValue, setSelectedValue] = useState("");
+  const radioIds = ["option1", "option2", "option3"];
+  
+  const { getRadioProps } = useRadioAccessibility({
+    radioIds,
+    selectedValue,
+    onValueChange: setSelectedValue,
+    name: "my-radio-group"
+  });
+
+  return (
+    <fieldset>
+      <legend>옵션을 선택하세요</legend>
+      <div className="space-y-2">
+        <div>
+          <input {...getRadioProps("option1", "radio-option1")} />
+          <label htmlFor="radio-option1">옵션 1</label>
+        </div>
+        <div>
+          <input {...getRadioProps("option2", "radio-option2")} />
+          <label htmlFor="radio-option2">옵션 2</label>
+        </div>
+        <div>
+          <input {...getRadioProps("option3", "radio-option3")} />
+          <label htmlFor="radio-option3">옵션 3</label>
+        </div>
+      </div>
+    </fieldset>
+  );
+};`;
+                
+                try {
+                  await navigator.clipboard.writeText(hookCode);
+                  setCopied(true);
+                  toast({
+                    title: "코드 복사 완료",
+                    description: "useRadioAccessibility 훅 코드가 클립보드에 복사되었습니다."
+                  });
+                  setTimeout(() => setCopied(false), 2000);
+                } catch (err) {
+                  toast({
+                    title: "복사 실패",
+                    description: "코드 복사에 실패했습니다. 수동으로 복사해주세요.",
+                    variant: "destructive"
+                  });
+                }
+              }}
+              className="shrink-0"
+            >
+              {copied ? <Check className="h-4 w-4 mr-1" /> : <Copy className="h-4 w-4 mr-1" />}
+              {copied ? "복사됨" : "코드 복사"}
+            </Button>
+          </div>
+          <div className="bg-background border rounded p-4 text-xs font-mono overflow-x-auto">
+            <pre className="whitespace-pre-wrap">{`import { useRef, useCallback } from 'react';
+
+interface UseRadioAccessibilityOptions {
+  radioIds: string[];
+  selectedValue: string;
+  onValueChange: (value: string) => void;
+  name: string;
+}
+
+/**
+ * 라디오 버튼 접근성을 위한 범용 React 훅
+ * 마우스 클릭과 키보드 입력을 구분하여 처리하고,
+ * 화살표 키 네비게이션과 스페이스바 선택 기능을 제공합니다.
+ * 
+ * @param radioIds - 라디오 버튼 ID 목록
+ * @param selectedValue - 현재 선택된 값
+ * @param onValueChange - 값 변경 핸들러
+ * @param name - 라디오 버튼 그룹 name 속성
+ */
+export function useRadioAccessibility({
+  radioIds,
+  selectedValue,
+  onValueChange,
+  name
+}: UseRadioAccessibilityOptions) {
+  const radioRefs = useRef<Record<string, HTMLInputElement | null>>({});
+
+  /**
+   * 키보드 이벤트 핸들러
+   * 화살표 키로 포커스 이동, 스페이스바로 선택
+   */
+  const handleKeyDown = useCallback((e: React.KeyboardEvent, value: string) => {
+    const currentIndex = radioIds.indexOf(value);
+    let newIndex = currentIndex;
+
+    // 화살표 키 기본 동작 차단 및 포커스 이동
+    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // 다음 인덱스 계산 (순환)
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+        newIndex = (currentIndex + 1) % radioIds.length;
+      } else {
+        newIndex = currentIndex === 0 ? radioIds.length - 1 : currentIndex - 1;
+      }
+      
+      // 포커스 이동 (선택하지 않음)
+      const nextElement = radioRefs.current[radioIds[newIndex]];
+      nextElement?.focus();
+    }
+    // 스페이스바로만 선택
+    else if (e.key === ' ') {
+      e.preventDefault();
+      onValueChange(value);
+    }
+  }, [radioIds, onValueChange]);
+
+  /**
+   * 변경 이벤트 핸들러
+   * 마우스 클릭과 키보드 입력을 구분하여 처리
+   */
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>, value: string) => {
+    // 마우스 클릭인지 키보드인지 구분
+    if (e.nativeEvent instanceof MouseEvent) {
+      // 마우스 클릭은 허용
+      onValueChange(value);
+    }
+    // 키보드 이벤트는 onKeyDown에서 처리
+  }, [onValueChange]);
+
+  /**
+   * 라디오 버튼에 적용할 props 생성
+   */
+  const getRadioProps = useCallback((value: string, id: string) => ({
+    ref: (el: HTMLInputElement | null) => { radioRefs.current[value] = el; },
+    type: 'radio' as const,
+    name,
+    value,
+    id,
+    checked: selectedValue === value,
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, value),
+    onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => handleKeyDown(e, value),
+    className: "w-4 h-4 text-primary border-2 border-primary focus:ring-2 focus:ring-primary focus:ring-offset-2"
+  }), [selectedValue, name, handleChange, handleKeyDown]);
+
+  return { getRadioProps };
+}
+
+// 사용 예시:
+const MyRadioGroup = () => {
+  const [selectedValue, setSelectedValue] = useState("");
+  const radioIds = ["option1", "option2", "option3"];
+  
+  const { getRadioProps } = useRadioAccessibility({
+    radioIds,
+    selectedValue,
+    onValueChange: setSelectedValue,
+    name: "my-radio-group"
+  });
+
+  return (
+    <fieldset>
+      <legend>옵션을 선택하세요</legend>
+      <div className="space-y-2">
+        <div>
+          <input {...getRadioProps("option1", "radio-option1")} />
+          <label htmlFor="radio-option1">옵션 1</label>
+        </div>
+        <div>
+          <input {...getRadioProps("option2", "radio-option2")} />
+          <label htmlFor="radio-option2">옵션 2</label>
+        </div>
+        <div>
+          <input {...getRadioProps("option3", "radio-option3")} />
+          <label htmlFor="radio-option3">옵션 3</label>
+        </div>
+      </div>
+    </fieldset>
+  );
+};`}</pre>
+          </div>
+        </div>
+      </DemoSection>
     </DemoPageLayout>
   );
 }
