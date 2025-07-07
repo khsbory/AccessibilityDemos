@@ -167,7 +167,7 @@ This is a full-stack web application demonstrating web accessibility issues and 
 - July 7, 2025. Implemented inert attribute for hidden category groups and focus management to first visible category after navigation
 - July 7, 2025. Fixed group-based slide navigation logic with proper group index calculation for infinite loop carousel
 - July 7, 2025. Added "무한 루프 캐러셀 접근성" to carousel demo category in header navigation
-- July 7, 2025. Increased category duplication from 75 to 450 items (30 sets × 15 categories) for stable Swiper loop mode
+- July 7, 2025. Adjusted category duplication to 420 items (28 sets × 15 categories) to match slidesPerGroup of 7
 - July 7, 2025. Implemented realIndex-based group navigation with modulo calculation for proper 7-item group cycling
 - July 7, 2025. Fixed inert logic to work with base category groups (15 items) instead of total duplicated items
 

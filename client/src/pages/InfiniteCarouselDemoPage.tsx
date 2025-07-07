@@ -38,8 +38,8 @@ export default function InfiniteCarouselDemoPage() {
     "반려동물", "건강", "육아", "도서", "취미", "자동차", "여행"
   ];
 
-  // 무한 루프를 위해 카테고리를 30번 반복 (총 450개) - Swiper 안정적 동작을 위해
-  const categories = Array.from({ length: 30 }, (_, setIndex) => 
+  // 무한 루프를 위해 카테고리를 28번 반복 (총 420개) - slidesPerGroup 7의 배수로 맞춤
+  const categories = Array.from({ length: 28 }, (_, setIndex) => 
     baseCategories.map((category, index) => ({
       id: setIndex * baseCategories.length + index,
       name: category,
