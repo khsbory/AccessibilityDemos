@@ -160,6 +160,13 @@ This is a full-stack web application demonstrating web accessibility issues and 
 - July 6, 2025. Enhanced aria-label for favorite buttons to include "찜하기/찜 취소하기" distinction
 - July 6, 2025. Added copyable hook code section for developers to implement tab accessibility in their projects
 - July 6, 2025. Implemented WAI-ARIA compliant tab controls with arrow key navigation, Home/End support, and proper focus management
+- July 7, 2025. Created InfiniteCarouselDemoPage with infinite loop category carousel using 75 shopping categories (15 base categories × 5 sets)
+- July 7, 2025. Implemented bottom sheet modal with accessibility applied/unapplied versions for infinite carousel comparison
+- July 7, 2025. Added 7 categories per view with group-based navigation using slideTo method for precise slide positioning
+- July 7, 2025. Applied a11y={false} for both accessible and inaccessible versions to maintain consistent manual accessibility control
+- July 7, 2025. Implemented inert attribute for hidden category groups and focus management to first visible category after navigation
+- July 7, 2025. Fixed group-based slide navigation logic with proper group index calculation for infinite loop carousel
+- July 7, 2025. Added "무한 루프 캐러셀 접근성" to carousel demo category in header navigation
 
 ## User Preferences
 
