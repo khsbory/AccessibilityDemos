@@ -69,16 +69,18 @@ export default function InfiniteCarouselDemoPage() {
     
     setAriaLive("polite");
     
+    // slideToLoop를 사용하여 loop 모드에서 정확한 이동
     const currentIndex = goodSwiperRef.current.realIndex;
+    const totalItems = currentCategories.length; // 450개
+    
     // 현재 위치에서 7개 이전으로 이동
     let targetIndex = currentIndex - 7;
     if (targetIndex < 0) {
-      // 음수가 되면 끝에서부터 계산
-      targetIndex = categories.length + targetIndex;
+      targetIndex = totalItems + targetIndex;
     }
     
-    console.log('Prev - current:', currentIndex, 'target:', targetIndex);
-    goodSwiperRef.current.slideTo(targetIndex, 300);
+    console.log('Prev - current:', currentIndex, 'target:', targetIndex, 'total:', totalItems);
+    goodSwiperRef.current.slideToLoop(targetIndex, 300);
     
     setTimeout(() => setAriaLive("off"), 1000);
     
@@ -95,16 +97,18 @@ export default function InfiniteCarouselDemoPage() {
     
     setAriaLive("polite");
     
+    // slideToLoop를 사용하여 loop 모드에서 정확한 이동
     const currentIndex = goodSwiperRef.current.realIndex;
+    const totalItems = currentCategories.length; // 450개
+    
     // 현재 위치에서 7개 다음으로 이동
     let targetIndex = currentIndex + 7;
-    if (targetIndex >= categories.length) {
-      // 전체 길이를 넘으면 처음부터
-      targetIndex = targetIndex - categories.length;
+    if (targetIndex >= totalItems) {
+      targetIndex = targetIndex % totalItems;
     }
     
-    console.log('Next - current:', currentIndex, 'target:', targetIndex);
-    goodSwiperRef.current.slideTo(targetIndex, 300);
+    console.log('Next - current:', currentIndex, 'target:', targetIndex, 'total:', totalItems);
+    goodSwiperRef.current.slideToLoop(targetIndex, 300);
     
     setTimeout(() => setAriaLive("off"), 1000);
     
