@@ -11,6 +11,7 @@ import PaymentCarouselDemoPage from "@/pages/PaymentCarouselDemoPage";
 import InfiniteCarouselDemoPage from "@/pages/InfiniteCarouselDemoPage";
 import NotificationSettingsDemoPage from "@/pages/NotificationSettingsDemoPage";
 import TabControlDemoPage from "@/pages/TabControlDemoPage";
+import FocusManagementDemoPage from "@/pages/FocusManagementDemoPage";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -24,6 +25,7 @@ function Router() {
         <Route path="/demos/infinite-carousel" component={InfiniteCarouselDemoPage} />
         <Route path="/demos/notification-settings" component={NotificationSettingsDemoPage} />
         <Route path="/demos/tab-control" component={TabControlDemoPage} />
+        <Route path="/demos/focus-management" component={FocusManagementDemoPage} />
         <Route component={NotFound} />
       </Switch>
     </Layout>

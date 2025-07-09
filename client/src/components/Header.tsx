@@ -3,7 +3,7 @@ import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Menu, Accessibility, ChevronDown, RadioIcon, Images, ArrowRight, Settings, LayoutGrid } from "lucide-react";
+import { Menu, Accessibility, ChevronDown, RadioIcon, Images, ArrowRight, Settings, LayoutGrid, Focus } from "lucide-react";
 import { motion } from "framer-motion";
 import { skipToMainContent } from "@/lib/focus-utils";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -55,6 +55,14 @@ export default function Header() {
       icon: LayoutGrid,
       items: [
         { title: '탭 컨트롤 키보드 접근성', href: '/demos/tab-control' }
+      ]
+    },
+    {
+      id: 'focus',
+      title: '초점',
+      icon: Focus,
+      items: [
+        { title: '초점 관리하기', href: '/demos/focus-management' }
       ]
     }
   ];
