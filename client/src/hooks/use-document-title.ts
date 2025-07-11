@@ -22,7 +22,7 @@ export const PAGE_TITLES: Record<string, string> = {
   "/": "소개",
   "/demos/radio-auto-select": "라디오버튼 자동 선택 문제",
   "/demos/category-radio": "카테고리 라디오버튼",
-  "/demos/payment-carousel": "모바일 캐러셀 접근성",
+  "/demos/payment-carousel": "모바일에서의 결제 카드 변경 데모",
   "/demos/notification-settings": "알림 설정 바텀 시트"
 };
 

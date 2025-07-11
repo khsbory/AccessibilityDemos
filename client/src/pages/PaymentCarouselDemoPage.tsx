@@ -89,8 +89,8 @@ export default function PaymentCarouselDemoPage() {
   };
 
   return (
-    <DemoPageLayout 
-      title="모바일 캐러셀 접근성"
+          <DemoPageLayout 
+        title="모바일에서의 결제 카드 변경 데모"
       description="모바일 캐러셀에서는 일반적으로 스와이프만 제공하고 버튼을 두지 않습니다. 하지만 이렇게 되면 스크린 리더 사용자나 손이 불편한 사용자는 슬라이드를 넘길 수 없는 문제가 발생합니다."
     >
       <ProblemIntroSection 
@@ -149,7 +149,9 @@ export default function PaymentCarouselDemoPage() {
               slidesPerView={1.2}
               centeredSlides={true}
               onSlideChange={(swiper) => setSelectedGoodCard(swiper.activeIndex)}
-              a11y={false}
+              a11y={{
+                enabled: false
+              }}
               className="payment-swiper-good"
               aria-live={ariaLive}
               aria-label="결제 수단 캐러셀"
