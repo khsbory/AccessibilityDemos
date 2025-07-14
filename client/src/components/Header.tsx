@@ -141,6 +141,22 @@ export default function Header() {
             </span>
           </Link>
           
+          {/* 소개 메뉴 아래에 릴리즈 노트 메뉴 추가 */}
+          <Link 
+            href="/release-notes" 
+            onClick={onItemClick} 
+            className={mobile ? "w-full text-decoration-none" : "text-decoration-none"}
+            aria-current={isActive("/release-notes") ? "page" : undefined}
+          >
+            <span 
+              className={mobile
+                ? `block w-full py-2 px-3 rounded-md text-left ${isActive("/release-notes") ? "text-primary bg-primary/10" : "text-foreground hover:text-primary hover:bg-muted"} transition-colors cursor-pointer`
+                : `py-2 px-3 rounded-md ${isActive("/release-notes") ? "text-primary bg-primary/10" : "text-foreground hover:text-primary hover:bg-muted"} transition-colors cursor-pointer`}
+            >
+              릴리즈 노트
+            </span>
+          </Link>
+
           {getVisibleDemos(isMobile).map((demo) => (
             <div key={demo.id} className="w-full">
               <Collapsible open={expandedDemo === demo.id} onOpenChange={() => toggleDemo(demo.id)}>
@@ -209,6 +225,19 @@ export default function Header() {
           </span>
         </Link>
         
+        {/* 소개 메뉴 아래에 릴리즈 노트 메뉴 추가 */}
+        <Link 
+          href="/release-notes" 
+          className="text-decoration-none"
+          aria-current={isActive("/release-notes") ? "page" : undefined}
+        >
+          <span 
+            className={`py-2 px-3 rounded-md ${isActive("/release-notes") ? "text-primary bg-primary/10" : "text-foreground hover:text-primary hover:bg-muted"} transition-colors cursor-pointer`}
+          >
+            릴리즈 노트
+          </span>
+        </Link>
+
         {getVisibleDemos(isMobile).map((demo) => (
           <div key={demo.id} className="relative">
             <button 

@@ -13,6 +13,7 @@ import NotificationSettingsDemoPage from "@/pages/NotificationSettingsDemoPage";
 import TabControlDemoPage from "@/pages/TabControlDemoPage";
 import FocusManagementDemoPage from "@/pages/FocusManagementDemoPage";
 import NotFound from "@/pages/not-found";
+import ReleaseNotesPage from "@/pages/ReleaseNotesPage";
 
 function Router() {
   return (
@@ -26,6 +27,7 @@ function Router() {
         <Route path="/demos/notification-settings" component={NotificationSettingsDemoPage} />
         <Route path="/demos/tab-control" component={TabControlDemoPage} />
         <Route path="/demos/focus-management" component={FocusManagementDemoPage} />
+        <Route path="/release-notes" component={ReleaseNotesPage} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
