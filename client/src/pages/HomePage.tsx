@@ -218,14 +218,26 @@ export default function HomePage() {
                       다운로드
                     </a>
                   </p>
-                  <div className="bg-muted p-4 rounded-lg">
-                    <p className="font-medium mb-2">설치 방법:</p>
+                  {/* 자막 애드온 설치 안내 섹션 추가 */}
+                  <div className="bg-muted p-4 rounded-lg mt-3">
+                    <p className="font-medium mb-2">자막 애드온 설치 방법:</p>
                     <ol className="list-decimal list-inside space-y-1 text-sm">
-                      <li>보이스위드를 먼저 설치</li>
-                      <li>보이스위드 실행한 상태로 해당 추가 기능을 설치</li>
-                      <li>작업 표시줄에서 보이스위드 아이콘을 눌러 환경 설정 → 설정 메뉴를 열기</li>
-                      <li>Speech Caption 카테고리에서 자막 켜기를 체크</li>
+                      <li>먼저 보이스위드를 실행하세요.</li>
+                      <li>위의 다운로드 링크에서 애드온 파일을 받은 후, 해당 파일을 더블 클릭하여 설치를 진행하세요.</li>
                     </ol>
+                  </div>
+
+                  {/* 보이스위드 종료 방법 안내 수정 */}
+                  <div className="mt-6">
+                    <strong className="block text-base font-semibold mb-2">보이스위드 종료 방법</strong>
+                    <ul className="list-disc list-inside text-sm space-y-1">
+                      <li>보이스위드는 화면 상에 별도의 메뉴가 없으며, 트레이 아이콘(작업표시줄 우측 하단)에서 보이스위드 아이콘을 눌러야 메뉴가 표시됩니다.</li>
+                      <li>오른쪽 하단 <b>작업표시줄(트레이) 아이콘</b> 영역을 확인하세요.</li>
+                      <li>숨겨진 아이콘 표시(∧)를 클릭해 <b>보이스위드 아이콘</b>을 찾습니다.</li>
+                      <li>보이스위드 아이콘을 <b>마우스 왼쪽 버튼</b>으로 클릭하면 메뉴가 펼쳐집니다.</li>
+                      <li>메뉴에서 <b>보이스위드 종료</b> 항목을 선택하면 프로그램이 완전히 종료됩니다.</li>
+                    </ul>
+                    <p className="text-xs text-muted-foreground mt-2">※ 트레이 아이콘(작업표시줄 우측 하단)은 '트레이 아이콘', '숨겨진 아이콘', '알림 영역' 등으로 불리기도 합니다.</p>
                   </div>
                 </div>
               </div>
