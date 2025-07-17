@@ -29,7 +29,8 @@ export default function Header() {
       icon: RadioIcon,
       items: [
         { title: '라디오 버튼 자동 선택 이슈', href: '/demos/radio-auto-select' },
-        { title: '라디오 버튼 계층형 카테고리', href: '/demos/category-radio' }
+        { title: '라디오 버튼 계층형 카테고리', href: '/demos/category-radio' },
+        { title: '커스텀 라디오 버튼 접근성', href: '/demos/custom-radio' }
       ]
     },
     {

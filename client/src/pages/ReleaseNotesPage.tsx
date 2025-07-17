@@ -19,6 +19,14 @@ interface ReleaseNote {
 // 초기 릴리즈(2025-07-14) 데이터 - 각 데모별 간단 요약 및 링크 포함
 const releaseNotes: ReleaseNote[] = [
   {
+    date: '2025-07-20',
+    version: 'v1.1.0',
+    summary: '커스텀 라디오 버튼 접근성 데모 추가',
+    demos: [
+      { title: '커스텀 라디오 버튼 접근성', summary: '커스텀 버튼 UI에서 라디오 그룹의 키보드/포커스/ARIA 접근성 구현 패턴', href: '/demos/custom-radio' }
+    ]
+  },
+  {
     date: '2025-07-14',
     version: 'v1.0.0',
     summary: '초기 릴리즈',
