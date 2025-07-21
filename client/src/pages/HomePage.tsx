@@ -194,50 +194,80 @@ export default function HomePage() {
             <div className="space-y-8">
               <div id="windows-setup">
                 <h4 className="text-lg font-medium text-foreground mb-3">Windows</h4>
-                <div className="text-muted-foreground space-y-3">
-                  <p>
-                    <a 
-                      href="https://nvda.or.kr/voicewith/" 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="text-primary hover:underline"
-                    >
-                      경북점자도서관
-                    </a>
-                    으로 들어가서 보이스위드를 다운받아 설치하여 테스트할 수 있습니다. 
-                    보이스위드는 NVDA를 한글화한 버전입니다.
-                  </p>
-                  <p>
-                    보이스위드 음성출력되는 텍스트를 화면에 자막으로 표시해 주는 애드온을 설치하면 편리합니다. 
-                    <a 
-                      href="https://khsruru.com/material/download.php?id=686127373bac2" 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="text-primary hover:underline ml-1"
-                    >
-                      다운로드
-                    </a>
-                  </p>
-                  {/* 자막 애드온 설치 안내 섹션 추가 */}
-                  <div className="bg-muted p-4 rounded-lg mt-3">
-                    <p className="font-medium mb-2">자막 애드온 설치 방법:</p>
-                    <ol className="list-decimal list-inside space-y-1 text-sm">
-                      <li>먼저 보이스위드를 실행하세요.</li>
-                      <li>위의 다운로드 링크에서 애드온 파일을 받은 후, 해당 파일을 더블 클릭하여 설치를 진행하세요.</li>
+                <div className="text-muted-foreground space-y-4">
+                  <div>
+                    <h5 className="font-medium text-foreground mb-2">NVDA 포터블 다운로드</h5>
+                    <p>
+                      <a 
+                        href="https://khsruru.com/material/download.php?id=687d3ce5b48b2" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="text-primary hover:underline"
+                      >
+                        NVDA 포터블 파일을 다운로드
+                      </a>
+                      하세요. 이는 설치 없이 간단하게 실행하여 접근성 테스트를 쉽게 할 수 있도록 한 버전입니다.
+                    </p>
+                  </div>
+
+                  <div>
+                    <h5 className="font-medium text-foreground mb-2">사용 방법</h5>
+                    <ol className="list-decimal list-inside space-y-2 text-sm">
+                      <li>바탕화면과 같은 곳에 <code className="bg-muted px-1 rounded">NVDA PORTABLE</code>과 같은 폴더를 만드세요.</li>
+                      <li>다운로드한 파일을 해당 폴더에 압축을 풀어주세요.</li>
+                      <li>폴더 안의 <code className="bg-muted px-1 rounded">nvda</code> 파일을 실행하면 바로 테스트할 수 있습니다.</li>
                     </ol>
                   </div>
 
-                  {/* 보이스위드 종료 방법 안내 수정 */}
-                  <div className="mt-6">
-                    <strong className="block text-base font-semibold mb-2">보이스위드 종료 방법</strong>
-                    <ul className="list-disc list-inside text-sm space-y-1">
-                      <li>보이스위드는 화면 상에 별도의 메뉴가 없으며, 트레이 아이콘(작업표시줄 우측 하단)에서 보이스위드 아이콘을 눌러야 메뉴가 표시됩니다.</li>
-                      <li>오른쪽 하단 <b>작업표시줄(트레이) 아이콘</b> 영역을 확인하세요.</li>
-                      <li>숨겨진 아이콘 표시(∧)를 클릭해 <b>보이스위드 아이콘</b>을 찾습니다.</li>
-                      <li>보이스위드 아이콘을 <b>마우스 왼쪽 버튼</b>으로 클릭하면 메뉴가 펼쳐집니다.</li>
-                      <li>메뉴에서 <b>보이스위드 종료</b> 항목을 선택하면 프로그램이 완전히 종료됩니다.</li>
+                  <div className="bg-muted p-4 rounded-lg">
+                    <h5 className="font-medium text-foreground mb-2">주요 기능</h5>
+                    <ul className="list-disc list-inside space-y-1 text-sm">
+                      <li><strong>자막 표시:</strong> 기본적으로 화면 아래쪽에 음성으로 출력되는 모든 텍스트가 자막으로 표시됩니다.</li>
+                      <li><strong>설치 불필요:</strong> 설치 과정 없이 바로 실행 가능합니다.</li>
                     </ul>
-                    <p className="text-xs text-muted-foreground mt-2">※ 트레이 아이콘(작업표시줄 우측 하단)은 '트레이 아이콘', '숨겨진 아이콘', '알림 영역' 등으로 불리기도 합니다.</p>
+                  </div>
+
+                  <div>
+                    <h5 className="font-medium text-foreground mb-2">영상 가이드</h5>
+                    <p className="text-sm mb-3">
+                      NVDA 포터블 버전의 실제 사용법과 자막 기능을 영상으로 확인할 수 있습니다.
+                    </p>
+                    <a 
+                      href="https://khsruru.com/caption/uploads/20250721_163347_73fb8f.html" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="inline-flex items-center gap-2 text-primary hover:underline font-medium"
+                    >
+                      <span>🎥 자막 포함 시연 영상 보기</span>
+                      <span className="text-xs">(새 창에서 열림)</span>
+                    </a>
+                  </div>
+
+                  <div>
+                    <h5 className="font-medium text-foreground mb-2">종료 방법</h5>
+                    <p className="text-sm">
+                      <strong>캡스락을 누른 상태로 Q</strong>를 눌러 종료할 수 있습니다.
+                    </p>
+                    <div className="bg-muted p-3 rounded-lg mt-2">
+                      <p className="text-xs font-medium mb-1">💡 대소문자 변경 팁</p>
+                      <p className="text-xs">
+                        대소문자로 변경할 때는 마치 마우스로 더블 클릭하듯이 <strong>캡스락 키를 두 번 따닥 연속 입력</strong>해야 합니다.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h5 className="font-medium text-foreground mb-2">웹 브라우징 접근성 테스트 단축키</h5>
+                    <ul className="list-disc list-inside space-y-1 text-sm">
+                      <li><strong>H:</strong> 다음 헤딩으로 이동</li>
+                      <li><strong>Shift + H:</strong> 이전 헤딩으로 이동</li>
+                      <li><strong>L:</strong> 다음 링크로 이동</li>
+                      <li><strong>Shift + L:</strong> 이전 링크로 이동</li>
+                      <li><strong>Tab:</strong> 포커스 가능한 요소로 이동</li>
+                      <li><strong>Space:</strong> 버튼 활성화, 체크박스/라디오 선택</li>
+                      <li><strong>Enter:</strong> 링크 이동, 버튼 활성화</li>
+                      <li><strong>Arrow Keys:</strong> 라디오 버튼, 탭, 메뉴 등에서 옵션 간 이동</li>
+                    </ul>
                   </div>
                 </div>
               </div>
