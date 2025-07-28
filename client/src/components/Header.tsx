@@ -3,7 +3,7 @@ import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Menu, Accessibility, ChevronDown, RadioIcon, Images, ArrowRight, Settings, LayoutGrid, Focus } from "lucide-react";
+import { Menu, Accessibility, ChevronDown, RadioIcon, Images, ArrowRight, Settings, LayoutGrid, Focus, MousePointer } from "lucide-react";
 import { motion } from "framer-motion";
 import { skipToMainContent } from "@/lib/focus-utils";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -64,6 +64,14 @@ export default function Header() {
       icon: Focus,
       items: [
         { title: '초점 관리하기', href: '/demos/focus-management' }
+      ]
+    },
+    {
+      id: 'interaction',
+      title: '인터랙션 데모',
+      icon: MousePointer,
+      items: [
+        { title: '복권 긁기 접근성', href: '/demos/lottery-scratch' }
       ]
     }
   ];

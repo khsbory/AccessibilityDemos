@@ -4,6 +4,7 @@ interface UseTabAccessibilityOptions {
   tabIds: string[];
   activeTab: string;
   onTabChange: (tabId: string) => void;
+  disabledTabs?: string[];
 }
 
 interface TabAccessibilityHandlers {
@@ -38,7 +39,8 @@ interface TabAccessibilityHandlers {
 export function useTabAccessibility({
   tabIds,
   activeTab,
-  onTabChange
+  onTabChange,
+  disabledTabs = []
 }: UseTabAccessibilityOptions): TabAccessibilityHandlers {
   const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
 
@@ -67,6 +69,22 @@ export function useTabAccessibility({
         return;
     }
 
+    // disabled 탭을 건너뛰기
+    let attempts = 0;
+    while (disabledTabs.includes(tabIds[newIndex]) && attempts < tabIds.length) {
+      if (e.key === 'ArrowRight' || e.key === 'End') {
+        newIndex = (newIndex + 1) % tabIds.length;
+      } else {
+        newIndex = newIndex === 0 ? tabIds.length - 1 : newIndex - 1;
+      }
+      attempts++;
+    }
+
+    // 모든 탭이 disabled인 경우 현재 탭 유지
+    if (disabledTabs.includes(tabIds[newIndex])) {
+      return;
+    }
+
     const newTabId = tabIds[newIndex];
     onTabChange(newTabId);
     
@@ -74,7 +92,7 @@ export function useTabAccessibility({
     setTimeout(() => {
       tabRefs.current[newTabId]?.focus();
     }, 0);
-  }, [tabIds, onTabChange]);
+  }, [tabIds, onTabChange, disabledTabs]);
 
   const getTabProps = useCallback((tabId: string) => ({
     ref: (el: HTMLButtonElement | null) => {
@@ -84,9 +102,9 @@ export function useTabAccessibility({
     id: `tab-${tabId}`,
     'aria-selected': activeTab === tabId,
     'aria-controls': `panel-${tabId}`,
-    tabIndex: activeTab === tabId ? 0 : -1,
+    tabIndex: disabledTabs.includes(tabId) ? -1 : (activeTab === tabId ? 0 : -1),
     onKeyDown: (e: React.KeyboardEvent) => handleKeyDown(e, tabId)
-  }), [activeTab, handleKeyDown]);
+  }), [activeTab, handleKeyDown, disabledTabs]);
 
   const getTabListProps = useCallback(() => ({
     role: 'tablist' as const

@@ -11,12 +11,13 @@ import { Heart, HeartIcon, Copy, Check } from "lucide-react";
 
 import { useTabAccessibility } from "@/hooks/use-tab-accessibility";
 
-type TabId = "fruits" | "vegetables" | "meat";
+type TabId = "fruits" | "vegetables" | "meat" | "fish";
 
 interface TabData {
   id: TabId;
   label: string;
   items: string[];
+  disabled?: boolean;
 }
 
 const tabsData: TabData[] = [
@@ -24,6 +25,12 @@ const tabsData: TabData[] = [
     id: "fruits",
     label: "과일",
     items: ["사과", "바나나", "딸기", "포도", "오렌지"]
+  },
+  {
+    id: "fish",
+    label: "어류",
+    items: ["연어", "고등어", "참치", "새우", "문어"],
+    disabled: true
   },
   {
     id: "vegetables", 
@@ -63,9 +70,12 @@ function BadTabControl() {
         {tabsData.map((tab) => (
           <li key={tab.id} className="flex-1">
             <button
-              onClick={() => setActiveTab(tab.id)}
+              disabled={tab.disabled}
+              onClick={() => !tab.disabled && setActiveTab(tab.id)}
               className={`w-full py-2 px-4 text-sm font-medium transition-colors ${
-                activeTab === tab.id
+                tab.disabled
+                  ? "opacity-50 cursor-not-allowed text-muted-foreground"
+                  : activeTab === tab.id
                   ? "text-primary border-b-2 border-primary bg-primary/5"
                   : "text-muted-foreground hover:text-foreground"
               }`}
@@ -106,6 +116,7 @@ function GoodTabControl() {
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   
   const tabIds = tabsData.map(tab => tab.id);
+  const disabledTabs = tabsData.filter(tab => tab.disabled).map(tab => tab.id);
   const handleTabChange = (tabId: string) => {
     setActiveTab(tabId as TabId);
   };
@@ -113,7 +124,8 @@ function GoodTabControl() {
   const { getTabProps, getTabListProps, getTabPanelProps } = useTabAccessibility({
     tabIds,
     activeTab,
-    onTabChange: handleTabChange
+    onTabChange: handleTabChange,
+    disabledTabs
   });
 
   const toggleFavorite = (item: string) => {
@@ -138,9 +150,12 @@ function GoodTabControl() {
           <li key={tab.id} role="none" className="flex-1">
             <button
               {...getTabProps(tab.id)}
-              onClick={() => setActiveTab(tab.id)}
+              disabled={tab.disabled}
+              onClick={() => !tab.disabled && setActiveTab(tab.id)}
               className={`w-full py-2 px-4 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
-                activeTab === tab.id
+                tab.disabled
+                  ? "opacity-50 cursor-not-allowed text-muted-foreground"
+                  : activeTab === tab.id
                   ? "text-primary border-b-2 border-primary bg-primary/5"
                   : "text-muted-foreground hover:text-foreground"
               }`}
@@ -328,17 +343,20 @@ interface UseTabAccessibilityOptions {
   tabIds: string[];
   activeTab: string;
   onTabChange: (tabId: string) => void;
+  disabledTabs?: string[];
 }
 
 /**
  * 탭 접근성을 위한 범용 React 훅
  * role="tablist"와 role="tab", aria-selected 마크업이 되어 있으면
  * 자동으로 키보드 접근성을 추가해주는 훅입니다.
+ * disabledTabs 옵션으로 비활성화된 탭을 건너뛰는 기능을 지원합니다.
  */
 export function useTabAccessibility({
   tabIds,
   activeTab,
-  onTabChange
+  onTabChange,
+  disabledTabs = []
 }: UseTabAccessibilityOptions) {
   const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
 
@@ -367,10 +385,26 @@ export function useTabAccessibility({
         return;
     }
 
+    // disabled 탭을 건너뛰기
+    let attempts = 0;
+    while (disabledTabs.includes(tabIds[newIndex]) && attempts < tabIds.length) {
+      if (e.key === 'ArrowRight' || e.key === 'End') {
+        newIndex = (newIndex + 1) % tabIds.length;
+      } else {
+        newIndex = newIndex === 0 ? tabIds.length - 1 : newIndex - 1;
+      }
+      attempts++;
+    }
+
+    // 모든 탭이 disabled인 경우 현재 탭 유지
+    if (disabledTabs.includes(tabIds[newIndex])) {
+      return;
+    }
+
     const newTabId = tabIds[newIndex];
     onTabChange(newTabId);
     setTimeout(() => tabRefs.current[newTabId]?.focus(), 0);
-  }, [tabIds, onTabChange]);
+  }, [tabIds, onTabChange, disabledTabs]);
 
   const getTabProps = useCallback((tabId: string) => ({
     ref: (el: HTMLButtonElement | null) => { tabRefs.current[tabId] = el; },
@@ -378,9 +412,9 @@ export function useTabAccessibility({
     id: \`tab-\${tabId}\`,
     'aria-selected': activeTab === tabId,
     'aria-controls': \`panel-\${tabId}\`,
-    tabIndex: activeTab === tabId ? 0 : -1,
+    tabIndex: disabledTabs.includes(tabId) ? -1 : (activeTab === tabId ? 0 : -1),
     onKeyDown: (e: React.KeyboardEvent) => handleKeyDown(e, tabId)
-  }), [activeTab, handleKeyDown]);
+  }), [activeTab, handleKeyDown, disabledTabs]);
 
   const getTabListProps = useCallback(() => ({
     role: 'tablist' as const
@@ -424,17 +458,20 @@ interface UseTabAccessibilityOptions {
   tabIds: string[];
   activeTab: string;
   onTabChange: (tabId: string) => void;
+  disabledTabs?: string[];
 }
 
 /**
  * 탭 접근성을 위한 범용 React 훅
  * role="tablist"와 role="tab", aria-selected 마크업이 되어 있으면
  * 자동으로 키보드 접근성을 추가해주는 훅입니다.
+ * disabledTabs 옵션으로 비활성화된 탭을 건너뛰는 기능을 지원합니다.
  */
 export function useTabAccessibility({
   tabIds,
   activeTab,
-  onTabChange
+  onTabChange,
+  disabledTabs = []
 }: UseTabAccessibilityOptions) {
   const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
 
@@ -463,10 +500,26 @@ export function useTabAccessibility({
         return;
     }
 
+    // disabled 탭을 건너뛰기
+    let attempts = 0;
+    while (disabledTabs.includes(tabIds[newIndex]) && attempts < tabIds.length) {
+      if (e.key === 'ArrowRight' || e.key === 'End') {
+        newIndex = (newIndex + 1) % tabIds.length;
+      } else {
+        newIndex = newIndex === 0 ? tabIds.length - 1 : newIndex - 1;
+      }
+      attempts++;
+    }
+
+    // 모든 탭이 disabled인 경우 현재 탭 유지
+    if (disabledTabs.includes(tabIds[newIndex])) {
+      return;
+    }
+
     const newTabId = tabIds[newIndex];
     onTabChange(newTabId);
     setTimeout(() => tabRefs.current[newTabId]?.focus(), 0);
-  }, [tabIds, onTabChange]);
+  }, [tabIds, onTabChange, disabledTabs]);
 
   const getTabProps = useCallback((tabId: string) => ({
     ref: (el: HTMLButtonElement | null) => { tabRefs.current[tabId] = el; },
@@ -474,9 +527,9 @@ export function useTabAccessibility({
     id: \`tab-\${tabId}\`,
     'aria-selected': activeTab === tabId,
     'aria-controls': \`panel-\${tabId}\`,
-    tabIndex: activeTab === tabId ? 0 : -1,
+    tabIndex: disabledTabs.includes(tabId) ? -1 : (activeTab === tabId ? 0 : -1),
     onKeyDown: (e: React.KeyboardEvent) => handleKeyDown(e, tabId)
-  }), [activeTab, handleKeyDown]);
+  }), [activeTab, handleKeyDown, disabledTabs]);
 
   const getTabListProps = useCallback(() => ({
     role: 'tablist' as const

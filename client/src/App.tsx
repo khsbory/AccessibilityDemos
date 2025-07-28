@@ -15,6 +15,7 @@ import FocusManagementDemoPage from "@/pages/FocusManagementDemoPage";
 import NotFound from "@/pages/not-found";
 import ReleaseNotesPage from "@/pages/ReleaseNotesPage";
 import CustomRadioDemoPage from "@/pages/CustomRadioDemoPage";
+import LotteryScratchDemoPage from "@/pages/LotteryScratchDemoPage";
 
 function Router() {
   return (
@@ -29,6 +30,7 @@ function Router() {
         <Route path="/demos/tab-control" component={TabControlDemoPage} />
         <Route path="/demos/focus-management" component={FocusManagementDemoPage} />
         <Route path="/demos/custom-radio" component={CustomRadioDemoPage} />
+        <Route path="/demos/lottery-scratch" component={LotteryScratchDemoPage} />
         <Route path="/release-notes" component={ReleaseNotesPage} />
         <Route component={NotFound} />
       </Switch>

@@ -19,6 +19,15 @@ interface ReleaseNote {
 // 초기 릴리즈(2025-07-14) 데이터 - 각 데모별 간단 요약 및 링크 포함
 const releaseNotes: ReleaseNote[] = [
   {
+    date: '2025-07-28',
+    version: 'v1.2.0',
+    summary: '복권 긁기 접근성 데모 추가 및 탭 컨트롤 disabled 기능 개선',
+    demos: [
+      { title: '복권 긁기 접근성', summary: 'Canvas API 기반 복권 긁기에서 스크린 리더 전용 버튼과 ARIA 속성으로 접근성 개선', href: '/demos/lottery-scratch' },
+      { title: '탭 컨트롤 접근성', summary: '어류 탭 추가 및 disabled 상태 구현, 키보드 네비게이션에서 disabled 탭 건너뛰기 기능', href: '/demos/tab-control' }
+    ]
+  },
+  {
     date: '2025-07-20',
     version: 'v1.1.0',
     summary: '커스텀 라디오 버튼 접근성 데모 추가',
