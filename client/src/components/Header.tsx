@@ -3,7 +3,7 @@ import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Menu, Accessibility, ChevronDown, RadioIcon, Images, ArrowRight, Settings, LayoutGrid, Focus, MousePointer } from "lucide-react";
+import { Menu, Accessibility, ChevronDown, RadioIcon, Images, ArrowRight, Settings, LayoutGrid, Focus, MousePointer, Smartphone, Download } from "lucide-react";
 import { motion } from "framer-motion";
 import { skipToMainContent } from "@/lib/focus-utils";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -72,6 +72,21 @@ export default function Header() {
       icon: MousePointer,
       items: [
         { title: '복권 긁기 접근성', href: '/demos/lottery-scratch' }
+      ]
+    },
+    {
+      id: 'android',
+      title: '안드로이드',
+      icon: Smartphone,
+      items: [
+        { 
+          title: '안드로이드 접근성 데모 앱 다운로드', 
+          href: 'https://khsruru.com/material/download.php?id=688b6bd1991dc',
+          isExternal: true,
+          icon: Download
+        },
+        { title: '확장축소', href: '/demos/android-expand-collapse' },
+        { title: '커스텀 탭', href: '/demos/android-custom-tab' }
       ]
     }
   ];
@@ -195,15 +210,29 @@ export default function Header() {
                   <div className="pl-6 py-2 space-y-1">
                     {demo.items.length > 0 ? (
                       demo.items.map((item, index) => (
-                        <Link 
-                          key={index} 
-                          href={item.href} 
-                          onClick={onItemClick} 
-                          className="block py-1 px-2 text-sm text-muted-foreground hover:text-primary transition-colors text-decoration-none"
-                          aria-current={isActive(item.href) ? "page" : undefined}
-                        >
-                          {item.title}
-                        </Link>
+                        item.isExternal ? (
+                          <a 
+                            key={index} 
+                            href={item.href} 
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block py-1 px-2 text-sm text-muted-foreground hover:text-primary transition-colors text-decoration-none flex items-center"
+                            aria-label={`${item.title} (새 창에서 열림)`}
+                          >
+                            {item.icon && <item.icon className="h-3 w-3 mr-2" aria-hidden="true" />}
+                            {item.title}
+                          </a>
+                        ) : (
+                          <Link 
+                            key={index} 
+                            href={item.href} 
+                            onClick={onItemClick} 
+                            className="block py-1 px-2 text-sm text-muted-foreground hover:text-primary transition-colors text-decoration-none"
+                            aria-current={isActive(item.href) ? "page" : undefined}
+                          >
+                            {item.title}
+                          </Link>
+                        )
                       ))
                     ) : (
                       <span className="block py-1 px-2 text-sm text-muted-foreground">
@@ -285,32 +314,59 @@ export default function Header() {
                     <demo.icon className="h-4 w-4 mr-2" aria-hidden="true" />
                     {demo.title}
                   </h3>
-                  {demo.items.length > 0 ? (
-                    <div className="space-y-2">
-                      {demo.items.map((item, index) => (
-                        <Link 
-                          key={index}
-                          href={item.href} 
-                          onClick={() => {
-                            const currentExpanded = expandedDemo;
-                            setExpandedDemo("");
-                            // 메뉴 항목 클릭 시에도 해당 버튼으로 초점 복원
-                            setTimeout(() => {
-                              buttonRefs.current[currentExpanded]?.focus();
-                            }, 100);
-                          }}
-                          className="flex items-center p-2 rounded-md hover:bg-muted transition-all group text-decoration-none"
-                          aria-current={isActive(item.href) ? "page" : undefined}
-                        >
-                          <div className="flex-1">
-                            <div className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
-                              {item.title}
-                            </div>
-                          </div>
-                          <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:text-primary transition-colors ml-2" aria-hidden="true" />
-                        </Link>
-                      ))}
-                    </div>
+                                     {demo.items.length > 0 ? (
+                     <div className="space-y-2">
+                       {demo.items.map((item, index) => (
+                         item.isExternal ? (
+                           <a 
+                             key={index}
+                             href={item.href} 
+                             target="_blank"
+                             rel="noopener noreferrer"
+                             onClick={() => {
+                               const currentExpanded = expandedDemo;
+                               setExpandedDemo("");
+                               // 메뉴 항목 클릭 시에도 해당 버튼으로 초점 복원
+                               setTimeout(() => {
+                                 buttonRefs.current[currentExpanded]?.focus();
+                               }, 100);
+                             }}
+                             className="flex items-center p-2 rounded-md hover:bg-muted transition-all group text-decoration-none"
+                             aria-label={`${item.title} (새 창에서 열림)`}
+                           >
+                             <div className="flex-1">
+                               <div className="text-sm font-medium text-foreground group-hover:text-primary transition-colors flex items-center">
+                                 {item.icon && <item.icon className="h-3 w-3 mr-2" aria-hidden="true" />}
+                                 {item.title}
+                               </div>
+                             </div>
+                             <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:text-primary transition-colors ml-2" aria-hidden="true" />
+                           </a>
+                         ) : (
+                           <Link 
+                             key={index}
+                             href={item.href} 
+                             onClick={() => {
+                               const currentExpanded = expandedDemo;
+                               setExpandedDemo("");
+                               // 메뉴 항목 클릭 시에도 해당 버튼으로 초점 복원
+                               setTimeout(() => {
+                                 buttonRefs.current[currentExpanded]?.focus();
+                               }, 100);
+                             }}
+                             className="flex items-center p-2 rounded-md hover:bg-muted transition-all group text-decoration-none"
+                             aria-current={isActive(item.href) ? "page" : undefined}
+                           >
+                             <div className="flex-1">
+                               <div className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
+                                 {item.title}
+                               </div>
+                             </div>
+                             <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:text-primary transition-colors ml-2" aria-hidden="true" />
+                           </Link>
+                         )
+                       ))}
+                     </div>
                   ) : (
                     <div className="text-center py-4 text-muted-foreground">
                       <demo.icon className="mx-auto h-8 w-8 mb-2" aria-hidden="true" />

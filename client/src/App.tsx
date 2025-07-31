@@ -16,6 +16,8 @@ import NotFound from "@/pages/not-found";
 import ReleaseNotesPage from "@/pages/ReleaseNotesPage";
 import CustomRadioDemoPage from "@/pages/CustomRadioDemoPage";
 import LotteryScratchDemoPage from "@/pages/LotteryScratchDemoPage";
+import AndroidExpandCollapsePage from "@/pages/AndroidExpandCollapsePage";
+import AndroidCustomTabPage from "@/pages/AndroidCustomTabPage";
 
 function Router() {
   return (
@@ -31,6 +33,8 @@ function Router() {
         <Route path="/demos/focus-management" component={FocusManagementDemoPage} />
         <Route path="/demos/custom-radio" component={CustomRadioDemoPage} />
         <Route path="/demos/lottery-scratch" component={LotteryScratchDemoPage} />
+        <Route path="/demos/android-expand-collapse" component={AndroidExpandCollapsePage} />
+        <Route path="/demos/android-custom-tab" component={AndroidCustomTabPage} />
         <Route path="/release-notes" component={ReleaseNotesPage} />
         <Route component={NotFound} />
       </Switch>
