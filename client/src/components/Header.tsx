@@ -250,14 +250,14 @@ export default function Header() {
 
     // 데스크톱에서는 새로운 확장 방식
     return (
-      <nav className="hidden md:flex items-center space-x-6" role="navigation" aria-label="주요 메뉴">
+      <nav className="hidden md:flex items-center space-x-2 md:space-x-4 lg:space-x-6 overflow-hidden min-w-0" role="navigation" aria-label="주요 메뉴">
         <Link 
           href="/" 
           className="text-decoration-none"
           aria-current={isActive("/") ? "page" : undefined}
         >
           <span 
-            className={`py-2 px-3 rounded-md ${isActive("/") ? "text-primary bg-primary/10" : "text-foreground hover:text-primary hover:bg-muted"} transition-colors cursor-pointer`}
+            className={`py-2 px-3 rounded-md ${isActive("/") ? "text-primary bg-primary/10" : "text-foreground hover:text-primary hover:bg-muted"} transition-colors cursor-pointer truncate overflow-hidden`}
           >
             소개
           </span>
@@ -270,7 +270,7 @@ export default function Header() {
           aria-current={isActive("/release-notes") ? "page" : undefined}
         >
           <span 
-            className={`py-2 px-3 rounded-md ${isActive("/release-notes") ? "text-primary bg-primary/10" : "text-foreground hover:text-primary hover:bg-muted"} transition-colors cursor-pointer`}
+            className={`py-2 px-3 rounded-md ${isActive("/release-notes") ? "text-primary bg-primary/10" : "text-foreground hover:text-primary hover:bg-muted"} transition-colors cursor-pointer truncate overflow-hidden`}
           >
             릴리즈 노트
           </span>
@@ -281,7 +281,7 @@ export default function Header() {
             <button 
               ref={(el) => buttonRefs.current[demo.id] = el}
               onClick={() => toggleDemo(demo.id)}
-              className={`flex items-center py-2 px-3 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary ${
+              className={`flex items-center py-2 px-3 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary min-w-0 flex-shrink ${
                 isParentActive(demo.id) 
                   ? "text-primary bg-primary/10" 
                   : "text-foreground hover:text-primary hover:bg-muted"
@@ -289,15 +289,15 @@ export default function Header() {
               aria-expanded={expandedDemo === demo.id}
               aria-current={isParentActive(demo.id) ? "page" : undefined}
             >
-              <demo.icon className="h-4 w-4 mr-2" aria-hidden="true" />
-              <span>{demo.title}</span>
-              <motion.div
-                animate={{ rotate: expandedDemo === demo.id ? 180 : 0 }}
-                transition={{ duration: 0.2 }}
-                className="ml-1"
-              >
-                <ChevronDown className="h-3 w-3" aria-hidden="true" />
-              </motion.div>
+              <demo.icon className="h-4 w-4 mr-2 flex-shrink-0" aria-hidden="true" />
+              <span className="truncate overflow-hidden">{demo.title}</span>
+                              <motion.div
+                  animate={{ rotate: expandedDemo === demo.id ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="ml-1 flex-shrink-0"
+                >
+                  <ChevronDown className="h-3 w-3" aria-hidden="true" />
+                </motion.div>
             </button>
             
             {/* 각 버튼 아래 인라인 확장 메뉴 */}
