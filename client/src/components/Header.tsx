@@ -16,6 +16,8 @@ export default function Header() {
   const buttonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const isMobile = useIsMobile();
 
+
+
   const isActive = (path: string) => {
     if (path === "/" && location === "/") return true;
     if (path !== "/" && location.startsWith(path)) return true;
@@ -250,7 +252,7 @@ export default function Header() {
 
     // 데스크톱에서는 새로운 확장 방식
     return (
-      <nav className="hidden md:flex items-center space-x-2 md:space-x-4 lg:space-x-6 overflow-hidden min-w-0" role="navigation" aria-label="주요 메뉴">
+      <nav className="hidden md:flex items-center space-x-2 md:space-x-4 lg:space-x-6 overflow-hidden min-w-0 transition-all duration-200" role="navigation" aria-label="주요 메뉴">
         <Link 
           href="/" 
           className="text-decoration-none"
@@ -397,7 +399,7 @@ export default function Header() {
       </a>
       <header className="bg-background shadow-sm border-b border-border sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-16 overflow-hidden">
             <Link href="/">
               <div className="flex items-center space-x-3 cursor-pointer">
                 <div className="flex items-center justify-center w-10 h-10 bg-primary rounded-lg">
@@ -409,12 +411,12 @@ export default function Header() {
             
             <NavLinks />
             
-            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden" aria-label="메뉴 열기">
-                  <Menu className="h-5 w-5" />
-                </Button>
-              </SheetTrigger>
+                          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon" className="md:hidden transition-all duration-200" aria-label="메뉴 열기">
+                    <Menu className="h-5 w-5" />
+                  </Button>
+                </SheetTrigger>
               <SheetContent side="right">
                 <div className="mt-6">
                   <NavLinks mobile={true} onItemClick={() => {
